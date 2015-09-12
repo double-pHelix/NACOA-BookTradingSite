@@ -56,6 +56,10 @@ public class DBLPMainServlet extends HttpServlet {
      * Call this function if you want to generate a number if randomly selected entries
      */
     private ArrayList<DBLPBean> generateRandomBeans(int num){
+    	//we dont need this right?
+    	//yeah... just returns an array of beans
+    	//ok this is redundant
+    	//TODO: Remove
     	//generate num number of entries into an xml
     	
     	Random rand = new Random();
@@ -110,7 +114,8 @@ public class DBLPMainServlet extends HttpServlet {
 			if(handler.fileExists(RESULTS_FILE_LOCATION)){
 				handler.loadResultsXML(RESULTS_FILE_LOCATION);
 			}
-
+			
+			//this performs the search and puts the results into a result doc
 			handler.searchAdvanced(author, title, venue, year, pubType);
 			
 			//write results to the given file location
@@ -121,6 +126,7 @@ public class DBLPMainServlet extends HttpServlet {
 		}
 		
 			
+		//this then just retrieves the results from the result doc (into bean format)
 		resultBeans = handler.getBeanFromResultDoc(0);
 		
 		//set up our bean to be displayed
@@ -139,12 +145,19 @@ public class DBLPMainServlet extends HttpServlet {
 		
 		req.setAttribute("viewBean",viewBean);
     	
-
+		//i guess we still need this
+		//but we might change it to include a search for people?
+		//as Admin can find people and ban them?
+		//um that might be good too
+		//that sounds like a good idea
+		//um same database but different query and table
+		
 
     }
     
     private void performBasicSearch(HttpServletRequest req, HttpServletResponse res){
     	//extract variables
+    	//same thing except basic search
 		String query = (String) req.getParameter("search_query");
 		String searchType = (String) req.getParameter("search_category");
 		
@@ -200,6 +213,8 @@ public class DBLPMainServlet extends HttpServlet {
     	
 
     	//set up our bean to be displayed
+		//yeah um.. ill ask on the forum but i think searching will be easy
+		//SQL makes searches pretty easy I think
 
     }
     
@@ -211,6 +226,8 @@ public class DBLPMainServlet extends HttpServlet {
 	 */
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException	{
     	doPost(req,res);
+    	//This is the get method call... it just redirects to post
+    	
 	
     }
 
@@ -222,7 +239,9 @@ public class DBLPMainServlet extends HttpServlet {
 		//where did the user want to go?
 		String uri = req.getRequestURI();
 		
+		//so as you can see it lol its just a series of if statements based on what page 
 		if (uri.contains("cart")){ //CART PAGE
+			//for cart it only processes the cart page or remove action
 			try {
 				//just set up the cart to be read 
 				setUpCart(req, res);
@@ -238,7 +257,9 @@ public class DBLPMainServlet extends HttpServlet {
 	    	requestDispatcher.forward(req, res);
 			
 		} else if (uri.contains("results")){  //RESULT PAGE (changing page No. OR extra detail for an entry)
-
+			//for result it does searches (basic/advanced) or add to cart for (result view or expanded detail view)
+			//know what i mean?
+			
 			String searchType = (String) req.getParameter("search_type");
 
 			//case of search
@@ -251,7 +272,7 @@ public class DBLPMainServlet extends HttpServlet {
 				} else if (searchType.matches(".*basic.*")){
 					performBasicSearch(req,res);
 					
-				}
+				} //uh yeah its kinda complicated...  yeah
 				
 			} else if(req.getParameter("add_to_cart_view") != null){
 				//add to cart from extend view
@@ -263,19 +284,19 @@ public class DBLPMainServlet extends HttpServlet {
 				
 				appendToCartPage(req,res);
 				
-				processResults(req,res);
+				processResults(req,res); //this function lets have a look at it
 
 			} else {
 				//just looking at results 
 				
-				loadResultsXML();
+				loadResultsXML(); //this stuff will probably be redundant as we are using sql
 				
 				processResults(req,res);
 			}
 			
 	    	requestDispatcher = req.getRequestDispatcher("/Results.jsp");
 	    	requestDispatcher.forward(req, res);
-		} else {//MAIN PAGE
+		} else {//MAIN PAGE (this is /search or welcome
 			//generate random list
 
 			loadMainXML();
@@ -292,12 +313,14 @@ public class DBLPMainServlet extends HttpServlet {
 		int pubId = Integer.parseInt(req.getParameter("publication_id"));
 		
 		try {
+			//i think we will have to replace this with SQL functions or we replace the 
+			//implementations of these functiosn to use SQL
 			setUpCart(req, res);
 			
 			//we append to the loaded cart
 			handler.appendToCart(pubId);	
 			
-			handler.updateCartXML(CART_FILE_LOCATION);
+			handler.updateCartXML(CART_FILE_LOCATION); //this will be useless 
 			
 			cartBeans = handler.getBeanFromCartDoc(0);
 
@@ -322,6 +345,7 @@ public class DBLPMainServlet extends HttpServlet {
 			///we need to start by looking at the last object 		
 			int totalEntries =  Integer.parseInt(req.getParameter("num_items"));
 
+			//to remove items i removed from last to first to avoid changing the indexes
 			for(int n = totalEntries-1; n >= 0; n--){
 				if(req.getParameter("entry"+n) != null){
 					
@@ -344,7 +368,16 @@ public class DBLPMainServlet extends HttpServlet {
 		}
 	}
 	
+	/**
+	 * @TODO: change this function to work with SQL
+	 * @param req
+	 * @param res
+	 * @throws Exception
+	 */
 	public void setUpCart(HttpServletRequest req, HttpServletResponse res) throws Exception{
+		//This function just does dumb things to get xml working
+		//we wont need it either
+		//oh yeah ok
 		//need to load result xml
 		loadResultsXML();
 		
@@ -399,7 +432,11 @@ public class DBLPMainServlet extends HttpServlet {
 	public void processResults(HttpServletRequest req, HttpServletResponse res){
 		//just set up the cart to be read 
 
-		String entryToview = req.getParameter("entryMoreView");
+		String entryToview = req.getParameter("entryMoreView");//im trying to remember what my code does lol
+		
+		//oh yeah so this viewBean is just a bean to display stuff, is a series of boolean values
+		//like do we show more results?
+		//do we show less results (like a back button?)
 		
 		if(entryToview != null){ //EXPANDING VIEW TO READ MORE
 			int entryToViewNum = Integer.parseInt(entryToview);
@@ -407,6 +444,7 @@ public class DBLPMainServlet extends HttpServlet {
 			resultBeans = handler.getBeanFromResultDoc(entryToViewNum);
 			DBLPBean entry = resultBeans.get(0);
 			
+			//that is what a ResultPageBean does
 			ResultPageBean viewBean = new ResultPageBean();
 			
 			viewBean.setReadMore(true);
@@ -425,6 +463,8 @@ public class DBLPMainServlet extends HttpServlet {
 			int currPageNo = Integer.parseInt(pageNo);
 			viewBean.setCurr_page_num(currPageNo);
 			
+			//so the logic for that is here
+			//if the current page number is > 1 we can go backwards etc
 			if(pageNo == null){
 				//default is first page
 				resultBeans = handler.getBeanFromResultDoc(0);
@@ -457,7 +497,10 @@ public class DBLPMainServlet extends HttpServlet {
 					viewBean.setNext_page_num(currPageNo+1);
 				}
 
+				//and we pass these Beans to our JSPs through attributes
 				req.setAttribute("viewBean",viewBean);
+				//yeah, it reads it and has if statements to display data
+				//um yeah it uses JSTL for ifs
 
 			}
 		}

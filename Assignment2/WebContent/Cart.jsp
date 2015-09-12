@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    
+   <!--  Remember to include these taglibs in every page... oh yeah just remembered -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -43,6 +43,7 @@
   <body>
     <div class="container">
   
+  <!-- I separated the top menu thingy into a diff jsp -->
     <jsp:include page="/topBanner.jsp" />
     
     <h1>Your Shopping Cart</h1>

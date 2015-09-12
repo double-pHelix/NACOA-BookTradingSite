@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    
+   <!--  Yeah I think you guys should install eclipse + egit lol -->
+   <!--  it you want i could try and get it working for your laptops -->
+   <!--  ive had to deal with stuff like this before -->
+   <!--  ok -->
+   <!--  ill show you now! -->
+   <!--  ill push to out repo now -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -137,7 +142,11 @@
                   
               </div>
               <div style="float: right; width: 225px"> 
-            
+              <!--  um bootstrap is just the container and css yeah -->
+              <!-- So below is an example of viewBean .. ok-->
+              <!--  btw do you want me to show you Egit? -->
+              <!--  its super easy bro -->
+              <!-- eclipse is easy as well lol -->
                 <c:if test="${requestScope.viewBean.more =='true'}">
                   <form name="articles_option" action="${pageContext.request.contextPath}/results" method="GET">
                     <input type="hidden" name="page" value="${requestScope.viewBean.next_page_num}">

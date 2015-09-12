@@ -9,7 +9,8 @@ import java.util.ArrayList;
  *
  */
 public class ResultPageBean implements Serializable {
-
+ //so yeah this is the pagebean
+	//no thats the other bean
 	public boolean readMore; //are we viewing a specific title or result page?
 	public boolean more; //next page nav?
 	public boolean less; //prev page nav?
