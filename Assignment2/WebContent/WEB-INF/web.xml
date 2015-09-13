@@ -9,7 +9,7 @@
 	
 	<servlet>
 	    <servlet-name>MainServlet</servlet-name>
-	    <servlet-class>DBLPMainServlet</servlet-class>
+	    <servlet-class>NACOAMainServlet</servlet-class>
   	</servlet>
 
 	<servlet-mapping>

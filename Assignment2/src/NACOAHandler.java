@@ -45,7 +45,7 @@ import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
  *
  */
 
-public class DBLPHandler {
+public class NACOAHandler {
 	Logger logger = Logger.getLogger(this.getClass().getName());
 	final static int MOST_RETRIEVE = 10;
 	
@@ -55,7 +55,7 @@ public class DBLPHandler {
 	private Document results; //our new results
 	private Document shpCart; //the user's shopping cart
 	
-	public DBLPHandler (){
+	public NACOAHandler (){
 		mainDoc = null;
 		results = null;
 		shpCart = null;
@@ -89,21 +89,21 @@ public class DBLPHandler {
 		}
 	}
 	
-	public ArrayList<DBLPBean> getBeanFromMainDoc(int start){
+	public ArrayList<NACOABean> getBeanFromMainDoc(int start){
 		return getBeanFromXML(this.mainDoc, start);
 	}
 	
-	public ArrayList<DBLPBean> getBeanFromResultDoc(int start){
+	public ArrayList<NACOABean> getBeanFromResultDoc(int start){
 		return getBeanFromXML(this.results, start);
 	}
 	
-	public ArrayList<DBLPBean> getBeanFromCartDoc(int start){
+	public ArrayList<NACOABean> getBeanFromCartDoc(int start){
 		return getBeanFromXML(this.shpCart, start);
 	}
 	
 	
-	private ArrayList<DBLPBean> getBeanFromXML(Document doc, int start){
-		ArrayList<DBLPBean> beans = new ArrayList<DBLPBean>();
+	private ArrayList<NACOABean> getBeanFromXML(Document doc, int start){
+		ArrayList<NACOABean> beans = new ArrayList<NACOABean>();
 		
 		//lets default grab it from the main file
 		NodeList realRootNodes = doc.getElementsByTagName("dblp");
@@ -121,7 +121,7 @@ public class DBLPHandler {
 				//cre8 da beenz
 				//generate 10 Beans
 				//harvest the xml 
-				DBLPBean newBean = new DBLPBean();
+				NACOABean newBean = new NACOABean();
 				
 				//TODO: FIX THIS PROBLEM BELOW
 				newBean.setXmlID(i); //for retrieval later from the xml file... 
@@ -425,6 +425,11 @@ public class DBLPHandler {
 	 * Append list to results to document + xml
 	 */
 	
+	//btw guys im really hungry 
+	//Cachey 
+	//woah
+	//ok i have to go for a sec brb 
+	
 	public void appendListToResults(NodeList results) throws Exception { 
 		//create transformers 
 		TransformerFactory tranFactory = TransformerFactory.newInstance(); 
@@ -545,7 +550,7 @@ public class DBLPHandler {
 		return rootChildren.getLength();
 	}
 	
-	public DBLPBean getEntryMain(int index){
+	public NACOABean getEntryMain(int index){
 		//lets default grab it from the main file
 		NodeList realRootNodes = this.mainDoc.getElementsByTagName("dblp");
 		Node realRootNode = realRootNodes.item(0);
@@ -554,7 +559,7 @@ public class DBLPHandler {
 		NodeList rootChildren = realRootNode.getChildNodes();
 		
 		Node currEntry = rootChildren.item(index);
-		DBLPBean newBean = new DBLPBean();
+		NACOABean newBean = new NACOABean();
 		
 		//we append this new Entry to the new tree we are making
 		if(currEntry.hasChildNodes()){

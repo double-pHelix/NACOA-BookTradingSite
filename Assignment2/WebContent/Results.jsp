@@ -6,6 +6,11 @@
    <!--  ok -->
    <!--  ill show you now! -->
    <!--  ill push to out repo now -->
+   <!--  done too ez-->
+   <!--  remember to pull to the latest version before you push or it wont work -->
+   <!-- I think so -->
+   <!--  I think we can break it up into Databases/Business logic/Presentation? -->
+   <!--  i didnt show you the xml handler code which will replace the database code ill do that now? -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>

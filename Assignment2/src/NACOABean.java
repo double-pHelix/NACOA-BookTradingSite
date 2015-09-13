@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @author Felix
  *
  */
-public class DBLPBean implements Serializable {
+public class NACOABean implements Serializable {
 	private int xmlID;
 	/* fields */
 	private ArrayList<String> authors; //we can have multiple authors or editors
@@ -45,7 +45,7 @@ public class DBLPBean implements Serializable {
 	
 	private String pubType;
 	
-	public DBLPBean(){
+	public NACOABean(){
 		//public constructor no arguments!
 	}
 	

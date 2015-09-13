@@ -8,5 +8,5 @@
       <li role="presentation"><a href="${pageContext.request.contextPath}/cart">Cart</a></li>
     </ul>
   </nav>
-  <h3 class="text-muted" id="logo">DBLP</h3>
+  <h3 class="text-muted" id="logo">NACOA</h3>
 </div>

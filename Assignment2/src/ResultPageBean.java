@@ -19,8 +19,8 @@ public class ResultPageBean implements Serializable {
 	public int curr_page_num;
 	public int prev_page_num; //1 less than curr
 	public int next_page_num; //1 more than curr
-	public DBLPBean readEntry; //is set only if readMore == true
-	public ArrayList<DBLPBean> resultBeans; //should always be set
+	public NACOABean readEntry; //is set only if readMore == true
+	public ArrayList<NACOABean> resultBeans; //should always be set
 	
 
 	public ResultPageBean (){
@@ -113,13 +113,13 @@ public class ResultPageBean implements Serializable {
 
 
 
-	public DBLPBean getReadEntry() {
+	public NACOABean getReadEntry() {
 		return readEntry;
 	}
 
 
 
-	public void setReadEntry(DBLPBean readEntry) {
+	public void setReadEntry(NACOABean readEntry) {
 		this.readEntry = readEntry;
 	}
 
@@ -139,13 +139,13 @@ public class ResultPageBean implements Serializable {
 
 
 
-	public ArrayList<DBLPBean> getResultBeans() {
+	public ArrayList<NACOABean> getResultBeans() {
 		return resultBeans;
 	}
 
 
 
-	public void setResultBeans(ArrayList<DBLPBean> resultBeans) {
+	public void setResultBeans(ArrayList<NACOABean> resultBeans) {
 		this.resultBeans = resultBeans;
 	}
 	

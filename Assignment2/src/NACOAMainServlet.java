@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 @WebServlet(name="MainServlet",urlPatterns="/start")
-public class DBLPMainServlet extends HttpServlet {
+public class NACOAMainServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	final static int NUM_ENTRIES_NEW_FILE = 20; 
 	final static String RESULTS_FILE_LOCATION = "./workspace/DBLP/WebContent/WEB-INF/results.xml";
@@ -35,27 +35,27 @@ public class DBLPMainServlet extends HttpServlet {
 	final static String CART_FILE_LOCATION = "./workspace/DBLP/WebContent/WEB-INF/cart.xml";
 	
 	/* Files for the given session */
-	private ArrayList<DBLPBean> resultBeans; 
-	private ArrayList<DBLPBean> cartBeans;
+	private ArrayList<NACOABean> resultBeans; 
+	private ArrayList<NACOABean> cartBeans;
 	
 	/* XML Handler: abstract class for dealing with XML */
-	private DBLPHandler handler;
+	private NACOAHandler handler;
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DBLPMainServlet() {
+    public NACOAMainServlet() {
         super();
 
-        resultBeans = new ArrayList<DBLPBean>();
-        cartBeans = new ArrayList<DBLPBean>();
-        handler = new DBLPHandler();
+        resultBeans = new ArrayList<NACOABean>();
+        cartBeans = new ArrayList<NACOABean>();
+        handler = new NACOAHandler();
     }
     
     /**
      * Call this function if you want to generate a number if randomly selected entries
      */
-    private ArrayList<DBLPBean> generateRandomBeans(int num){
+    private ArrayList<NACOABean> generateRandomBeans(int num){
     	//we dont need this right?
     	//yeah... just returns an array of beans
     	//ok this is redundant
@@ -66,7 +66,7 @@ public class DBLPMainServlet extends HttpServlet {
     	int totalEntries = handler.getNumMain();
     	
     	ArrayList<Integer> listOfNum = new ArrayList<Integer>();
-    	ArrayList<DBLPBean> randomEntriesList = new ArrayList<DBLPBean>();
+    	ArrayList<NACOABean> randomEntriesList = new ArrayList<NACOABean>();
     	
     	for(int i = 0;  i < num*5; i++ ){
     		
@@ -83,7 +83,7 @@ public class DBLPMainServlet extends HttpServlet {
     			break;
     		}
     		
-    		DBLPBean newBean = handler.getEntryMain(n);
+    		NACOABean newBean = handler.getEntryMain(n);
     		if(newBean == null){
     			counter--;
     		} else {
@@ -442,7 +442,7 @@ public class DBLPMainServlet extends HttpServlet {
 			int entryToViewNum = Integer.parseInt(entryToview);
 			
 			resultBeans = handler.getBeanFromResultDoc(entryToViewNum);
-			DBLPBean entry = resultBeans.get(0);
+			NACOABean entry = resultBeans.get(0);
 			
 			//that is what a ResultPageBean does
 			ResultPageBean viewBean = new ResultPageBean();

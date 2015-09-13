@@ -51,7 +51,7 @@
     <jsp:include page="/topBanner.jsp" /> 
     
       <div class="jumbotron">
-        <h1>Welcome to DBLP</h1>
+        <h1>Welcome to NACOA</h1>
          
          <!--  Need to place search form here -->
          <!-- Default we show basic, if we have a request to have advanced we switch -->
