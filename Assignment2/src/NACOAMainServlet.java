@@ -25,15 +25,15 @@ import javax.servlet.http.HttpServletResponse;
  * 
  */
 
-@WebServlet(name="MainServlet",urlPatterns="/start")
+@WebServlet(name="NACOAMainServlet",urlPatterns="/start")
 public class NACOAMainServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	final static int NUM_ENTRIES_NEW_FILE = 20; 
-	final static String RESULTS_FILE_LOCATION = "./workspace/DBLP/WebContent/WEB-INF/results.xml";
-	final static String MAIN_FILE_LOCATION = "./workspace/DBLP/WebContent/WEB-INF/DBLPSmallGen.xml";
+
+	final static String RESULTS_FILE_LOCATION = "./Assignment2/WebContent/WEB-INF/results.xml";
+	final static String MAIN_FILE_LOCATION = "./Assignment2/WebContent/WEB-INF/DBLPSmallGen.xml";
 	//final static String MAIN_FILE_LOCATION = "./workspace/DBLP/WebContent/WEB-INF/smallDBLP.xml";
-	final static String CART_FILE_LOCATION = "./workspace/DBLP/WebContent/WEB-INF/cart.xml";
-	
+	final static String CART_FILE_LOCATION = "./Assignment2/WebContent/WEB-INF/cart.xml";
 	/* Files for the given session */
 	private ArrayList<NACOABean> resultBeans; 
 	private ArrayList<NACOABean> cartBeans;
@@ -225,7 +225,10 @@ public class NACOAMainServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException	{
+
+    	System.out.println(System.getProperty("user.dir"));
     	doPost(req,res);
+    	
     	//This is the get method call... it just redirects to post
     	
 	

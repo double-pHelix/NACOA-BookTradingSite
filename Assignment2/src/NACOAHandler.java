@@ -69,6 +69,7 @@ public class NACOAHandler {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		this.mainDoc = builder.parse(location);
+		System.out.println("Location is " + location);
 	}
 	
 	public void loadResultsXML (String location) throws Exception { 		
