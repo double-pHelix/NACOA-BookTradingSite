@@ -38,6 +38,8 @@ public class NACOADataHandler {
 		if(!handler.databaseExists("nacoadatabase1")){
 			System.out.println("Test 2 Passed!");
 		}
+		
+		System.out.println("User name is " +handler.getUserName(0));
 	}
 	
 	/**
@@ -308,6 +310,63 @@ public class NACOADataHandler {
 		}
 		
 		return false;
+	}
+	
+	public String getUserName (int user_id){
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String username = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			
+			//STEP 4: Execute a query
+			System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM users WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, user_id);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+	
+			  //STEP 5: Extract data from result set
+			while(rs.next()){
+				//Retrieve by column name
+				username = rs.getString("username");
+		
+			}
+					  //STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();	
+			
+			return username;
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		
+		return username; 
 	}
 	
 	
