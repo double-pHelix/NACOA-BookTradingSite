@@ -245,6 +245,19 @@ public class NACOAMainServlet extends HttpServlet {
     	RequestDispatcher requestDispatcher; 
 		//where did the user want to go?
 		String uri = req.getRequestURI();
+		
+		//create database if not created
+		if(!dHandler.databaseExists("nacoadatabase")){
+			dHandler.setUpDatabase();
+		}
+		
+		//if we are logged in retrieve user id
+		if(req.getSession().getAttribute("logged_in") != null){
+			//write the code you want
+			
+		}
+		
+
 		//so as you can see it lol its just a series of if statements based on what page 
 		if (uri.contains("register")){ //USER REGISTRATION PAGE
 			//if user has submitted form
@@ -421,6 +434,8 @@ public class NACOAMainServlet extends HttpServlet {
 		//set the session to login
 		req.getSession().setAttribute("logged_in", true);
 		req.getSession().setAttribute("user_id", id);
+		req.getSession().setAttribute("username", dHandler.getUserName(id));
+		//Add more stuff that you need for a login
 		
 	}
 	
