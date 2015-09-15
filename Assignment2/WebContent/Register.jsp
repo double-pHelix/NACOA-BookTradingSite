@@ -53,7 +53,7 @@
       <div class="jumbotron">
       
       <c:choose>
-        <c:when test="${not empty sessionScope.logged_in}">
+        <c:when test="${sessionScope.logged_in == true}">
           <h2>Thank you for registering ${sessionScope.username}</h2> 
         </c:when>    
         <c:otherwise>

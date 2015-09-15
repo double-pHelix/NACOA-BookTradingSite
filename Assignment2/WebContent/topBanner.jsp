@@ -1,3 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+    
 <!--  Contains only the top menu  -->
 <!-- yeah so i when i modify this it changes for all pages.. its easier -->
 
@@ -10,22 +17,25 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
             <ul class="dropdown-menu">
             
-              <!-- TODO: If we are logged in -->
-              <!-- 
+            <c:choose>
+              <c:when test="${sessionScope.logged_in == true}">
+                <li class="dropdown-header">Logged in as "${sessionScope.username}"</li>
                 <li><a href="#">Change Details</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Settings</li>
                 <li><a href="${pageContext.request.contextPath}/logout">Log Out</a></li>
-              -->
-               <!-- TODO: else we need to register -->
+               
+              </c:when>    
+              <c:otherwise>
                
                 <li><a href="${pageContext.request.contextPath}/register">Register</a></li>
                 <li><a href="${pageContext.request.contextPath}/login">Login</a></li>
                 
-               <!-- TODO: end if -->
+              </c:otherwise> 
+            </c:choose>
+          
             </ul>
-            </li>    
-      
+            </li> 
       
     </ul>
   </nav>

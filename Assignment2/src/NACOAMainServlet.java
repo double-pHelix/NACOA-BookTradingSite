@@ -259,7 +259,15 @@ public class NACOAMainServlet extends HttpServlet {
 		
 
 		//so as you can see it lol its just a series of if statements based on what page 
-		if (uri.contains("register")){ //USER REGISTRATION PAGE
+		//if we are logged in retrieve user id
+		if (uri.contains("logout")){
+			//write the code you want
+			logoutUser(req, res);
+			
+			requestDispatcher = req.getRequestDispatcher("/Logout.jsp");
+	    	requestDispatcher.forward(req, res);
+			
+		} else if (uri.contains("register")){ //USER REGISTRATION PAGE
 			//if user has submitted form
 			
 			if(req.getParameter("registering") != null){
@@ -436,6 +444,12 @@ public class NACOAMainServlet extends HttpServlet {
 		req.getSession().setAttribute("user_id", id);
 		req.getSession().setAttribute("username", dHandler.getUserName(id));
 		//Add more stuff that you need for a login
+		
+	}
+	
+	public void logoutUser(HttpServletRequest req, HttpServletResponse res){
+		//set the session to logged out
+		req.getSession().setAttribute("logged_in", false);
 		
 	}
 	
