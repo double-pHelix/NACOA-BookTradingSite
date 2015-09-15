@@ -29,6 +29,7 @@ public class NACOADataHandler {
 		NACOADataHandler handler= new NACOADataHandler();
 		
 		handler.setUpDatabase();
+		//handler.createUser("fakeuser21","pw","fakeemails","k","r","r","2015-09-23","fake","fake");
 	}
 	
 	/**
@@ -205,7 +206,72 @@ public class NACOADataHandler {
 
 	}
 	
+	public int createUser(String username, String password, String email, String nickname, 
+			String firstname, String lastname, String dob, String address, String creditinfo){
+		int auto_id = 0;
+		Connection conn = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			//STEP 3: Open a connection
+			System.out.println("Connecting to database...");
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+
+			//STEP 4: Execute a query
+			String sql;
+			
+			sql = "INSERT INTO `users` "
+					 + "(`username`, `password`, `email`, `firstname`, `lastname`, `nickname`, `dob`, `address`, `creditcarddetails`, `is_halted`) "
+			  + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				
+
+			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, username);
+			stmt.setString(2, password);
+			stmt.setString(3, email);
+			stmt.setString(4, firstname);
+			stmt.setString(5, lastname);
+			stmt.setString(6, nickname);
+			stmt.setString(7, dob);
+			stmt.setString(8, address);
+			stmt.setString(9, creditinfo);
+			stmt.setInt(10, 0);
+			
+			stmt.executeUpdate();
+			
+			//we need to get the auto generated id for session login
+			//we will use this id to reference the user during login
+			ResultSet rs = stmt.getGeneratedKeys();
+		    rs.next();
+		    auto_id = rs.getInt(1);
+		    
+			System.out.println("...closing connection");
+
+		    stmt.close();
+			conn.close();
+			
+		} catch (SQLException se) {
+		  //Handle errors for JDBC
+		      se.printStackTrace();
+		   } catch (Exception e) {
+		      //Handle errors for Class.forName
+		      e.printStackTrace();
+		   } finally {
+		      //finally block used to close resources
+		 
+			  try {
+			     if(conn!=null)
+			        conn.close();
+			  } catch (SQLException se) {
+			     se.printStackTrace();
+			  } //end finally try
+		   } //end try
+	      //
+	      
 	
+		return auto_id;
+	}
 	
 	
 }
