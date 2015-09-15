@@ -30,6 +30,14 @@ public class NACOADataHandler {
 		
 		handler.setUpDatabase();
 		//handler.createUser("fakeuser21","pw","fakeemails","k","r","r","2015-09-23","fake","fake");
+		
+		if(handler.databaseExists("nacoadatabase")){
+			System.out.println("Test 1 Passed!");
+		}
+		
+		if(!handler.databaseExists("nacoadatabase1")){
+			System.out.println("Test 2 Passed!");
+		}
 	}
 	
 	/**
@@ -271,6 +279,35 @@ public class NACOADataHandler {
 	      
 	
 		return auto_id;
+	}
+	
+	public boolean databaseExists(String dbName){
+		Connection conn = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			//STEP 3: Open a connection
+			System.out.println("Connecting to database...");
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+
+			//CHECK IF EXISTS
+			ResultSet rs = conn.getMetaData().getCatalogs();
+			 
+			while(rs.next()){
+				String catalogs = rs.getString(1);
+				
+				if(dbName.equals(catalogs)){
+					System.out.println("the database "+dbName+" exists");
+					return true;
+				}
+			}
+			
+		} catch (Exception e){
+			 e.printStackTrace();
+		}
+		
+		return false;
 	}
 	
 	
