@@ -73,7 +73,7 @@
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Nickname" name="nickname">                         
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="First Name" name="firstname">              
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Last Name" name="lastname">             
-              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="DOB (dd/mm/yy)" name="dob">         
+              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="DOB (yyyy-mm-dd)" name="dob">         
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Home Address" name="address">             
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Credit Card Info (number)" name="creditinfo">
             </div><!-- /input-group -->
