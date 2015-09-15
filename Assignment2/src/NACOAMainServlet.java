@@ -41,6 +41,9 @@ public class NACOAMainServlet extends HttpServlet {
 	/* XML Handler: abstract class for dealing with XML */
 	private NACOAHandler handler;
 	
+	/* Data Handler: class for dealing with databases */
+	private NACOADataHandler dHandler;
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -50,6 +53,7 @@ public class NACOAMainServlet extends HttpServlet {
         resultBeans = new ArrayList<NACOABean>();
         cartBeans = new ArrayList<NACOABean>();
         handler = new NACOAHandler();
+        dHandler = new NACOADataHandler();
     }
     
     /**
@@ -241,9 +245,24 @@ public class NACOAMainServlet extends HttpServlet {
     	RequestDispatcher requestDispatcher; 
 		//where did the user want to go?
 		String uri = req.getRequestURI();
-		
 		//so as you can see it lol its just a series of if statements based on what page 
-		if (uri.contains("cart")){ //CART PAGE
+		if (uri.contains("register")){ //USER REGISTRATION PAGE
+			//if user has submitted form
+			
+			if(req.getParameter("registering") != null){
+				//register the user
+				int user_id = registerUser(req, res);
+				
+				//send a email to the user... TODO:
+				
+				//login the user... but they are not yet registered without email confirm (do later)
+				loginUser(req,res,user_id);
+			}
+						
+			requestDispatcher = req.getRequestDispatcher("/Register.jsp");
+	    	requestDispatcher.forward(req, res);
+			
+		} else if (uri.contains("cart")){ //CART PAGE
 			//for cart it only processes the cart page or remove action
 			try {
 				//just set up the cart to be read 
@@ -370,6 +389,40 @@ public class NACOAMainServlet extends HttpServlet {
 			System.out.println("error adding to cart:" + e );
 		}
 	}
+
+	public int registerUser(HttpServletRequest req, HttpServletResponse res){
+		String username = (String) req.getParameter("username");
+		String password = (String) req.getParameter("password");
+		String email = (String) req.getParameter("email");
+		String nickname = (String) req.getParameter("nickname");
+		String firstname = (String) req.getParameter("firstname");
+		String lastname = (String) req.getParameter("lastname");
+		String dob = (String) req.getParameter("dob");
+		String address = (String) req.getParameter("address");
+		String creditinfo = (String) req.getParameter("creditinfo");
+		System.out.println(":" + username );
+		System.out.println(":" + password );
+		System.out.println(":" + email );
+		System.out.println(":" + nickname );
+		System.out.println(":" + firstname );
+		System.out.println(":" + lastname );
+		System.out.println(":" + dob );
+		System.out.println(":" + address );
+		System.out.println(":" + creditinfo );
+		
+		System.out.println("Creating User in MySQL Database");
+		int user_id = dHandler.createUser(username, password, email, nickname, firstname, lastname, dob, address, creditinfo);
+		
+		return user_id;
+
+	}
+	
+	public void loginUser(HttpServletRequest req, HttpServletResponse res, int id){
+		//set the session to login
+		req.getSession().setAttribute("logged_in", true);
+		req.getSession().setAttribute("user_id", id);
+		
+	}
 	
 	/**
 	 * @TODO: change this function to work with SQL
@@ -417,10 +470,11 @@ public class NACOAMainServlet extends HttpServlet {
 	}
 	
 	public void loadMainXML(){
+		
 		try {
-			if(handler.fileExists(MAIN_FILE_LOCATION)){
+			//if(handler.fileExists(MAIN_FILE_LOCATION)){
 				handler.loadMainXML(MAIN_FILE_LOCATION);
-			}
+			//}
 		} catch (Exception e){
 			System.out.println("Failed to load main xml: " + e);
 		}
