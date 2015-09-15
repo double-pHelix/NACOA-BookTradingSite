@@ -54,7 +54,7 @@
       
       <c:choose>
         <c:when test="${not empty sessionScope.logged_in}">
-          <h2>Thank you for registering</h2>
+          <h2>Thank you for registering ${sessionScope.username}</h2> 
         </c:when>    
         <c:otherwise>
          
