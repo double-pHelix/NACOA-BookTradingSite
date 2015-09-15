@@ -27,4 +27,9 @@
 		<url-pattern>/cart</url-pattern>
 	</servlet-mapping>
 	
+	<servlet-mapping>
+		<servlet-name>MainServlet</servlet-name>
+		<url-pattern>/register</url-pattern>
+	</servlet-mapping>
+	
 </web-app>
