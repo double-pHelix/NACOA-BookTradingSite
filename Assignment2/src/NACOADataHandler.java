@@ -588,7 +588,103 @@ public class NACOADataHandler {
 		
 	}
 	
+	//Delete book from cart
+	public void deleteBookCart (int book_id){
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		//String bookName = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			System.out.println("Creating statement...");
+			
+			String sql = "DELETE * FROM user_customer_books WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, book_id);
+			stmt.executeQuery();
+
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+	}
+
+	//Add book to cart
+	public void addBookToCart (int user_id, int book_id, int is_sold, String dou, String dos){
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		//String bookName = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			System.out.println("Creating statement...");
+			
+			String sql = "INSERT INTO `user_customer_books` "
+					 + "(`user_id`, `book_id`, `is_sold`, `dateofupload`, `dateofsale`) "
+			  + "VALUES (?, ?, ?, ?, ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, user_id);
+			stmt.setInt(2, book_id);
+			stmt.setInt(3, is_sold);
+			stmt.setString(4, dou);
+			stmt.setString(5, dos);
+			stmt.executeQuery();
+
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+	}
+	
 	//Sold book
+	//TODO
+	//Do we need to remove the book from the shopping cart or database??
 	public void setBookSold (int book_id){
 		
 		Connection conn = null;
