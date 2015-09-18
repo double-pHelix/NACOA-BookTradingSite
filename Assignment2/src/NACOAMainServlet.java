@@ -282,22 +282,38 @@ public class NACOAMainServlet extends HttpServlet {
 						
 			requestDispatcher = req.getRequestDispatcher("/Register.jsp");
 	    	requestDispatcher.forward(req, res);
-			
-		} else if (uri.contains("cart")){ //CART PAGE
-			//for cart it only processes the cart page or remove action
-			try {
-				//just set up the cart to be read 
-				setUpCart(req, res);
-			} catch (Exception e){
-				System.out.println("setting pu cart fail: " + e );
-			}
-			
-			if (req.getParameter("remove_cart") != null) {
-				removeFromCart(req,res);
-			}	
-			
-	    	requestDispatcher = req.getRequestDispatcher("/Cart.jsp");
+			System.out.println(uri);
+		} else if (uri.contains("login")){ //USER LOGIN PAGE
+			requestDispatcher = req.getRequestDispatcher("/Login.jsp");
 	    	requestDispatcher.forward(req, res);
+		} else if (uri.contains("submitcred")){ //SUBMIT LOGIN DETAILS
+			String username = req.getParameter("username");
+			System.out.println(username);
+			String password = req.getParameter("password");
+			int id = dHandler.getId(username);
+			if (authUser(id, password)) {
+				loginUser(req, res, id);
+				requestDispatcher = req.getRequestDispatcher("/Search.jsp");
+		    	requestDispatcher.forward(req, res);
+			}else {
+				requestDispatcher = req.getRequestDispatcher("/Login.jsp");
+		    	requestDispatcher.forward(req, res);
+			}
+		} else if (uri.contains("cart")){ //CART PAGE
+		//for cart it only processes the cart page or remove action
+		try {
+			//just set up the cart to be read 
+			setUpCart(req, res);
+		} catch (Exception e){
+			System.out.println("setting pu cart fail: " + e );
+		}
+		
+		if (req.getParameter("remove_cart") != null) {
+			removeFromCart(req,res);
+		}	
+		
+    	requestDispatcher = req.getRequestDispatcher("/Cart.jsp");
+    	requestDispatcher.forward(req, res);
 			
 		} else if (uri.contains("results")){  //RESULT PAGE (changing page No. OR extra detail for an entry)
 			//for result it does searches (basic/advanced) or add to cart for (result view or expanded detail view)
@@ -436,6 +452,12 @@ public class NACOAMainServlet extends HttpServlet {
 		
 		return user_id;
 
+	}
+	
+	public Boolean authUser(int id, String pw) {
+		Boolean result = false;
+		result = dHandler.checkPassword(id, pw);
+		return result;
 	}
 	
 	public void loginUser(HttpServletRequest req, HttpServletResponse res, int id){

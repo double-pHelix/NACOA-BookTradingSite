@@ -37,4 +37,13 @@
 		<url-pattern>/logout</url-pattern>
 	</servlet-mapping>
 	
+	<servlet-mapping>
+		<servlet-name>MainServlet</servlet-name>
+		<url-pattern>/login</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>MainServlet</servlet-name>
+		<url-pattern>/submitcred</url-pattern>
+	</servlet-mapping>
 </web-app>
