@@ -102,9 +102,10 @@ public class NACOADataHandler {
 		String tpages1 = "204";
 		String tisbn1 = "123441-23322-111";
 		String tGenre1 = "Mystery";
+		String tDate = "2015-10-18";
 		
 		System.out.println("Creating Book...");
-		int bookID = handler.createBook(tTitle1, tAuthor1, tPicture1, tPrice1, tPublisher1, tdop1, tpages1, tisbn1, tGenre1);
+		int bookID = handler.createBook(id, tDate, tTitle1, tAuthor1, tPicture1, tPrice1, tPublisher1, tdop1, tpages1, tisbn1, tGenre1);
 		
 		System.out.println("Testing get book title...");
 		if (!handler.getBookTitle(bookID).contentEquals(tTitle1)) {
@@ -504,6 +505,97 @@ public class NACOADataHandler {
 		return auto_id;
 	}
 	
+	/*
+	 * Creates a book on the database.
+	 * 
+	String cSBooks  = "CREATE TABLE IF NOT EXISTS `user_seller_books` ("
+		  + "`user_id` int(11) NOT NULL,"
+		  + "`book_id` int(11) NOT NULL,"
+		  + "`is_sold` tinyint(1) NOT NULL DEFAULT '0',"
+		  + "`dateofupload` date NOT NULL,"
+		  + "`dateofsale` date NOT NULL,"
+		  + " `is_paused` tinyint(1) NOT NULL DEFAULT '0'"
+		+ ") ENGINE=InnoDB DEFAULT CHARSET=latin1";
+
+	 */
+	public int createBook (int user_id, String date, String title, String author, String picture, String price, String publisher, 
+			String dateofpublication, String pages, String isbn, String genre) {
+		int auto_id = 0;
+		Connection conn = null;
+		
+		//String bookName = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			//STEP 3: Open a connection
+			//System.out.println("Connecting to database...");
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			String sql = "INSERT INTO `books` "
+					 + "(`title`, `author`, `picture`, `price`, `publisher`, `dateofpublication`, `pages`, `isbn`, `genre`) "
+			  + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+			//Price conversion
+			float f = Float.parseFloat(price);
+			
+			//Int conversion
+			Integer pageNum = Integer.parseInt(pages);
+			
+			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, title);
+			stmt.setString(2, author);
+			stmt.setString(3, picture);
+			stmt.setFloat(4, f);
+			stmt.setString(5, publisher);
+			stmt.setString(6, dateofpublication);
+			stmt.setInt(7, pageNum);
+			stmt.setString(8, isbn);
+			stmt.setString(9, genre);
+			
+			stmt.executeUpdate();
+			ResultSet rs = stmt.getGeneratedKeys();
+		    rs.next();
+		    auto_id = rs.getInt(1);
+		    
+			sql = "INSERT INTO `user_seller_books` "
+					 + "(`user_id`, `book_id`, `is_sold`, `dateofupload`, `dateofsale`, `is_paused`) "
+			  + "VALUES (?, ?, ?, ?, ?, ?)";
+
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, user_id);
+			stmt.setInt(2, auto_id);
+			stmt.setInt(3, 0);
+			stmt.setString(4, date);
+			stmt.setInt(6, 0);
+
+			stmt.executeUpdate();
+			
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		return auto_id;
+	}
+	
 	public boolean databaseExists(String dbName){
 		Connection conn = null;
 		try {
@@ -797,7 +889,8 @@ public class NACOADataHandler {
 			  //STEP 5: Extract data from result set
 			while(rs.next()){
 				//Retrieve by column name
-				answer = Float.toString(rs.getFloat("price"));
+				answer = String.format("%.2f", rs.getFloat("price"));;
+				
 			}
 			
 			//STEP 6: Clean-up environment
@@ -1294,74 +1387,6 @@ public class NACOADataHandler {
 		
 		
 		return available; 
-	}
-	
-	/*
-	 * Creates a book on the database.
-	 */
-	public int createBook (String title, String author, String picture, String price, String publisher, 
-			String dateofpublication, String pages, String isbn, String genre) {
-		int auto_id = 0;
-		Connection conn = null;
-		
-		//String bookName = null;
-		try {
-			//STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-			
-			//STEP 3: Open a connection
-			//System.out.println("Connecting to database...");
-			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
-			
-			//STEP 4: Execute a query
-			String sql = "INSERT INTO `books` "
-					 + "(`title`, `author`, `picture`, `price`, `publisher`, `dateofpublication`, `pages`, `isbn`, `genre`) "
-			  + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-			//Price conversion
-			float f = Float.parseFloat(price);
-			
-			//Int conversion
-			Integer pageNum = Integer.parseInt(pages);
-			
-			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, title);
-			stmt.setString(2, author);
-			stmt.setString(3, picture);
-			stmt.setFloat(4, f);
-			stmt.setString(5, publisher);
-			stmt.setString(6, dateofpublication);
-			stmt.setInt(7, pageNum);
-			stmt.setString(8, isbn);
-			stmt.setString(9, genre);
-			
-			stmt.executeUpdate();
-			ResultSet rs = stmt.getGeneratedKeys();
-		    rs.next();
-		    auto_id = rs.getInt(1);
-		    
-			//STEP 6: Clean-up environment
-			stmt.close();
-			conn.close();	
-			
-		} catch (SQLException se) {
-			//Handle errors for JDBC
-			    se.printStackTrace();
-		} catch (Exception e) {
-		    //Handle errors for Class.forName
-		    e.printStackTrace();
-		} finally {
-		    //finally block used to close resources
-		 
-			try {
-			   if(conn!=null)
-			      conn.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			} //end finally try
-		} //end try
-		
-		return auto_id;
 	}
 	
 	//Delete book
