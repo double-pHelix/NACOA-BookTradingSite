@@ -39,9 +39,230 @@ public class NACOADataHandler {
 			System.out.println("Test 2 Passed!");
 		}
 		
+		handler.testDatabase(handler);
 		System.out.println("User name is " +handler.getUserName(0));
 	}
 	
+	//Runs tests to make sure the functions are working
+	private void testDatabase(NACOADataHandler handler) {
+		
+		//NACOADataHandler handler = new NACOADataHandler();
+		
+		//handler.setUpDatabase();
+		//Creating a test user
+		//String username, String password, String email, String nickname, 
+		//String firstname, String lastname, String dob, String address, String creditinfo
+		String tUserN1 = "Riked";
+		String tPass1 = "password123";
+		String tEmail1 = "richard@hotdog.com";
+		String tNickN1 = "DeathToAllThe";
+		String tFirstN1 = "Richard";
+		String tLastN1 = "Zhang";
+		String tdob1 = "1990-01-01";
+		String tAddress1 = "Fake Address 1";
+		String tCreditInfo1 = "Fake Credit info";
+		
+		System.out.println("Creating user...");
+		int id = handler.createUser(tUserN1, tPass1, tEmail1, tNickN1, tFirstN1, tLastN1, tdob1, tAddress1, tCreditInfo1);
+		//handler.addBookToCart(id, 0, 0, "1990-09-09", "1991-01-01");
+		
+		System.out.println("Testing get email...");
+		
+		if (!handler.getEmail(id).contentEquals(tEmail1)) {
+			System.out.println("Test Failed");
+		} else {
+			System.out.println("Test Passed");
+		}
+		
+		System.out.println("Testing get username...");
+		
+		if (!handler.getUserName(id).contentEquals(tUserN1)) {
+			System.out.println("Test Failed");
+		} else {
+			System.out.println("Test Passed");
+		}
+		
+		System.out.println("Testing get creditcarddetails...");
+		
+		if (!handler.getCreditCardDetails(id).contentEquals(tCreditInfo1)) {
+			System.out.println("Test Failed");
+		} else {
+			System.out.println("Test Passed");
+		}
+		
+//		String title, String author, String picture, float price, String publisher, 
+//		String dateofpublication, int pages, String isbn, String genre)
+			
+		String tTitle1 = "The Jack";
+		String tAuthor1 = "Rowl Darn";
+		String tPicture1 = "No picture bro";
+		String tPrice1 = "100.50";
+		String tPublisher1 = "Blizzard";
+		String tdop1 = "1920-11-01";
+		String tpages1 = "204";
+		String tisbn1 = "123441-23322-111";
+		String tGenre1 = "Mystery";
+		
+		System.out.println("Creating Book...");
+		int bookID = handler.createBook(tTitle1, tAuthor1, tPicture1, tPrice1, tPublisher1, tdop1, tpages1, tisbn1, tGenre1);
+		
+		System.out.println("Testing get book title...");
+		if (!handler.getBookTitle(bookID).contentEquals(tTitle1)) {
+			System.out.println("Test Failed!");
+		} else {
+			System.out.println("Test Passed!");
+		}
+		
+		System.out.println("Testing get book author...");
+		if (!handler.getBookAuthor(bookID).contentEquals(tAuthor1)) {
+			System.out.println("Test Failed!");
+		} else {
+			System.out.println("Test Passed!");
+		}
+		
+		System.out.println("Testing get book Picture...");
+		if (!handler.getBookPicture(bookID).contentEquals(tPicture1)) {
+			System.out.println("Test Failed!");
+		} else {
+			System.out.println("Test Passed!");
+		}
+		
+		System.out.println("Testing get book Price...");
+		if (!handler.getBookPrice(bookID).contentEquals(tPrice1)) {
+			System.out.println("Test Failed!");
+		} else {
+			System.out.println("Test Passed!");
+		}
+		
+		System.out.println("Testing get book Publisher...");
+		if (!handler.getBookPublisher(bookID).contentEquals(tPublisher1)) {
+			System.out.println("Test Failed!");
+		} else {
+			System.out.println("Test Passed!");
+		}
+		
+		System.out.println("Testing get book dop...");
+		if (!handler.getBookDOP(bookID).contentEquals(tdop1)) {
+			System.out.println("Test Failed!");
+		} else {
+			System.out.println("Test Passed!");
+		}
+		
+		System.out.println("Testing get book pages...");
+		if (!handler.getBookPages(bookID).contentEquals(tpages1)) {
+			System.out.println("Test Failed!");
+		} else {
+			System.out.println("Test Passed!");
+		}
+		
+		System.out.println("Testing get book isbn...");
+		if (!handler.getBookISBN(bookID).contentEquals(tisbn1)) {
+			System.out.println("Test Failed!");
+		} else {
+			System.out.println("Test Passed!");
+		}
+		
+		System.out.println("Testing get book Genre...");
+		if (!handler.getBookGenre(bookID).contentEquals(tGenre1)) {
+			System.out.println("Test Failed!");
+		} else {
+			System.out.println("Test Passed!");
+		}
+		
+		//Testing Change
+		String changedTitle = "Selfless Idiot";
+		String changedAuthor = "Bob Jobes";
+		String changedPicture = "Datk Knight";
+		String changedPrice = "11.11";
+		String changedPublisher = "Riot Games";
+		String changedDOP = "1000-10-10";
+		String changedPages = "1337";
+		String changedISBN = "1234-1234-1234";
+		String changedGenre = "Action";
+		
+		System.out.println("Testing change title...");
+		handler.changeBookTitle(bookID, changedTitle);
+		
+		if (!handler.getBookTitle(bookID).contentEquals(changedTitle)) {
+			System.out.println("Test failed!");
+		} else {
+			System.out.println("Test passed!");
+		}
+		
+		System.out.println("Testing change author...");
+		handler.changeBookAuthor(bookID, changedAuthor);
+		
+		if (!handler.getBookAuthor(bookID).contentEquals(changedAuthor)) {
+			System.out.println("Test failed!");
+		} else {
+			System.out.println("Test passed!");
+		}
+		
+		System.out.println("Testing change picture...");
+		handler.changeBookPicture(bookID, changedPicture);
+		
+		if (!handler.getBookPicture(bookID).contentEquals(changedPicture)) {
+			System.out.println("Test failed!");
+		} else {
+			System.out.println("Test passed!");
+		}
+		
+		System.out.println("Testing change price...");
+		handler.changeBookPrice(bookID, changedPrice);
+		
+		if (!handler.getBookPrice(bookID).contentEquals(changedPrice)) {
+			System.out.println("Test failed!");
+		} else {
+			System.out.println("Test passed!");
+		}
+		
+		System.out.println("Testing change publisher...");
+		handler.changeBookPublisher(bookID, changedPublisher);
+		
+		if (!handler.getBookPublisher(bookID).contentEquals(changedPublisher)) {
+			System.out.println("Test failed!");
+		} else {
+			System.out.println("Test passed!");
+		}
+		
+		System.out.println("Testing change dop...");
+		handler.changeBookDOP(bookID, changedDOP);
+		
+		if (!handler.getBookDOP(bookID).contentEquals(changedDOP)) {
+			System.out.println("Test failed!");
+		} else {
+			System.out.println("Test passed!");
+		}
+		
+		System.out.println("Testing change pages...");
+		handler.changeBookPages(bookID, changedPages);
+		
+		if (!handler.getBookPages(bookID).contentEquals(changedPages)) {
+			System.out.println("Test failed!");
+		} else {
+			System.out.println("Test passed!");
+		}
+		
+		System.out.println("Testing change isbn...");
+		handler.changeBookISBN(bookID, changedISBN);
+		
+		if (!handler.getBookISBN(bookID).contentEquals(changedISBN)) {
+			System.out.println("Test failed!");
+		} else {
+			System.out.println("Test passed!");
+		}
+		
+		System.out.println("Testing change genre...");
+		handler.changeBookGenre(bookID, changedGenre);
+		
+		if (!handler.getBookGenre(bookID).contentEquals(changedGenre)) {
+			System.out.println("Test failed!");
+		} else {
+			System.out.println("Test passed!");
+		}
+		
+	}
+
 	/**
 	 * Given the location of an SQL database set up script, runs the script
 	 * @param location
@@ -55,7 +276,7 @@ public class NACOADataHandler {
 			Class.forName("com.mysql.jdbc.Driver");
 			
 			//STEP 3: Open a connection
-			System.out.println("Connecting to database...");
+			//System.out.println("Connecting to database...");
 			conn = (Connection) DriverManager.getConnection(LOCALHOST_URL,USER,PASS);
 		
 			//CREATE DATABASE
@@ -225,7 +446,7 @@ public class NACOADataHandler {
 			Class.forName("com.mysql.jdbc.Driver");
 			
 			//STEP 3: Open a connection
-			System.out.println("Connecting to database...");
+			//System.out.println("Connecting to database...");
 			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
 
 			//STEP 4: Execute a query
@@ -290,7 +511,7 @@ public class NACOADataHandler {
 			Class.forName("com.mysql.jdbc.Driver");
 			
 			//STEP 3: Open a connection
-			System.out.println("Connecting to database...");
+			//System.out.println("Connecting to database...");
 			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
 
 			//CHECK IF EXISTS
@@ -326,7 +547,7 @@ public class NACOADataHandler {
 			
 			
 			//STEP 4: Execute a query
-			System.out.println("Creating statement...");
+			//System.out.println("Creating statement...");
 			
 			String sql = "SELECT * FROM users WHERE (id = ?)";
 	
@@ -342,7 +563,8 @@ public class NACOADataHandler {
 				username = rs.getString("username");
 		
 			}
-					  //STEP 6: Clean-up environment
+			
+			//STEP 6: Clean-up environment
 			rs.close();
 			stmt.close();
 			conn.close();	
@@ -370,6 +592,536 @@ public class NACOADataHandler {
 		return username; 
 	}
 	
+	//Gets book title
+	public String getBookTitle (int book_id){
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String booktTitle = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM books WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, book_id);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+	
+			  //STEP 5: Extract data from result set
+			while(rs.next()){
+				//Retrieve by column name
+				booktTitle = rs.getString("title");
+		
+			}
+			
+			//STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();	
+			
+			return booktTitle;
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		
+		return booktTitle; 
+	}
+		
+	//Gets book author
+	public String getBookAuthor (int book_id){
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String bookAuthor = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM books WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, book_id);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+	
+			  //STEP 5: Extract data from result set
+			while(rs.next()){
+				//Retrieve by column name
+				bookAuthor = rs.getString("author");
+		
+			}
+			
+			//STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();	
+			
+			return bookAuthor;
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		
+		return bookAuthor; 
+	}
+	
+	//Gets book picture
+	public String getBookPicture (int book_id){
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String answer = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM books WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, book_id);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+	
+			  //STEP 5: Extract data from result set
+			while(rs.next()){
+				//Retrieve by column name
+				answer = rs.getString("picture");
+		
+			}
+			
+			//STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();	
+			
+			return answer;
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		
+		return answer; 
+	}
+	
+	//Gets book price
+	//TODO Do we need to return it as a float??
+	public String getBookPrice (int book_id){
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String answer = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM books WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, book_id);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+	
+			  //STEP 5: Extract data from result set
+			while(rs.next()){
+				//Retrieve by column name
+				answer = Float.toString(rs.getFloat("price"));
+			}
+			
+			//STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();	
+			
+			return answer;
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		
+		return answer; 
+	}
+	
+	//Gets book publisher
+	public String getBookPublisher (int book_id){
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String answer = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM books WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, book_id);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+	
+			  //STEP 5: Extract data from result set
+			while(rs.next()){
+				//Retrieve by column name
+				answer = rs.getString("publisher");
+		
+			}
+			
+			//STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();	
+			
+			return answer;
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		
+		return answer; 
+	}
+	
+	//Gets book date of publication
+	public String getBookDOP (int book_id){
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String answer = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM books WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, book_id);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+	
+			  //STEP 5: Extract data from result set
+			while(rs.next()){
+				//Retrieve by column name
+				answer = rs.getString("dateofpublication");
+		
+			}
+			
+			//STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();	
+			
+			return answer;
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		
+		return answer; 
+	}
+	
+	//Gets book pages
+	public String getBookPages (int book_id){
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String answer = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM books WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, book_id);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+	
+			  //STEP 5: Extract data from result set
+			while(rs.next()){
+				//Retrieve by column name
+				answer = Integer.toString(rs.getInt("pages"));
+		
+			}
+			
+			//STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();	
+			
+			return answer;
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		return answer;
+	}
+	
+	//Gets book isbn
+	public String getBookISBN (int book_id){
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String answer = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM books WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, book_id);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+	
+			  //STEP 5: Extract data from result set
+			while(rs.next()){
+				//Retrieve by column name
+				answer = rs.getString("isbn");
+		
+			}
+			
+			//STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();	
+			
+			return answer;
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		
+		return answer; 
+	}
+	
+	//Gets book genre
+	public String getBookGenre (int book_id){
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String answer = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM books WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, book_id);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+	
+			  //STEP 5: Extract data from result set
+			while(rs.next()){
+				//Retrieve by column name
+				answer = rs.getString("genre");
+		
+			}
+			
+			//STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();	
+			
+			return answer;
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		
+		return answer; 
+	}
+		
 	//Gets credit card details
 	public String getCreditCardDetails (int user_id){
 		
@@ -384,7 +1136,7 @@ public class NACOADataHandler {
 			
 			
 			//STEP 4: Execute a query
-			System.out.println("Creating statement...");
+			//System.out.println("Creating statement...");
 			
 			String sql = "SELECT * FROM users WHERE (id = ?)";
 	
@@ -442,7 +1194,7 @@ public class NACOADataHandler {
 			
 			
 			//STEP 4: Execute a query
-			System.out.println("Creating statement...");
+			//System.out.println("Creating statement...");
 			
 			String sql = "SELECT * FROM users WHERE (id = ?)";
 	
@@ -500,7 +1252,7 @@ public class NACOADataHandler {
 			
 			
 			//STEP 4: Execute a query
-			System.out.println("Creating statement...");
+			//System.out.println("Creating statement...");
 			
 			String sql = "SELECT * FROM user_seller_books WHERE (id = ?)";
 	
@@ -547,8 +1299,8 @@ public class NACOADataHandler {
 	/*
 	 * Creates a book on the database.
 	 */
-	public int createBook (String title, String author, String picture, float price, String publisher, 
-			String dateofpublication, int pages, String isbn, String genre) {
+	public int createBook (String title, String author, String picture, String price, String publisher, 
+			String dateofpublication, String pages, String isbn, String genre) {
 		int auto_id = 0;
 		Connection conn = null;
 		
@@ -558,7 +1310,7 @@ public class NACOADataHandler {
 			Class.forName("com.mysql.jdbc.Driver");
 			
 			//STEP 3: Open a connection
-			System.out.println("Connecting to database...");
+			//System.out.println("Connecting to database...");
 			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
 			
 			//STEP 4: Execute a query
@@ -566,14 +1318,20 @@ public class NACOADataHandler {
 					 + "(`title`, `author`, `picture`, `price`, `publisher`, `dateofpublication`, `pages`, `isbn`, `genre`) "
 			  + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+			//Price conversion
+			float f = Float.parseFloat(price);
+			
+			//Int conversion
+			Integer pageNum = Integer.parseInt(pages);
+			
 			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, title);
 			stmt.setString(2, author);
 			stmt.setString(3, picture);
-			stmt.setFloat(4, price);
+			stmt.setFloat(4, f);
 			stmt.setString(5, publisher);
 			stmt.setString(6, dateofpublication);
-			stmt.setInt(7, pages);
+			stmt.setInt(7, pageNum);
 			stmt.setString(8, isbn);
 			stmt.setString(9, genre);
 			
@@ -619,7 +1377,7 @@ public class NACOADataHandler {
 			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
 			
 			//STEP 4: Execute a query
-			System.out.println("Creating statement...");
+			//System.out.println("Creating statement...");
 			
 			String sql = "DELETE * FROM books WHERE (id = ?)";
 	
@@ -663,7 +1421,7 @@ public class NACOADataHandler {
 			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
 			
 			//STEP 4: Execute a query
-			System.out.println("Creating statement...");
+			//System.out.println("Creating statement...");
 			
 			String sql = "DELETE * FROM user_customer_books WHERE (id = ?)";
 	
@@ -707,7 +1465,7 @@ public class NACOADataHandler {
 			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
 			
 			//STEP 4: Execute a query
-			System.out.println("Creating statement...");
+			//System.out.println("Creating statement...");
 			
 			String sql = "INSERT INTO `user_customer_books` "
 					 + "(`user_id`, `book_id`, `is_sold`, `dateofupload`, `dateofsale`) "
@@ -759,7 +1517,7 @@ public class NACOADataHandler {
 			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
 			
 			//STEP 4: Execute a query
-			System.out.println("Creating statement...");
+			//System.out.println("Creating statement...");
 			
 			String sql = "UPDATE user_seller_books SET is_sold WHERE (id = ?)";
 	
@@ -803,45 +1561,46 @@ public class NACOADataHandler {
 		
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		//String bookName = null;
-		try {
-			//STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-			//
-			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
-			
-			//STEP 4: Execute a query
-			System.out.println("Creating statement...");
-			
-			//Statement to change details of the database
-			String sql = "UPDATE books SET title=? WHERE (id = ?)";
-	
-			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, title);
-			stmt.setInt(2, book_id);
-			stmt.executeQuery();
 
-			//STEP 6: Clean-up environment
-			stmt.close();
-			conn.close();	
-			
-		} catch (SQLException se) {
-			//Handle errors for JDBC
-			    se.printStackTrace();
-		} catch (Exception e) {
-		    //Handle errors for Class.forName
-		    e.printStackTrace();
-		} finally {
-		    //finally block used to close resources
-		 
+		if (!title.contentEquals("")) {
 			try {
-			   if(conn!=null)
-			      conn.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			} //end finally try
-		} //end try
+				//STEP 2: Register JDBC driver
+				Class.forName("com.mysql.jdbc.Driver");
+				//
+				conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+				
+				//STEP 4: Execute a query
+				//System.out.println("Creating statement...");
+				
+				//Statement to change details of the database
+				String sql = "UPDATE books SET title=? WHERE (id = ?)";
 		
+				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				stmt.setString(1, title);
+				stmt.setInt(2, book_id);
+				stmt.executeUpdate();
+	
+				//STEP 6: Clean-up environment
+				stmt.close();
+				conn.close();	
+				
+			} catch (SQLException se) {
+				//Handle errors for JDBC
+				    se.printStackTrace();
+			} catch (Exception e) {
+			    //Handle errors for Class.forName
+			    e.printStackTrace();
+			} finally {
+			    //finally block used to close resources
+			 
+				try {
+				   if(conn!=null)
+				      conn.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				} //end finally try
+			} //end try
+		}
 	}
 	
 	//Change book author
@@ -850,44 +1609,45 @@ public class NACOADataHandler {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		//String bookName = null;
-		try {
-			//STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-			//
-			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
-			
-			//STEP 4: Execute a query
-			System.out.println("Creating statement...");
-			
-			//Statement to change details of the database
-			String sql = "UPDATE books SET author=? WHERE (id = ?)";
-	
-			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, author);
-			stmt.setInt(2, book_id);
-			stmt.executeQuery();
-
-			//STEP 6: Clean-up environment
-			stmt.close();
-			conn.close();	
-			
-		} catch (SQLException se) {
-			//Handle errors for JDBC
-			    se.printStackTrace();
-		} catch (Exception e) {
-		    //Handle errors for Class.forName
-		    e.printStackTrace();
-		} finally {
-		    //finally block used to close resources
-		 
+		if (!author.contentEquals("")) {
 			try {
-			   if(conn!=null)
-			      conn.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			} //end finally try
-		} //end try
+				//STEP 2: Register JDBC driver
+				Class.forName("com.mysql.jdbc.Driver");
+				//
+				conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+				
+				//STEP 4: Execute a query
+				//System.out.println("Creating statement...");
+				
+				//Statement to change details of the database
+				String sql = "UPDATE books SET author=? WHERE (id = ?)";
 		
+				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				stmt.setString(1, author);
+				stmt.setInt(2, book_id);
+				stmt.executeUpdate();
+	
+				//STEP 6: Clean-up environment
+				stmt.close();
+				conn.close();	
+				
+			} catch (SQLException se) {
+				//Handle errors for JDBC
+				    se.printStackTrace();
+			} catch (Exception e) {
+			    //Handle errors for Class.forName
+			    e.printStackTrace();
+			} finally {
+			    //finally block used to close resources
+			 
+				try {
+				   if(conn!=null)
+				      conn.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				} //end finally try
+			} //end try
+		}
 	}
 	
 	//Change book picture
@@ -895,45 +1655,46 @@ public class NACOADataHandler {
 		
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		//String bookName = null;
-		try {
-			//STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-			//
-			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
-			
-			//STEP 4: Execute a query
-			System.out.println("Creating statement...");
-			
-			//Statement to change details of the database
-			String sql = "UPDATE books SET picture=? WHERE (id = ?)";
-	
-			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, picture);
-			stmt.setInt(2, book_id);
-			stmt.executeQuery();
-
-			//STEP 6: Clean-up environment
-			stmt.close();
-			conn.close();	
-			
-		} catch (SQLException se) {
-			//Handle errors for JDBC
-			    se.printStackTrace();
-		} catch (Exception e) {
-		    //Handle errors for Class.forName
-		    e.printStackTrace();
-		} finally {
-		    //finally block used to close resources
-		 
-			try {
-			   if(conn!=null)
-			      conn.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			} //end finally try
-		} //end try
 		
+		if (!picture.contentEquals("")) {
+			try {
+				//STEP 2: Register JDBC driver
+				Class.forName("com.mysql.jdbc.Driver");
+				//
+				conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+				
+				//STEP 4: Execute a query
+				//System.out.println("Creating statement...");
+				
+				//Statement to change details of the database
+				String sql = "UPDATE books SET picture=? WHERE (id = ?)";
+		
+				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				stmt.setString(1, picture);
+				stmt.setInt(2, book_id);
+				stmt.executeUpdate();
+	
+				//STEP 6: Clean-up environment
+				stmt.close();
+				conn.close();	
+				
+			} catch (SQLException se) {
+				//Handle errors for JDBC
+				    se.printStackTrace();
+			} catch (Exception e) {
+			    //Handle errors for Class.forName
+			    e.printStackTrace();
+			} finally {
+			    //finally block used to close resources
+			 
+				try {
+				   if(conn!=null)
+				      conn.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				} //end finally try
+			} //end try
+		}
 	}
 	
 	//Change book price
@@ -941,48 +1702,49 @@ public class NACOADataHandler {
 		
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		//String bookName = null;
-		try {
-			//STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-			//
-			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
-			
-			//STEP 4: Execute a query
-			System.out.println("Creating statement...");
-			
-			//Statement to change details of the database
-			String sql = "UPDATE books SET price=? WHERE (id = ?)";
-	
-			//Price conversion
-			float f = Float.parseFloat(price);
-			
-			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setFloat(1, f);
-			stmt.setInt(2, book_id);
-			stmt.executeQuery();
-
-			//STEP 6: Clean-up environment
-			stmt.close();
-			conn.close();	
-			
-		} catch (SQLException se) {
-			//Handle errors for JDBC
-			    se.printStackTrace();
-		} catch (Exception e) {
-		    //Handle errors for Class.forName
-		    e.printStackTrace();
-		} finally {
-		    //finally block used to close resources
-		 
-			try {
-			   if(conn!=null)
-			      conn.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			} //end finally try
-		} //end try
 		
+		if (!price.contentEquals("")) {
+			try {
+				//STEP 2: Register JDBC driver
+				Class.forName("com.mysql.jdbc.Driver");
+				//
+				conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+				
+				//STEP 4: Execute a query
+				//System.out.println("Creating statement...");
+				
+				//Statement to change details of the database
+				String sql = "UPDATE books SET price=? WHERE (id = ?)";
+		
+				//Price conversion
+				float f = Float.parseFloat(price);
+				
+				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				stmt.setFloat(1, f);
+				stmt.setInt(2, book_id);
+				stmt.executeUpdate();
+	
+				//STEP 6: Clean-up environment
+				stmt.close();
+				conn.close();	
+				
+			} catch (SQLException se) {
+				//Handle errors for JDBC
+				    se.printStackTrace();
+			} catch (Exception e) {
+			    //Handle errors for Class.forName
+			    e.printStackTrace();
+			} finally {
+			    //finally block used to close resources
+			 
+				try {
+				   if(conn!=null)
+				      conn.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				} //end finally try
+			} //end try
+		}
 	}
 	
 	//Change book publisher
@@ -991,90 +1753,92 @@ public class NACOADataHandler {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		//String bookName = null;
-		try {
-			//STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-			//
-			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
-			
-			//STEP 4: Execute a query
-			System.out.println("Creating statement...");
-			
-			//Statement to change details of the database
-			String sql = "UPDATE books SET publisher=? WHERE (id = ?)";
-	
-			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, publisher);
-			stmt.setInt(2, book_id);
-			stmt.executeQuery();
-
-			//STEP 6: Clean-up environment
-			stmt.close();
-			conn.close();	
-			
-		} catch (SQLException se) {
-			//Handle errors for JDBC
-			    se.printStackTrace();
-		} catch (Exception e) {
-		    //Handle errors for Class.forName
-		    e.printStackTrace();
-		} finally {
-		    //finally block used to close resources
-		 
+		if (!publisher.contentEquals("")) {
 			try {
-			   if(conn!=null)
-			      conn.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			} //end finally try
-		} //end try
+				//STEP 2: Register JDBC driver
+				Class.forName("com.mysql.jdbc.Driver");
+				//
+				conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+				
+				//STEP 4: Execute a query
+				//System.out.println("Creating statement...");
+				
+				//Statement to change details of the database
+				String sql = "UPDATE books SET publisher=? WHERE (id = ?)";
 		
+				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				stmt.setString(1, publisher);
+				stmt.setInt(2, book_id);
+				stmt.executeUpdate();
+	
+				//STEP 6: Clean-up environment
+				stmt.close();
+				conn.close();	
+				
+			} catch (SQLException se) {
+				//Handle errors for JDBC
+				    se.printStackTrace();
+			} catch (Exception e) {
+			    //Handle errors for Class.forName
+			    e.printStackTrace();
+			} finally {
+			    //finally block used to close resources
+			 
+				try {
+				   if(conn!=null)
+				      conn.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				} //end finally try
+			} //end try
+		}
 	}
 	
 	//Change book date of publication
-	public void changeBookDateOfPublication(int book_id, String dop){
+	public void changeBookDOP(int book_id, String dop){
 		
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		//String bookName = null;
-		try {
-			//STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-			//
-			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
-			
-			//STEP 4: Execute a query
-			System.out.println("Creating statement...");
-			
-			//Statement to change details of the database
-			String sql = "UPDATE books SET dateofpublication=? WHERE (id = ?)";
-			
-			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, dop);
-			stmt.setInt(2, book_id);
-			stmt.executeQuery();
-
-			//STEP 6: Clean-up environment
-			stmt.close();
-			conn.close();	
-			
-		} catch (SQLException se) {
-			//Handle errors for JDBC
-			    se.printStackTrace();
-		} catch (Exception e) {
-		    //Handle errors for Class.forName
-		    e.printStackTrace();
-		} finally {
-		    //finally block used to close resources
-		 
-			try {
-			   if(conn!=null)
-			      conn.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			} //end finally try
-		} //end try
 		
+		if (!dop.contentEquals("")) {
+			try {
+				//STEP 2: Register JDBC driver
+				Class.forName("com.mysql.jdbc.Driver");
+				//
+				conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+				
+				//STEP 4: Execute a query
+				//System.out.println("Creating statement...");
+				
+				//Statement to change details of the database
+				String sql = "UPDATE books SET dateofpublication=? WHERE (id = ?)";
+				
+				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				stmt.setString(1, dop);
+				stmt.setInt(2, book_id);
+				stmt.executeUpdate();
+	
+				//STEP 6: Clean-up environment
+				stmt.close();
+				conn.close();	
+				
+			} catch (SQLException se) {
+				//Handle errors for JDBC
+				    se.printStackTrace();
+			} catch (Exception e) {
+			    //Handle errors for Class.forName
+			    e.printStackTrace();
+			} finally {
+			    //finally block used to close resources
+			 
+				try {
+				   if(conn!=null)
+				      conn.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				} //end finally try
+			} //end try
+		}
 	}
 	
 	//Change book pages
@@ -1082,48 +1846,49 @@ public class NACOADataHandler {
 		
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		//String bookName = null;
-		try {
-			//STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-			//
-			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
-			
-			//STEP 4: Execute a query
-			System.out.println("Creating statement...");
-			
-			//Convert to int
-			Integer pageNum = Integer.parseInt(pages);
-			
-			//Statement to change details of the database
-			String sql = "UPDATE books SET pages=? WHERE (id = ?)";
-			
-			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setInt(1, pageNum);
-			stmt.setInt(2, book_id);
-			stmt.executeQuery();
-
-			//STEP 6: Clean-up environment
-			stmt.close();
-			conn.close();	
-			
-		} catch (SQLException se) {
-			//Handle errors for JDBC
-			    se.printStackTrace();
-		} catch (Exception e) {
-		    //Handle errors for Class.forName
-		    e.printStackTrace();
-		} finally {
-		    //finally block used to close resources
-		 
-			try {
-			   if(conn!=null)
-			      conn.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			} //end finally try
-		} //end try
 		
+		if (!pages.contentEquals("")) {
+			try {
+				//STEP 2: Register JDBC driver
+				Class.forName("com.mysql.jdbc.Driver");
+				//
+				conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+				
+				//STEP 4: Execute a query
+				//System.out.println("Creating statement...");
+				
+				//Convert to int
+				Integer pageNum = Integer.parseInt(pages);
+				
+				//Statement to change details of the database
+				String sql = "UPDATE books SET pages=? WHERE (id = ?)";
+				
+				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				stmt.setInt(1, pageNum);
+				stmt.setInt(2, book_id);
+				stmt.executeUpdate();
+	
+				//STEP 6: Clean-up environment
+				stmt.close();
+				conn.close();	
+				
+			} catch (SQLException se) {
+				//Handle errors for JDBC
+				    se.printStackTrace();
+			} catch (Exception e) {
+			    //Handle errors for Class.forName
+			    e.printStackTrace();
+			} finally {
+			    //finally block used to close resources
+			 
+				try {
+				   if(conn!=null)
+				      conn.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				} //end finally try
+			} //end try
+		}
 	}
 	
 	//Change book isbn
@@ -1131,45 +1896,46 @@ public class NACOADataHandler {
 		
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		//String bookName = null;
-		try {
-			//STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-			//
-			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
-			
-			//STEP 4: Execute a query
-			System.out.println("Creating statement...");
-			
-			//Statement to change details of the database
-			String sql = "UPDATE books SET isbn=? WHERE (id = ?)";
-			
-			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, isbn);
-			stmt.setInt(2, book_id);
-			stmt.executeQuery();
-
-			//STEP 6: Clean-up environment
-			stmt.close();
-			conn.close();	
-			
-		} catch (SQLException se) {
-			//Handle errors for JDBC
-			    se.printStackTrace();
-		} catch (Exception e) {
-		    //Handle errors for Class.forName
-		    e.printStackTrace();
-		} finally {
-		    //finally block used to close resources
-		 
-			try {
-			   if(conn!=null)
-			      conn.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			} //end finally try
-		} //end try
 		
+		if (!isbn.contentEquals("")) {
+			try {
+				//STEP 2: Register JDBC driver
+				Class.forName("com.mysql.jdbc.Driver");
+				//
+				conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+				
+				//STEP 4: Execute a query
+				//System.out.println("Creating statement...");
+				
+				//Statement to change details of the database
+				String sql = "UPDATE books SET isbn=? WHERE (id = ?)";
+				
+				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				stmt.setString(1, isbn);
+				stmt.setInt(2, book_id);
+				stmt.executeUpdate();
+	
+				//STEP 6: Clean-up environment
+				stmt.close();
+				conn.close();	
+				
+			} catch (SQLException se) {
+				//Handle errors for JDBC
+				    se.printStackTrace();
+			} catch (Exception e) {
+			    //Handle errors for Class.forName
+			    e.printStackTrace();
+			} finally {
+			    //finally block used to close resources
+			 
+				try {
+				   if(conn!=null)
+				      conn.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				} //end finally try
+			} //end try
+		}
 	}
 	
 	//Change book genre
@@ -1178,43 +1944,44 @@ public class NACOADataHandler {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		//String bookName = null;
-		try {
-			//STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-			//
-			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
-			
-			//STEP 4: Execute a query
-			System.out.println("Creating statement...");
-			
-			//Statement to change details of the database
-			String sql = "UPDATE books SET genre=? WHERE (id = ?)";
-			
-			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, genre);
-			stmt.setInt(2, book_id);
-			stmt.executeQuery();
-
-			//STEP 6: Clean-up environment
-			stmt.close();
-			conn.close();	
-			
-		} catch (SQLException se) {
-			//Handle errors for JDBC
-			    se.printStackTrace();
-		} catch (Exception e) {
-		    //Handle errors for Class.forName
-		    e.printStackTrace();
-		} finally {
-		    //finally block used to close resources
-		 
+		if (!genre.contentEquals("")) {
 			try {
-			   if(conn!=null)
-			      conn.close();
+				//STEP 2: Register JDBC driver
+				Class.forName("com.mysql.jdbc.Driver");
+				//
+				conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+				
+				//STEP 4: Execute a query
+				//System.out.println("Creating statement...");
+				
+				//Statement to change details of the database
+				String sql = "UPDATE books SET genre=? WHERE (id = ?)";
+				
+				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				stmt.setString(1, genre);
+				stmt.setInt(2, book_id);
+				stmt.executeUpdate();
+	
+				//STEP 6: Clean-up environment
+				stmt.close();
+				conn.close();	
+				
 			} catch (SQLException se) {
-				se.printStackTrace();
-			} //end finally try
-		} //end try
-		
+				//Handle errors for JDBC
+				    se.printStackTrace();
+			} catch (Exception e) {
+			    //Handle errors for Class.forName
+			    e.printStackTrace();
+			} finally {
+			    //finally block used to close resources
+			 
+				try {
+				   if(conn!=null)
+				      conn.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				} //end finally try
+			} //end try
+		}
 	}
 }
