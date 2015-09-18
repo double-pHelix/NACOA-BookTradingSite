@@ -1383,7 +1383,7 @@ public class NACOADataHandler {
 	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, book_id);
-			stmt.executeQuery();
+			stmt.executeUpdate();
 
 			//STEP 6: Clean-up environment
 			stmt.close();
@@ -1427,7 +1427,7 @@ public class NACOADataHandler {
 	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, book_id);
-			stmt.executeQuery();
+			stmt.executeUpdate();
 
 			//STEP 6: Clean-up environment
 			stmt.close();
@@ -1477,7 +1477,7 @@ public class NACOADataHandler {
 			stmt.setInt(3, is_sold);
 			stmt.setString(4, dou);
 			stmt.setString(5, dos);
-			stmt.executeQuery();
+			stmt.executeUpdate();
 
 			//STEP 6: Clean-up environment
 			stmt.close();
