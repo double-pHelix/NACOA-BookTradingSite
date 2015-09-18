@@ -90,8 +90,13 @@
               
           </table>
           </div>
+          
+          <input class="btn btn-ss btn-info" type="submit" value="Buy">
+          
+          <br>
         </form> 
-      </c:when>    
+      </c:when> 
+
     <c:otherwise>
      
       <!-- Display no results message -->
