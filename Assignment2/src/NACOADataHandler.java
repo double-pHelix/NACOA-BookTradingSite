@@ -544,6 +544,68 @@ public class NACOADataHandler {
 		return available; 
 	}
 	
+	/*
+	 * Creates a book on the database.
+	 */
+	public int createBook (String title, String author, String picture, float price, String publisher, 
+			String dateofpublication, int pages, String isbn, String genre) {
+		int auto_id = 0;
+		Connection conn = null;
+		
+		//String bookName = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			//STEP 3: Open a connection
+			System.out.println("Connecting to database...");
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			String sql = "INSERT INTO `books` "
+					 + "(`title`, `author`, `picture`, `price`, `publisher`, `dateofpublication`, `pages`, `isbn`, `genre`) "
+			  + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, title);
+			stmt.setString(2, author);
+			stmt.setString(3, picture);
+			stmt.setFloat(4, price);
+			stmt.setString(5, publisher);
+			stmt.setString(6, dateofpublication);
+			stmt.setInt(7, pages);
+			stmt.setString(8, isbn);
+			stmt.setString(9, genre);
+			
+			stmt.executeUpdate();
+			ResultSet rs = stmt.getGeneratedKeys();
+		    rs.next();
+		    auto_id = rs.getInt(1);
+		    
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		return auto_id;
+	}
+	
 	//Delete book
 	public void deleteBook (int book_id){
 		
