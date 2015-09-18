@@ -43,7 +43,6 @@
   <body>
     <div class="container">
   
-  <!-- I separated the top menu thingy into a diff jsp -->
     <jsp:include page="/topBanner.jsp" />
    	
     <div class="loginForm">

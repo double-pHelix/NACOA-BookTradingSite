@@ -1984,7 +1984,6 @@ public class NACOADataHandler {
 			} //end try
 		}
 	}
-	
 	//gets ID from username
 	public int getId (String username){
 		Connection conn = null;
