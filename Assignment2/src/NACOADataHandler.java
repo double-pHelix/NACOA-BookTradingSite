@@ -1984,4 +1984,115 @@ public class NACOADataHandler {
 			} //end try
 		}
 	}
+	
+	//gets ID from username
+	public int getId (String username){
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		int id = -1;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			
+			//STEP 4: Execute a query
+			System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM users WHERE (username = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, username);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+	
+			  //STEP 5: Extract data from result set
+			while(rs.next()){
+				//Retrieve by column name
+				id = rs.getInt("id");
+		
+			}
+					  //STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();	
+			
+			return id;
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+			
+			
+		return id; 
+	}
+	
+	public Boolean checkPassword(int id, String pw) {
+		Boolean result = false;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String realPassword = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM users WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, id);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+	
+			  //STEP 5: Extract data from result set
+			while(rs.next()){
+				//Retrieve by column name
+				realPassword = rs.getString("password");
+		
+			}
+			
+			//STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();	
+			result = (pw.equals(realPassword));
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		return result;
+	}
 }
