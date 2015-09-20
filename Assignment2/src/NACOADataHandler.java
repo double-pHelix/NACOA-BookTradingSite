@@ -468,7 +468,7 @@ public class NACOADataHandler {
 			stmt.setString(7, dob);
 			stmt.setString(8, address);
 			stmt.setString(9, creditinfo);
-			stmt.setInt(10, 0);
+			stmt.setInt(10, 1); //user is halted until email is verified
 			
 			stmt.executeUpdate();
 			
@@ -2101,6 +2101,64 @@ public class NACOADataHandler {
 			stmt.close();
 			conn.close();	
 			result = (pw.equals(realPassword));
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		return result;
+	}
+
+	public boolean checkHalted(int id) {
+		Boolean result = false;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		int isHalted = 1;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM users WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, id);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+	
+			  //STEP 5: Extract data from result set
+			while(rs.next()){
+				//Retrieve by column name
+				isHalted = rs.getInt("is_halted");
+		
+			}
+			
+			//STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();
+			if (isHalted == 1) {
+				return true;
+			}else {
+				return false;
+			}
 		} catch (SQLException se) {
 			//Handle errors for JDBC
 			    se.printStackTrace();

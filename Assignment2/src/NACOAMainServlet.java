@@ -3,7 +3,10 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
 
@@ -13,6 +16,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import javax.mail.*;
+import javax.mail.internet.*;
+import javax.activation.*;
+
 /***
  * This program if for the s2/2015 COMP9234 Web Applications Assignment 1
  * 
@@ -275,6 +283,41 @@ public class NACOAMainServlet extends HttpServlet {
 				int user_id = registerUser(req, res);
 				
 				//send a email to the user... TODO:
+				String to = dHandler.getEmail(user_id);
+				String from = "info.nacoa@gmail.com";
+				SecureRandom random = new SecureRandom();
+				String code = new BigInteger(130, random).toString(32);
+
+		 		Properties props = new Properties();
+		 		props.put("mail.smtp.auth", "true");
+		 		props.put("mail.smtp.starttls.enable", "true");
+		 		props.put("mail.smtp.host", "smtp.gmail.com");
+		 		props.put("mail.smtp.port", "587");
+	
+		 		Session session = Session.getInstance(props,
+		 		  new javax.mail.Authenticator() {
+		 			protected PasswordAuthentication getPasswordAuthentication() {
+		 				return new PasswordAuthentication(from, "comp9321");
+		 			}
+		 		  });
+	
+		 		try {
+		 			System.out.println("starting...");
+		 			Message message = new MimeMessage(session);
+		 			message.setFrom(new InternetAddress(from));
+		 			message.setRecipients(Message.RecipientType.TO,
+		 					InternetAddress.parse(to));
+		 			message.setSubject("Verify your NACOA account");
+		 			message.setText("Thanks for signing up for NACOA, please follow this link to  "
+		 	         		+ "verify your account: http://localhost:8080/Assignment2/verify?id=1337&code=" + code);
+	
+		 			Transport.send(message);
+	
+		 			System.out.println("Sent verification email...");
+	
+		 		} catch (MessagingException e) {
+		 			throw new RuntimeException(e);
+		 		}	
 				
 				//login the user... but they are not yet registered without email confirm (do later)
 				loginUser(req,res,user_id);
@@ -291,7 +334,9 @@ public class NACOAMainServlet extends HttpServlet {
 			System.out.println(username);
 			String password = req.getParameter("password");
 			int id = dHandler.getId(username);
-			if (authUser(id, password)) {
+			String authResult = authUser(id, password); //contains a message of the authentication result
+														//TODO: display it if we redirect to login
+			if (authResult.equals("Successfully logged in...")) {
 				loginUser(req, res, id);
 				requestDispatcher = req.getRequestDispatcher("/Search.jsp");
 		    	requestDispatcher.forward(req, res);
@@ -367,7 +412,7 @@ public class NACOAMainServlet extends HttpServlet {
 		}
 
 	}
-	
+
 	public void appendToCartPage(HttpServletRequest req, HttpServletResponse res){
 		int pubId = Integer.parseInt(req.getParameter("publication_id"));
 		
@@ -454,9 +499,19 @@ public class NACOAMainServlet extends HttpServlet {
 
 	}
 	
-	public Boolean authUser(int id, String pw) {
-		Boolean result = false;
-		result = dHandler.checkPassword(id, pw);
+	public String authUser(int id, String pw) {
+		String result = "Error authenticating user";
+		
+		//check if user is halted
+		if (!dHandler.checkHalted(id)) {
+			if (dHandler.checkPassword(id, pw)) {
+				result = "Successfully logged in...";
+			}else {
+				result = "Incorrect username or password";
+			}
+		}else {
+			result = "User email not verified or account has been banned, please check your email";
+		}
 		return result;
 	}
 	
