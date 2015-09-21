@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
@@ -349,21 +350,22 @@ public class NACOAMainServlet extends HttpServlet {
 		    	requestDispatcher.forward(req, res);
 			}
 		} else if (uri.contains("cart")){ //CART PAGE
-		//for cart it only processes the cart page or remove action
-		try {
-			//just set up the cart to be read 
-			setUpCart(req, res);
-		} catch (Exception e){
-			System.out.println("setting pu cart fail: " + e );
-		}
-		
-		if (req.getParameter("remove_cart") != null) {
-			removeFromCart(req,res);
-		}	
-		
-    	requestDispatcher = req.getRequestDispatcher("/Cart.jsp");
-    	requestDispatcher.forward(req, res);
 			
+			//for cart it only processes the cart page or remove action
+			try {
+				//just set up the cart to be read 
+				setUpCart(req, res);
+			} catch (Exception e){
+				System.out.println("setting pu cart fail: " + e );
+			}
+			
+			if (req.getParameter("remove_cart") != null) {
+				removeFromCart(req,res);
+			}	
+			
+	    	requestDispatcher = req.getRequestDispatcher("/Cart.jsp");
+	    	requestDispatcher.forward(req, res);
+				
 		} else if (uri.contains("results")){  //RESULT PAGE (changing page No. OR extra detail for an entry)
 			//for result it does searches (basic/advanced) or add to cart for (result view or expanded detail view)
 			//know what i mean?
@@ -446,10 +448,57 @@ public class NACOAMainServlet extends HttpServlet {
 			System.out.println("error adding to cart:" + e );
 		}
 		
+		/*
+		//TODO My Stuff here
+		int user_id = Integer.parseInt(req.getParameter("user_id"));
+		int book_id = Integer.parseInt(req.getParameter("book_id"));
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		//get current date time with Date()
+		Date date = new Date();
+		System.out.println(dateFormat.format(date));
+	  
+		//get current date time with Calendar()
+		Calendar cal = Calendar.getInstance();
+		System.out.println(dateFormat.format(cal.getTime()));
+		   
+		//Need to get book_id somehow
+		dHandler.addBookToCart(user_id, book_id, 0, dateFormat.format(date).replace("/",  "-"), dHandler.DUMMYDOS);
+		cartBeans = dHandler.getShoppingCart(user_id);
+		
+		req.getSession().setAttribute("shoppingCart", cartBeans);
+		handler.setCartToSession("shoppingCartDoc", req.getSession());
+		*/
+		
 	}
 	
 	public void removeFromCart(HttpServletRequest req, HttpServletResponse res){
 		//we need to load the "current" cart doc, either from session variable, or from xml
+		
+		/*
+		int totalEntries =  Integer.parseInt(req.getParameter("num_items"));
+		int user_id = (int) req.getAttribute("id");
+		
+		//TODO Need a way to get book id to delete from cart
+		for(int n = totalEntries-1; n >= 0; n--){
+			if(req.getParameter("entry"+n) != null){
+				
+				//Need to remove from database
+				//handler.removeFromCart(n);
+				cartBeans = dHandler.getShoppingCart(user_id);
+				
+				dHandler.deleteBookCart(cartBeans.get(n).getBookID());
+			}
+			
+		}
+		
+		//handler.updateCartXML(CART_FILE_LOCATION);
+		
+		cartBeans = dHandler.getShoppingCart(user_id);
+
+		req.getSession().setAttribute("shoppingCart", cartBeans);
+		*/
+		//handler.setCartToSession("shoppingCartDoc", req.getSession());
+		
 		try {
 			setUpCart(req, res);
 			

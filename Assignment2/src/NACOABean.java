@@ -12,13 +12,36 @@ public class NACOABean implements Serializable {
 	private int xmlID;
 	/* fields */
 	private ArrayList<String> authors; //we can have multiple authors or editors
+	
 	//private String editor; //also treated like authors
 	private String title; //we have to ignore the various element types and retrieve the data only (they are all the same)
-	private String booktitle;
-	private String pages; //this tends to be ranges
+	//private String booktitle;
+	
 	private int year;
 	private String address;
 
+//	`id` int(11) NOT NULL,
+//	  `title` varchar(52) NOT NULL,
+//	  `author` varchar(52) NOT NULL,
+//	  `picture` varchar(128) NOT NULL,
+//	  `price` float NOT NULL,
+//	  `publisher` varchar(52) NOT NULL,
+//	  `dateofpublication` date NOT NULL,
+//	  `pages` int(11) NOT NULL,
+//	  `isbn` varchar(20) NOT NULL,
+//	  `genre` varchar(20) NOT NULL
+	//Book details
+	private int bookID;
+	private String booktitle;
+	private String author;
+	private String picture;
+	private String price;
+	private String publisher;
+	private String dop;
+	private String pages; //this tends to be ranges
+	private String isbn;
+	private String genre;
+	
 	private String journal;
 	private String volume;
 	private String number;
@@ -28,10 +51,10 @@ public class NACOABean implements Serializable {
 	private String cdrom;
 	private String cite;
 
-	private String publisher;
+//	private String publisher;
 	private String note;
 	private String crossref;
-	private String isbn;
+//	private String isbn;
 	private String series;
 	private String school;
 	private String chapter;
@@ -52,10 +75,51 @@ public class NACOABean implements Serializable {
 	public ArrayList<String> getAuthors() {
 		return this.authors;
 	}
+	
+	public void setPrice (String price) {
+		this.price = price;
+	}
+	
+	public void setPicture (String picture) {
+		this.picture = picture;
+	}
+	
+	public void setDOP (String dop) {
+		this.dop = dop;
+	}
+	
+	public void setGenre (String genre) {
+		this.genre = genre;
+	}
+	
+	public String getPrice (String price) {
+		return this.price;
+	}
+	
+	public String getPicture (String picture) {
+		return this.picture;
+	}
+	
+	public String getDOP (String dop) {
+		return this.dop;
+	}
+	
+	public String getGenre (String genre) {
+		return this.genre;
+	}
+
 	public void setAuthors(ArrayList<String> authors) {
 		this.authors = authors;
 	}
 
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+	
+	public String getAuthor() {
+		return this.author;
+	}
+	
 	public String getTitle() {
 		return title;
 	}
@@ -217,5 +281,13 @@ public class NACOABean implements Serializable {
 	}
 	public void setPubType(String pubType) {
 		this.pubType = pubType;
+	}
+
+	public int getBookID() {
+		return this.bookID;
+	}
+	
+	public void setBookID(int bID) {
+		this.bookID = bID;
 	}
 }
