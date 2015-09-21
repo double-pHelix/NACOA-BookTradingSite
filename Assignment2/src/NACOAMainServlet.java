@@ -10,6 +10,10 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
 
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -400,7 +404,11 @@ public class NACOAMainServlet extends HttpServlet {
 			
 	    	requestDispatcher = req.getRequestDispatcher("/Results.jsp");
 	    	requestDispatcher.forward(req, res);
-		} else {//MAIN PAGE (this is /search or welcome
+		} else if (uri.contains("upload_book")) {
+	    	requestDispatcher = req.getRequestDispatcher("/Upload_book.jsp");
+	    	requestDispatcher.forward(req, res);
+	    	
+		}	else {//MAIN PAGE (this is /search or welcome
 			//generate random list
 
 			loadMainXML();
@@ -496,7 +504,37 @@ public class NACOAMainServlet extends HttpServlet {
 		int user_id = dHandler.createUser(username, password, email, nickname, firstname, lastname, dob, address, creditinfo);
 		
 		return user_id;
-
+	}
+	
+	public int UploadBook(HttpServletRequest req, HttpServletResponse res){
+		int user_id = (int) req.getAttribute("id");
+	    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    Date date = new Date();
+	    String today = (String) dateFormat.format(date);
+		String title = (String) req.getParameter("title");
+		String author = (String) req.getParameter("author");
+		String picture = (String) req.getParameter("picture");
+		String publisher = (String) req.getParameter("publisher");
+		String dateofpublication = (String) req.getParameter("dateofpublication");
+		String pages = (String) req.getParameter("pages");
+		String isbn = (String) req.getParameter("isbn");
+		String genre = (String) req.getParameter("genre");
+		String price = (String) req.getParameter("price");
+		System.out.println(":" + user_id );
+		System.out.println(":" + today );
+		System.out.println(":" + title );
+		System.out.println(":" + author );
+		System.out.println(":" + publisher );
+		System.out.println(":" + dateofpublication );
+		System.out.println(":" + pages );
+		System.out.println(":" + isbn );
+		System.out.println(":" + genre );
+		System.out.println(":" + price );
+		
+		System.out.println("Creating User in MySQL Database");
+		int book_id = dHandler.createBook(user_id, today, title, author, picture, price, publisher, dateofpublication, pages, isbn, genre);
+		
+		return book_id;
 	}
 	
 	public String authUser(int id, String pw) {

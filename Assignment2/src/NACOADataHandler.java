@@ -508,15 +508,6 @@ public class NACOADataHandler {
 	/*
 	 * Creates a book on the database.
 	 * 
-	String cSBooks  = "CREATE TABLE IF NOT EXISTS `user_seller_books` ("
-		  + "`user_id` int(11) NOT NULL,"
-		  + "`book_id` int(11) NOT NULL,"
-		  + "`is_sold` tinyint(1) NOT NULL DEFAULT '0',"
-		  + "`dateofupload` date NOT NULL,"
-		  + "`dateofsale` date NOT NULL,"
-		  + " `is_paused` tinyint(1) NOT NULL DEFAULT '0'"
-		+ ") ENGINE=InnoDB DEFAULT CHARSET=latin1";
-
 	 */
 	public int createBook (int user_id, String date, String title, String author, String picture, String price, String publisher, 
 			String dateofpublication, String pages, String isbn, String genre) {

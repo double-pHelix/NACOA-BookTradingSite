@@ -59,7 +59,7 @@
         <c:otherwise>
          
           <h1>Registration</h1>
-          <h4> Enter in your details into the form the begin shopping at NACOA</h4>
+          <h4> Enter in your details into the form to begin shopping at NACOA</h4>
           <!--  Need to place search form here -->
           <!-- Default we show basic, if we have a request to have advanced we switch -->
 
