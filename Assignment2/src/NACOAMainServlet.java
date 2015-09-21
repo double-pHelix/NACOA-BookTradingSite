@@ -410,7 +410,67 @@ public class NACOAMainServlet extends HttpServlet {
 	    	requestDispatcher = req.getRequestDispatcher("/Upload_book.jsp");
 	    	requestDispatcher.forward(req, res);
 	    	
-		}	else {//MAIN PAGE (this is /search or welcome
+		} else if (uri.contains("checkOut")) {
+			
+			//TODO Can sell multiple books
+			if(req.getParameter("checkingOut") != null){
+				//register the user
+				//int user_id = registerUser(req, res);
+				ArrayList<NACOACheckOutBook> users = (ArrayList<NACOACheckOutBook>) req.getAttribute("all_sellers");
+				
+				int size = 0;
+				
+				while (size != users.size()) {
+					String to = dHandler.getEmail(users.get(size).getUserID());
+					String from = "info.nacoa@gmail.com";
+					
+			 		Properties props = new Properties();
+			 		props.put("mail.smtp.auth", "true");
+			 		props.put("mail.smtp.starttls.enable", "true");
+			 		props.put("mail.smtp.host", "smtp.gmail.com");
+			 		props.put("mail.smtp.port", "587");
+		
+			 		Session session = Session.getInstance(props,
+			 		  new javax.mail.Authenticator() {
+			 			protected PasswordAuthentication getPasswordAuthentication() {
+			 				return new PasswordAuthentication(from, "comp9321");
+			 			}
+			 		  });
+		
+			 		try {
+			 			System.out.println("starting...");
+			 			Message message = new MimeMessage(session);
+			 			message.setFrom(new InternetAddress(from));
+			 			message.setRecipients(Message.RecipientType.TO,
+			 					InternetAddress.parse(to));
+			 			message.setSubject("A book has been sold");
+			 			
+			 			//Get id of book
+			 			int bookID = users.get(size).getBookID();
+			 			
+			 			message.setText("The following book has been sold: \n"
+			 					+ "Title: " + dHandler.getBookTitle(bookID) + "\n"
+			 					+ "Author: " + dHandler.getBookAuthor(bookID) + "\n"
+			 					+ "Price: $" + dHandler.getBookPrice(bookID) + "\n"
+			 					+ "\n Have a nice day!");
+		
+			 			Transport.send(message);
+		
+			 			System.out.println("Sent emails to users with their books sold...");
+		
+			 		} catch (MessagingException e) {
+			 			throw new RuntimeException(e);
+			 		}	
+			 		
+			 		size++;
+				}
+			}
+						
+			requestDispatcher = req.getRequestDispatcher("/checkOut.jsp");
+	    	requestDispatcher.forward(req, res);
+			System.out.println(uri);
+			
+		} else {//MAIN PAGE (this is /search or welcome
 			//generate random list
 
 			loadMainXML();
