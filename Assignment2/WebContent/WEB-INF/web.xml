@@ -51,4 +51,9 @@
 		<servlet-name>MainServlet</servlet-name>
 		<url-pattern>/upload_book</url-pattern>
 	</servlet-mapping>
+		
+	<servlet-mapping>
+		<servlet-name>MainServlet</servlet-name>
+		<url-pattern>/verify</url-pattern>
+	</servlet-mapping>
 </web-app>
