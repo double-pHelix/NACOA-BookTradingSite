@@ -314,7 +314,7 @@ public class NACOAMainServlet extends HttpServlet {
 		 					InternetAddress.parse(to));
 		 			message.setSubject("Verify your NACOA account");
 		 			message.setText("Thanks for signing up for NACOA, please follow this link to  "
-		 	         		+ "verify your account: http://localhost:8080/Assignment2/verify?id=1337&code=" + code);
+		 	         		+ "verify your account: http://localhost:8080/Assignment2/verify?id=" + user_id);
 	
 		 			Transport.send(message);
 	
@@ -325,12 +325,12 @@ public class NACOAMainServlet extends HttpServlet {
 		 		}	
 				
 				//login the user... but they are not yet registered without email confirm (do later)
-				loginUser(req,res,user_id);
+				//loginUser(req,res,user_id);
 			}
-						
-			requestDispatcher = req.getRequestDispatcher("/Register.jsp");
+			requestDispatcher = req.getRequestDispatcher("/Waiting_confirmation.jsp");
 	    	requestDispatcher.forward(req, res);
-			System.out.println(uri);
+//			requestDispatcher = req.getRequestDispatcher("/Register.jsp");
+//	    	requestDispatcher.forward(req, res);
 		} else if (uri.contains("login")){ //USER LOGIN PAGE
 			requestDispatcher = req.getRequestDispatcher("/Login.jsp");
 	    	requestDispatcher.forward(req, res);
@@ -349,6 +349,11 @@ public class NACOAMainServlet extends HttpServlet {
 				requestDispatcher = req.getRequestDispatcher("/Login.jsp");
 		    	requestDispatcher.forward(req, res);
 			}
+		} else if (uri.contains("verify")){ //SUBMIT LOGIN DETAILS
+			int id = Integer.parseInt(req.getParameter("id"));
+			String code = req.getParameter("code");
+			System.out.println("Verifying user " + id + "\nwith code: " + code);
+			verifyUser(id, code);
 		} else if (uri.contains("cart")){ //CART PAGE
 			
 			//for cart it only processes the cart page or remove action
@@ -492,6 +497,10 @@ public class NACOAMainServlet extends HttpServlet {
 	    	requestDispatcher.forward(req, res);
 		}
 
+	}
+
+	private void verifyUser(int id, String code) {
+		dHandler.verifyUser(id, code);
 	}
 
 	private void setUpCartDB(HttpServletRequest req, HttpServletResponse res) {
