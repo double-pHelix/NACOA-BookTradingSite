@@ -3,8 +3,11 @@ import com.mysql.jdbc.Connection;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.LinkedList;
 /**
  * Class which deals with the data access needs of the NACOAMainServlet
@@ -26,6 +29,10 @@ public class NACOADataHandler {
 	
 	//Dummy variable
 	public final String DUMMYDOS = "0000-00-00";
+	
+	//Tests
+	private boolean initialTests = false;
+	private boolean testCheckOut = false;
 	
 	public static void main(String [] args){
 		NACOADataHandler handler= new NACOADataHandler();
@@ -50,128 +57,38 @@ public class NACOADataHandler {
 		
 		//NACOADataHandler handler = new NACOADataHandler();
 		
+		if (initialTests) {
+			int user_id = testAddUser(handler);
+			int book_id = testAddBook(handler, user_id);
+			testChangeBook(handler, book_id);
+		}
+		
+		if (testCheckOut) {
+			int newID = createUser("Seller", DUMMYDOS, DUMMYDOS, DUMMYDOS, DUMMYDOS, DUMMYDOS, DUMMYDOS, DUMMYDOS, DUMMYDOS);
+			//addBookToCart (int user_id, int book_id, int is_sold, String dou, String dos){
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		  
+			//get current date time with Calendar()
+			Calendar cal = Calendar.getInstance();
+			System.out.println(dateFormat.format(cal.getTime()).replace("/",  "-"));
+			   
+			//Need to get book_id somehow
+			handler.addBookToCart(newID, 7, 0, dateFormat.format(cal.getTime()).replace("/",  "-"), DUMMYDOS);
+		}
+		//addBookToCart(newID, 7, 0, , DUMMYDOS);
 		//handler.setUpDatabase();
 		//Creating a test user
 		//String username, String password, String email, String nickname, 
 		//String firstname, String lastname, String dob, String address, String creditinfo
-		String tUserN1 = "Riked";
-		String tPass1 = "password123";
-		String tEmail1 = "richard@hotdog.com";
-		String tNickN1 = "DeathToAllThe";
-		String tFirstN1 = "Richard";
-		String tLastN1 = "Zhang";
-		String tdob1 = "1990-01-01";
-		String tAddress1 = "Fake Address 1";
-		String tCreditInfo1 = "Fake Credit info";
-		
-		System.out.println("Creating user...");
-		int id = handler.createUser(tUserN1, tPass1, tEmail1, tNickN1, tFirstN1, tLastN1, tdob1, tAddress1, tCreditInfo1);
-		//handler.addBookToCart(id, 0, 0, "1990-09-09", "1991-01-01");
-		
-		System.out.println("Testing get email...");
-		
-		if (!handler.getEmail(id).contentEquals(tEmail1)) {
-			System.out.println("Test Failed");
-		} else {
-			System.out.println("Test Passed");
-		}
-		
-		System.out.println("Testing get username...");
-		
-		if (!handler.getUserName(id).contentEquals(tUserN1)) {
-			System.out.println("Test Failed");
-		} else {
-			System.out.println("Test Passed");
-		}
-		
-		System.out.println("Testing get creditcarddetails...");
-		
-		if (!handler.getCreditCardDetails(id).contentEquals(tCreditInfo1)) {
-			System.out.println("Test Failed");
-		} else {
-			System.out.println("Test Passed");
-		}
 		
 //		String title, String author, String picture, float price, String publisher, 
 //		String dateofpublication, int pages, String isbn, String genre)
-			
-		String tTitle1 = "The Jack";
-		String tAuthor1 = "Rowl Darn";
-		String tPicture1 = "No picture bro";
-		String tPrice1 = "100.50";
-		String tPublisher1 = "Blizzard";
-		String tdop1 = "1920-11-01";
-		String tpages1 = "204";
-		String tisbn1 = "123441-23322-111";
-		String tGenre1 = "Mystery";
-		String tDate = "2015-10-18";
 		
-		System.out.println("Creating Book...");
-		int bookID = handler.createBook(id, tDate, tTitle1, tAuthor1, tPicture1, tPrice1, tPublisher1, tdop1, tpages1, tisbn1, tGenre1);
 		
-		System.out.println("Testing get book title...");
-		if (!handler.getBookTitle(bookID).contentEquals(tTitle1)) {
-			System.out.println("Test Failed!");
-		} else {
-			System.out.println("Test Passed!");
-		}
 		
-		System.out.println("Testing get book author...");
-		if (!handler.getBookAuthor(bookID).contentEquals(tAuthor1)) {
-			System.out.println("Test Failed!");
-		} else {
-			System.out.println("Test Passed!");
-		}
-		
-		System.out.println("Testing get book Picture...");
-		if (!handler.getBookPicture(bookID).contentEquals(tPicture1)) {
-			System.out.println("Test Failed!");
-		} else {
-			System.out.println("Test Passed!");
-		}
-		
-		System.out.println("Testing get book Price...");
-		if (!handler.getBookPrice(bookID).contentEquals(tPrice1)) {
-			System.out.println("Test Failed!");
-		} else {
-			System.out.println("Test Passed!");
-		}
-		
-		System.out.println("Testing get book Publisher...");
-		if (!handler.getBookPublisher(bookID).contentEquals(tPublisher1)) {
-			System.out.println("Test Failed!");
-		} else {
-			System.out.println("Test Passed!");
-		}
-		
-		System.out.println("Testing get book dop...");
-		if (!handler.getBookDOP(bookID).contentEquals(tdop1)) {
-			System.out.println("Test Failed!");
-		} else {
-			System.out.println("Test Passed!");
-		}
-		
-		System.out.println("Testing get book pages...");
-		if (!handler.getBookPages(bookID).contentEquals(tpages1)) {
-			System.out.println("Test Failed!");
-		} else {
-			System.out.println("Test Passed!");
-		}
-		
-		System.out.println("Testing get book isbn...");
-		if (!handler.getBookISBN(bookID).contentEquals(tisbn1)) {
-			System.out.println("Test Failed!");
-		} else {
-			System.out.println("Test Passed!");
-		}
-		
-		System.out.println("Testing get book Genre...");
-		if (!handler.getBookGenre(bookID).contentEquals(tGenre1)) {
-			System.out.println("Test Failed!");
-		} else {
-			System.out.println("Test Passed!");
-		}
-		
+	}
+
+	private void testChangeBook(NACOADataHandler handler, int bookID) {
 		//Testing Change
 		String changedTitle = "Selfless Idiot";
 		String changedAuthor = "Bob Jobes";
@@ -263,7 +180,132 @@ public class NACOADataHandler {
 		} else {
 			System.out.println("Test passed!");
 		}
+	}
+
+	//Test add book
+	private int testAddBook(NACOADataHandler handler, int id) {
+		String tTitle1 = "The Jack";
+		String tAuthor1 = "Rowl Darn";
+		String tPicture1 = "No picture bro";
+		String tPrice1 = "100.50";
+		String tPublisher1 = "Blizzard";
+		String tdop1 = "1920-11-01";
+		String tpages1 = "204";
+		String tisbn1 = "123441-23322-111";
+		String tGenre1 = "Mystery";
+		String tDate = "2015-10-12";
 		
+		System.out.println("Creating Book...");
+		int bookID = handler.createBook(id, tDate, tTitle1, tAuthor1, tPicture1, tPrice1, tPublisher1, tdop1, tpages1, tisbn1, tGenre1);
+		
+		System.out.println("Testing get book title...");
+		if (!handler.getBookTitle(bookID).contentEquals(tTitle1)) {
+			System.out.println("Test Failed!");
+		} else {
+			System.out.println("Test Passed!");
+		}
+		
+		System.out.println("Testing get book author...");
+		if (!handler.getBookAuthor(bookID).contentEquals(tAuthor1)) {
+			System.out.println("Test Failed!");
+		} else {
+			System.out.println("Test Passed!");
+		}
+		
+		System.out.println("Testing get book Picture...");
+		if (!handler.getBookPicture(bookID).contentEquals(tPicture1)) {
+			System.out.println("Test Failed!");
+		} else {
+			System.out.println("Test Passed!");
+		}
+		
+		System.out.println("Testing get book Price...");
+		if (!handler.getBookPrice(bookID).contentEquals(tPrice1)) {
+			System.out.println("Test Failed!");
+		} else {
+			System.out.println("Test Passed!");
+		}
+		
+		System.out.println("Testing get book Publisher...");
+		if (!handler.getBookPublisher(bookID).contentEquals(tPublisher1)) {
+			System.out.println("Test Failed!");
+		} else {
+			System.out.println("Test Passed!");
+		}
+		
+		System.out.println("Testing get book dop...");
+		if (!handler.getBookDOP(bookID).contentEquals(tdop1)) {
+			System.out.println("Test Failed!");
+		} else {
+			System.out.println("Test Passed!");
+		}
+		
+		System.out.println("Testing get book pages...");
+		if (!handler.getBookPages(bookID).contentEquals(tpages1)) {
+			System.out.println("Test Failed!");
+		} else {
+			System.out.println("Test Passed!");
+		}
+		
+		System.out.println("Testing get book isbn...");
+		if (!handler.getBookISBN(bookID).contentEquals(tisbn1)) {
+			System.out.println("Test Failed!");
+		} else {
+			System.out.println("Test Passed!");
+		}
+		
+		System.out.println("Testing get book Genre...");
+		if (!handler.getBookGenre(bookID).contentEquals(tGenre1)) {
+			System.out.println("Test Failed!");
+		} else {
+			System.out.println("Test Passed!");
+		}
+		
+		return bookID;
+	}
+
+	//Test add user
+	private int testAddUser(NACOADataHandler handler) {
+		// TODO Auto-generated method stub
+		String tUserN1 = "Riked";
+		String tPass1 = "password123";
+		String tEmail1 = "richard@hotdog.com";
+		String tNickN1 = "DeathToAllThe";
+		String tFirstN1 = "Richard";
+		String tLastN1 = "Zhang";
+		String tdob1 = "1990-01-01";
+		String tAddress1 = "Fake Address 1";
+		String tCreditInfo1 = "Fake Credit info";
+		
+		System.out.println("Creating user...");
+		int id = handler.createUser(tUserN1, tPass1, tEmail1, tNickN1, tFirstN1, tLastN1, tdob1, tAddress1, tCreditInfo1);
+		//handler.addBookToCart(id, 0, 0, "1990-09-09", "1991-01-01");
+		
+		System.out.println("Testing get email...");
+		
+		if (!handler.getEmail(id).contentEquals(tEmail1)) {
+			System.out.println("Test Failed");
+		} else {
+			System.out.println("Test Passed");
+		}
+		
+		System.out.println("Testing get username...");
+		
+		if (!handler.getUserName(id).contentEquals(tUserN1)) {
+			System.out.println("Test Failed");
+		} else {
+			System.out.println("Test Passed");
+		}
+		
+		System.out.println("Testing get creditcarddetails...");
+		
+		if (!handler.getCreditCardDetails(id).contentEquals(tCreditInfo1)) {
+			System.out.println("Test Failed");
+		} else {
+			System.out.println("Test Passed");
+		}
+		
+		return id;
 	}
 
 	/**
@@ -561,6 +603,7 @@ public class NACOADataHandler {
 			stmt.setInt(2, auto_id);
 			stmt.setInt(3, 0);
 			stmt.setString(4, date);
+			stmt.setString(5, DUMMYDOS);
 			stmt.setInt(6, 0);
 
 			stmt.executeUpdate();
