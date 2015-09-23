@@ -25,7 +25,7 @@
             <c:choose>
               <c:when test="${sessionScope.logged_in == true}">
                 <li class="dropdown-header">Logged in as "${sessionScope.username}"</li>
-                <li><a href="#">Change Details</a></li>
+                <li><a href="${pageContext.request.contextPath}/account">Change Details</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Settings</li>
                 <li><a href="${pageContext.request.contextPath}/logout">Log Out</a></li>

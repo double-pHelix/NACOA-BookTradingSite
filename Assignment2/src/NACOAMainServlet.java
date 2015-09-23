@@ -258,7 +258,7 @@ public class NACOAMainServlet extends HttpServlet {
     	RequestDispatcher requestDispatcher; 
 		//where did the user want to go?
 		String uri = req.getRequestURI();
-		
+		System.out.println("GOT URI: " + uri);
 		//create database if not created
 		if(!dHandler.databaseExists("nacoadatabase")){
 			dHandler.setUpDatabase();
@@ -355,6 +355,9 @@ public class NACOAMainServlet extends HttpServlet {
 			System.out.println("Verifying user " + id + "\nwith code: " + code);
 			verifyUser(id, code);
 	    	requestDispatcher = req.getRequestDispatcher("/Login.jsp");
+	    	requestDispatcher.forward(req, res);
+		} else if (uri.contains("account")){ //CART PAGE
+			requestDispatcher = req.getRequestDispatcher("/Account_setting.jsp");
 	    	requestDispatcher.forward(req, res);
 		} else if (uri.contains("cart")){ //CART PAGE
 			
@@ -490,7 +493,6 @@ public class NACOAMainServlet extends HttpServlet {
 			
 		} else {//MAIN PAGE (this is /search or welcome
 			//generate random list
-
 			loadMainXML();
 
 			req.setAttribute("randomBeans",generateRandomBeans(10));
