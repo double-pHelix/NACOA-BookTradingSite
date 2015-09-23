@@ -736,7 +736,7 @@ public class NACOADataHandler {
 			//STEP 4: Execute a query
 			//System.out.println("Creating statement...");
 			
-			String sql = "SELECT * FROM user_seller_books WHERE (id = ?)";
+			String sql = "SELECT * FROM user_seller_books WHERE (user_id = ?)";
 	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, book_id);
@@ -1442,7 +1442,7 @@ public class NACOADataHandler {
 			//STEP 4: Execute a query
 			//System.out.println("Creating statement...");
 			
-			String sql = "SELECT * FROM user_seller_books WHERE (id = ?)";
+			String sql = "SELECT * FROM user_seller_books WHERE (book_id = ?)";
 	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, book_id);
@@ -1639,14 +1639,14 @@ public class NACOADataHandler {
 			//STEP 4: Execute a query
 			//System.out.println("Creating statement...");
 			
-			String sql = "UPDATE user_seller_books SET is_sold WHERE (id = ?)";
+			String sql = "UPDATE user_seller_books SET is_sold WHERE (book_id = ?)";
 	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, 1);
 			stmt.setInt(2, book_id);
 			stmt.executeUpdate();
 			
-			sql = "UPDATE user_customer_books SET is_sold WHERE (id = ?)";
+			sql = "UPDATE user_customer_books SET is_sold WHERE (book_id = ?)";
 			
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, 1);
@@ -1692,7 +1692,7 @@ public class NACOADataHandler {
 			
 			//STEP 4: Execute a query
 			//System.out.println("Creating statement...");
-			String sql = "SELECT * FROM user_customer_books WHERE (id = ?)";
+			String sql = "SELECT * FROM user_customer_books WHERE (user_id = ?)";
 			
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, user_id);

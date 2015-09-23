@@ -507,8 +507,13 @@ public class NACOAMainServlet extends HttpServlet {
 
 	private void setUpCartDB(HttpServletRequest req, HttpServletResponse res) {
 		// TODO Auto-generated method stub
-		int user_id = (int) req.getAttribute("id");
+		String username = (String) req.getParameter("username");
 		
+		System.out.println("User name is " + username);
+		
+		int user_id = dHandler.getId(username);
+		
+		System.out.println("User id is " + user_id);
 		cartBeans = dHandler.getShoppingCart(user_id);
 		req.getSession().setAttribute("shoppingCart", cartBeans);
 		handler.setCartToSession("shoppingCartDoc", req.getSession());
@@ -650,7 +655,11 @@ public class NACOAMainServlet extends HttpServlet {
 	}
 	
 	public int UploadBook(HttpServletRequest req, HttpServletResponse res){
-		int user_id = (int) req.getAttribute("id");
+		String username = req.getParameter("username");
+		
+		
+		int user_id = dHandler.getId(username);
+		
 	    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	    Date date = new Date();
 	    String today = (String) dateFormat.format(date);
