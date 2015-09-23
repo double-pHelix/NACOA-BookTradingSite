@@ -53,7 +53,7 @@
       <div class="jumbotron">
       
       <c:choose>
-        <c:when test="${sessionScope.logged_in == true}">
+        <c:when test="${sessionScope.upload_success == true}">
           <h2>Your book has been uploaded successfully</h2> 
         </c:when>
         <c:otherwise>
@@ -62,7 +62,7 @@
           <h4> Enter in the details of the book into the form to sell on NACOA</h4>
 
           <form action="${pageContext.request.contextPath}/upload_book" method="POST"> 
-            <input type="hidden" name="registering" value="true">
+            <input type="hidden" name="uploading" value="true">
             
             <div class="input-group">
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Title" name="title">

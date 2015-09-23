@@ -407,6 +407,15 @@ public class NACOAMainServlet extends HttpServlet {
 	    	requestDispatcher = req.getRequestDispatcher("/Results.jsp");
 	    	requestDispatcher.forward(req, res);
 		} else if (uri.contains("upload_book")) {
+			// TODO
+			if (req.getParameter("uploading") != null) {
+				int book_id = UploadBook(req, res);
+				if (book_id > 0) {
+					req.getSession().setAttribute("upload_success", true);
+				} else {
+					req.getSession().setAttribute("upload_success", false);
+				}
+			}
 	    	requestDispatcher = req.getRequestDispatcher("/Upload_book.jsp");
 	    	requestDispatcher.forward(req, res);
 	    	
