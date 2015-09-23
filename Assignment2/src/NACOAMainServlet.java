@@ -319,6 +319,8 @@ public class NACOAMainServlet extends HttpServlet {
 		 			Transport.send(message);
 	
 		 			System.out.println("Sent verification email...");
+					requestDispatcher = req.getRequestDispatcher("/Waiting_confirmation.jsp");
+			    	requestDispatcher.forward(req, res);
 	
 		 		} catch (MessagingException e) {
 		 			throw new RuntimeException(e);
@@ -327,10 +329,8 @@ public class NACOAMainServlet extends HttpServlet {
 				//login the user... but they are not yet registered without email confirm (do later)
 				//loginUser(req,res,user_id);
 			}
-			requestDispatcher = req.getRequestDispatcher("/Waiting_confirmation.jsp");
+			requestDispatcher = req.getRequestDispatcher("/Register.jsp");
 	    	requestDispatcher.forward(req, res);
-//			requestDispatcher = req.getRequestDispatcher("/Register.jsp");
-//	    	requestDispatcher.forward(req, res);
 		} else if (uri.contains("login")){ //USER LOGIN PAGE
 			requestDispatcher = req.getRequestDispatcher("/Login.jsp");
 	    	requestDispatcher.forward(req, res);
@@ -354,6 +354,8 @@ public class NACOAMainServlet extends HttpServlet {
 			String code = req.getParameter("code");
 			System.out.println("Verifying user " + id + "\nwith code: " + code);
 			verifyUser(id, code);
+	    	requestDispatcher = req.getRequestDispatcher("/Login.jsp");
+	    	requestDispatcher.forward(req, res);
 		} else if (uri.contains("cart")){ //CART PAGE
 			
 			//for cart it only processes the cart page or remove action

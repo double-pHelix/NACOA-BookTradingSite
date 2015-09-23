@@ -2372,10 +2372,10 @@ public class NACOADataHandler {
 			//STEP 4: Execute a query
 			//System.out.println("Creating statement...");
 			
-			String sql = "UPDATE users SET is_halted WHERE (id = ?)";
+			String sql = "UPDATE users SET is_halted=? WHERE (id = ?)";
 	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setInt(1, 1);
+			stmt.setInt(1, 0);
 			stmt.setInt(2, id);
 			stmt.executeUpdate();
 			
