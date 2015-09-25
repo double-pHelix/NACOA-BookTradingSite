@@ -52,6 +52,7 @@
       <c:when test="${not empty sessionScope.shoppingCart}">
         <form name="articles_option" action="" method="POST">
           <input type="hidden" name="remove_cart" value="yes">
+          <input type="hidden" name="user_id" value="${sessionScope.user_id}">
           <input type="hidden" name="num_items" value="${fn:length(sessionScope.shoppingCart)}">
           <!-- We must display the results of there are any -->
           <div class="content">
@@ -59,8 +60,8 @@
             <tr class="active">
               <td scope="col"><b>TITLE</b></td>
               <td scope="col"><b>AUTHOR</b></td>
-              <td scope="col"><b>DATE PUBLISHED</b></td>
               <td scope="col"><b>ISBN</b></td>
+              <td scope="col"><b>PRICE</b></td>
               <td scope="col"><b>REMOVE</b></td>
             </tr>
 
@@ -71,10 +72,10 @@
                 <tr class="active">
                   <td class="active">${entry.title}</td>
                   <td class="success">${entry.authors}</td>
-                  <td class="warning">${entry.year}</td>
-                  <td class="danger">${entry.isbn}</td>
+                  <td class="warning">${entry.isbn}</td>
+                  <td class="danger">${entry.price}</td>
                   
-                  <td class="info"><center> <input type="checkbox" name="entry${entry.xmlID}" value="set" style="width: 20px;height: 20px;"> </center></td>
+                  <td class="info"><center> <input type="checkbox" name="entry${entry.bookID}" value="set" style="width: 20px;height: 20px;"> </center></td>
                 </tr>
                 
               </c:forEach>
@@ -91,7 +92,7 @@
           </table>
           </div>
           
-          <input class="btn btn-ss btn-info" type="submit" value="Buy">
+          <a href="${pageContext.request.contextPath}/checkOut" class="btn btn-info" role="button">Purchase Books</a>
           
           <br>
         </form> 

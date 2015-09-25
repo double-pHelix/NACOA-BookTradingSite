@@ -32,7 +32,8 @@ public class NACOADataHandler {
 	
 	//Tests
 	private boolean initialTests = false;
-	private boolean testCheckOut = true;
+	private boolean testCheckOut = false;
+	private boolean testCount = true;
 	
 	public static void main(String [] args){
 		NACOADataHandler handler= new NACOADataHandler();
@@ -76,6 +77,11 @@ public class NACOADataHandler {
 			handler.addBookToCart(2, 3, 0, dateFormat.format(cal.getTime()).replace("/",  "-"), DUMMYDOS);
 		}
 		
+		if (testCount) {
+			System.out.println("testing count");
+			countBooks();
+			countUsers();
+		}
 		//if (testUp)
 		//addBookToCart(newID, 7, 0, , DUMMYDOS);
 		//handler.setUpDatabase();
@@ -2836,5 +2842,108 @@ public void changeCreditInfo(int user_id, String creditinfo) {
 		}else {
 			return false;
 		}
+	}
+	
+	//Counts the number of books in the database
+	public int countBooks() {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		int books = 0;
+		//String bookName = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT COUNT(*) AS Size FROM books";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+			//stmt.getFetchSize()
+			while (rs.next()) {
+				books = rs.getInt("Size");
+				System.out.println(rs.getInt("Size"));
+			}
+			
+			
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		return books;
+	}
+	
+	//Counts the number of users in the database
+	public int countUsers() {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		int users = 0;
+		//String bookName = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT COUNT(*) AS Size FROM users";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+			
+			while (rs.next()) {
+				users = rs.getInt("Size");
+				System.out.println(rs.getInt("Size"));
+			}
+			
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		return users;
 	}
 }

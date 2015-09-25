@@ -63,10 +63,11 @@
           <!--  Need to place search form here -->
           <!-- Default we show basic, if we have a request to have advanced we switch -->
 
-          <form action="${pageContext.request.contextPath}/register" method="POST"> 
+          <form action="${pageContext.request.contextPath}/checkOut" method="POST"> 
             <input type="hidden" name="checkingOut" value="true">
             
-            <div class="input-group">        
+            <div class="input-group">  
+              <input type="hidden" name="user_id" value="${sessionScope.user_id}">     
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Credit Card Info (number)" name="creditinfo">
             </div><!-- /input-group -->
           

@@ -524,11 +524,12 @@ public class NACOAMainServlet extends HttpServlet {
 
 	private void setUpCartDB(HttpServletRequest req, HttpServletResponse res) {
 		// TODO Auto-generated method stub
-		String username = (String) req.getParameter("username");
+		//String username = (String) req.getParameter("username");
+		int user_id = Integer.parseInt(req.getParameter("user_id"));
 		
-		System.out.println("User name is " + username);
+		//System.out.println("User name is " + username);
 		
-		int user_id = dHandler.getId(username);
+		//int user_id = dHandler.getId(username);
 		
 		System.out.println("User id is " + user_id);
 		cartBeans = dHandler.getShoppingCart(user_id);
@@ -537,8 +538,8 @@ public class NACOAMainServlet extends HttpServlet {
 	}
 
 	public void appendToCartPage(HttpServletRequest req, HttpServletResponse res){
-		int pubId = Integer.parseInt(req.getParameter("publication_id"));
-		
+		//int pubId = Integer.parseInt(req.getParameter("publication_id"));
+		/*
 		try {
 			//i think we will have to replace this with SQL functions or we replace the 
 			//implementations of these functiosn to use SQL
@@ -559,11 +560,11 @@ public class NACOAMainServlet extends HttpServlet {
     		
 		} catch (Exception e){
 			System.out.println("error adding to cart:" + e );
-		}
+		}*/
 		
-		/*
+		
 		//TODO My Stuff here
-		String creditinfo = (String) req.getParameter("creditinfo");
+		//String creditinfo = (String) req.getParameter("creditinfo");
 		
 		int user_id = Integer.parseInt(req.getParameter("user_id"));
 		int book_id = Integer.parseInt(req.getParameter("book_id"));
@@ -582,26 +583,24 @@ public class NACOAMainServlet extends HttpServlet {
 		
 		req.getSession().setAttribute("shoppingCart", cartBeans);
 		handler.setCartToSession("shoppingCartDoc", req.getSession());
-		*/
 		
 	}
 	
 	public void removeFromCart(HttpServletRequest req, HttpServletResponse res){
 		//we need to load the "current" cart doc, either from session variable, or from xml
 		
-		/*
-		int totalEntries =  Integer.parseInt(req.getParameter("num_items"));
-		int user_id = (int) req.getAttribute("id");
+		int totalEntries =  dHandler.countBooks();
+		int user_id = Integer.parseInt(req.getParameter("user_id"));
 		
 		cartBeans = dHandler.getShoppingCart(user_id);
 		
 		//TODO Need a way to get book id to delete from cart
-		for(int n = totalEntries-1; n >= 0; n--){
+		for(int n = 0; n != totalEntries; n++){
 			if(req.getParameter("entry"+n) != null){
 				
 				//Need to remove from database
 				//handler.removeFromCart(n);
-				dHandler.deleteBookCart(cartBeans.get(n).getBookID());
+				dHandler.deleteBookCart(n);
 			}
 			
 		}
@@ -612,8 +611,8 @@ public class NACOAMainServlet extends HttpServlet {
 
 		req.getSession().setAttribute("shoppingCart", cartBeans);
 		
-		handler.setCartToSession("shoppingCartDoc", req.getSession());
-		*/
+		//handler.setCartToSession("shoppingCartDoc", req.getSession());
+		/*
 		//pie
 		try {
 			setUpCart(req, res);
@@ -643,6 +642,7 @@ public class NACOAMainServlet extends HttpServlet {
 		} catch (Exception e){
 			System.out.println("error adding to cart:" + e );
 		}
+		*/
 	}
 
 	public int registerUser(HttpServletRequest req, HttpServletResponse res){
