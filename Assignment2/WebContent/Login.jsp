@@ -56,14 +56,17 @@
         <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       </form>
+      <br>
+      
+      <div class="center-block">
+        <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button" id="backButton">Back to Main</a>
+      </div>
 
     </div> <!-- /container -->
     
     
-    <br>
-    <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button">Back to Main</a>
-    
-    <footer class="footer">
+
+    <footer class="centering">
       <p>&copy; Felix Yuen Dao Phu 2015</p>
     </footer>
     </div> <!-- /container -->

@@ -1,10 +1,9 @@
 @CHARSET "ISO-8859-1";
 
-body {
-  padding-top: 40px;
-  padding-bottom: 40px;
+.centering{
+float:none;
+margin:0 auto
 }
-
 .form-signin {
   max-width: 330px;
   padding: 15px;
