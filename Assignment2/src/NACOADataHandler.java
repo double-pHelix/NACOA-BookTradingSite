@@ -2742,7 +2742,6 @@ public void changeCreditInfo(int user_id, String creditinfo) {
 	}
 
 	public void verifyUser(int id, String code) {
-		// TODO Verify the user with given code
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		//String bookName = null;
@@ -2785,5 +2784,57 @@ public void changeCreditInfo(int user_id, String creditinfo) {
 			} //end finally try
 		} //end try
 		
+	}
+
+	public boolean userExists(String username) {
+		// TODO Verify the user with given code
+				Connection conn = null;
+				PreparedStatement stmt = null;
+				String usernameReturned = "";
+				//String bookName = null;
+				try {
+					//STEP 2: Register JDBC driver
+					Class.forName("com.mysql.jdbc.Driver");
+					//
+					conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+					
+					//STEP 4: Execute a query
+					//System.out.println("Creating statement...");
+					
+					String sql = "SELECT * FROM users WHERE (username = ?)";
+			
+					stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+					stmt.setString(1, username);
+					stmt.executeQuery();
+					ResultSet rs = stmt.getResultSet();
+					while (rs.next()) {
+						usernameReturned = rs.getString("username");
+					}
+					System.out.println("query returned: " + usernameReturned);
+					//STEP 6: Clean-up environment
+					stmt.close();
+					conn.close();	
+					
+				} catch (SQLException se) {
+					//Handle errors for JDBC
+					    se.printStackTrace();
+				} catch (Exception e) {
+				    //Handle errors for Class.forName
+				    e.printStackTrace();
+				} finally {
+				    //finally block used to close resources
+				 
+					try {
+					   if(conn!=null)
+					      conn.close();
+					} catch (SQLException se) {
+						se.printStackTrace();
+					} //end finally try
+				} //end try
+		if(usernameReturned.equals(username)) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 }

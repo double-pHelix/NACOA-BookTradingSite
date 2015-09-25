@@ -286,48 +286,47 @@ public class NACOAMainServlet extends HttpServlet {
 			if(req.getParameter("registering") != null){
 				//register the user
 				int user_id = registerUser(req, res);
-				
-				//send a email to the user... TODO:
-				String to = dHandler.getEmail(user_id);
-				String from = "info.nacoa@gmail.com";
-				SecureRandom random = new SecureRandom();
-				String code = new BigInteger(130, random).toString(32);
-
-		 		Properties props = new Properties();
-		 		props.put("mail.smtp.auth", "true");
-		 		props.put("mail.smtp.starttls.enable", "true");
-		 		props.put("mail.smtp.host", "smtp.gmail.com");
-		 		props.put("mail.smtp.port", "587");
+				System.out.println("got user id: " + user_id);
+				if (user_id > 0) { //will return -1 if username already exists
+					//send a email to the user...
+					String to = dHandler.getEmail(user_id);
+					String from = "info.nacoa@gmail.com";
+					SecureRandom random = new SecureRandom();
+					String code = new BigInteger(130, random).toString(32);
 	
-		 		Session session = Session.getInstance(props,
-		 		  new javax.mail.Authenticator() {
-		 			protected PasswordAuthentication getPasswordAuthentication() {
-		 				return new PasswordAuthentication(from, "comp9321");
-		 			}
-		 		  });
-	
-		 		try {
-		 			System.out.println("starting...");
-		 			Message message = new MimeMessage(session);
-		 			message.setFrom(new InternetAddress(from));
-		 			message.setRecipients(Message.RecipientType.TO,
-		 					InternetAddress.parse(to));
-		 			message.setSubject("Verify your NACOA account");
-		 			message.setText("Thanks for signing up for NACOA, please follow this link to  "
-		 	         		+ "verify your account: http://localhost:8080/Assignment2/verify?id=" + user_id);
-	
-		 			Transport.send(message);
-	
-		 			System.out.println("Sent verification email...");
-					requestDispatcher = req.getRequestDispatcher("/Waiting_confirmation.jsp");
-			    	requestDispatcher.forward(req, res);
-	
-		 		} catch (MessagingException e) {
-		 			throw new RuntimeException(e);
-		 		}	
-				
-				//login the user... but they are not yet registered without email confirm (do later)
-				//loginUser(req,res,user_id);
+			 		Properties props = new Properties();
+			 		props.put("mail.smtp.auth", "true");
+			 		props.put("mail.smtp.starttls.enable", "true");
+			 		props.put("mail.smtp.host", "smtp.gmail.com");
+			 		props.put("mail.smtp.port", "587");
+		
+			 		Session session = Session.getInstance(props,
+			 		  new javax.mail.Authenticator() {
+			 			protected PasswordAuthentication getPasswordAuthentication() {
+			 				return new PasswordAuthentication(from, "comp9321");
+			 			}
+			 		  });
+		
+			 		try {
+			 			System.out.println("starting...");
+			 			Message message = new MimeMessage(session);
+			 			message.setFrom(new InternetAddress(from));
+			 			message.setRecipients(Message.RecipientType.TO,
+			 					InternetAddress.parse(to));
+			 			message.setSubject("Verify your NACOA account");
+			 			message.setText("Thanks for signing up for NACOA, please follow this link to  "
+			 	         		+ "verify your account: http://localhost:8080/Assignment2/verify?id=" + user_id);
+		
+			 			Transport.send(message);
+		
+			 			System.out.println("Sent verification email...");
+						requestDispatcher = req.getRequestDispatcher("/Waiting_confirmation.jsp");
+				    	requestDispatcher.forward(req, res);
+		
+			 		} catch (MessagingException e) {
+			 			throw new RuntimeException(e);
+			 		}	
+				}
 			}
 			requestDispatcher = req.getRequestDispatcher("/Register.jsp");
 	    	requestDispatcher.forward(req, res);
@@ -667,9 +666,12 @@ public class NACOAMainServlet extends HttpServlet {
 		System.out.println(":" + creditinfo );
 		
 		System.out.println("Creating User in MySQL Database");
-		int user_id = dHandler.createUser(username, password, email, nickname, firstname, lastname, dob, address, creditinfo);
-		
-		return user_id;
+		if (!dHandler.userExists(username)) {
+			int user_id = dHandler.createUser(username, password, email, nickname, firstname, lastname, dob, address, creditinfo);
+			return user_id;
+		}else {
+			return -1;
+		}
 	}
 	
 	public int UploadBook(HttpServletRequest req, HttpServletResponse res){
