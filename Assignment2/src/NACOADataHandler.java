@@ -18,6 +18,11 @@ import java.util.LinkedList;
  *
  */
 public class NACOADataHandler {
+	//REFERENCING ACTION TYPE IN USER_HISTORY
+	static final int ACTION_BUY = 1;
+	static final int ACTION_ATC = 2;
+	static final int ACTION_RFC = 3;
+	
 	// JDBC driver name and database URL
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
 	static final String DB_URL = "jdbc:mysql://localhost/nacoadatabase";
@@ -51,6 +56,11 @@ public class NACOADataHandler {
 		
 		handler.testDatabase(handler);
 		System.out.println("User name is " +handler.getUserName(0));
+		
+		
+		handler.addHistoryBuyEntry(1,2); //
+		handler.addHistoryAddCartEntry(1, 2);//
+		handler.addHistoryRemoveCartEntry(1, 2);//
 	}
 	
 	//Runs tests to make sure the functions are working
@@ -3051,5 +3061,63 @@ public void changeCreditInfo(int user_id, String creditinfo) {
 		} //end try
 		
 		return details;
+	}
+	
+	public void addHistoryBuyEntry(int user_id, int book_id){
+		createHistoryEntry (user_id, book_id, ACTION_BUY); //history bought book
+	}
+	public void addHistoryAddCartEntry(int user_id, int book_id){
+		createHistoryEntry (user_id, book_id, ACTION_ATC);	//history entry add to cart
+	}
+	public void addHistoryRemoveCartEntry(int user_id, int book_id){
+		createHistoryEntry (user_id, book_id, ACTION_RFC); //history entry remove from cart
+	}
+	
+	public void createHistoryEntry(int user_id, int book_id, int action){
+		int auto_id = 0;
+		Connection conn = null;
+		
+		//String bookName = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			//STEP 3: Open a connection
+			//System.out.println("Connecting to database...");
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			String sql = "INSERT INTO `user_history` "
+					 + "(`user_id`, `book_id`, `action_type`) "
+			  + "VALUES (?, ?, ?)";
+			
+			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, user_id);
+			stmt.setInt(2, book_id);
+			stmt.setInt(3, action);
+			
+			stmt.executeUpdate();
+		
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
 	}
 }
