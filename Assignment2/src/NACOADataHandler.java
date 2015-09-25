@@ -365,12 +365,6 @@ public class NACOADataHandler {
 			
 			//CREATE OUR TABLES
 			System.out.println("Creating tables");
-			String cAdmins = "CREATE TABLE IF NOT EXISTS `admins` ("
-						+ "  `id` int(11) NOT NULL,"
-						+ "  `username` varchar(32) NOT NULL,"
-						+ "  `password` int(128) NOT NULL,"
-						+ "  `email` int(52) NOT NULL"
-						+ ") ENGINE=InnoDB DEFAULT CHARSET=latin1";
 			
 			String cBooks = "CREATE TABLE IF NOT EXISTS `books` ("
 					+ " `id` int(11) NOT NULL,"
@@ -423,16 +417,15 @@ public class NACOADataHandler {
 					  + " `is_paused` tinyint(1) NOT NULL DEFAULT '0'"
 					+ ") ENGINE=InnoDB DEFAULT CHARSET=latin1";
 			
-			LinkedList<String> creatTables = new LinkedList<String>(Arrays.asList(cAdmins, cBooks, cUsers, cUBooks, cSBooks, cHistor));
+			LinkedList<String> creatTables = new LinkedList<String>(Arrays.asList(cBooks, cUsers, cUBooks, cSBooks, cHistor));
 			
-			for(int i = 0; i < 6; i++){
+			for(int i = 0; i < 5; i++){
 				PreparedStatement cStmt = conn.prepareStatement(creatTables.get(i));
 				cStmt.executeUpdate();
 				cStmt.close();
 			}
 			
 			//SET UP OUR CONSTRAINTS
-			String query1 = "ALTER TABLE `admins` ADD PRIMARY KEY (`id`)";
 			String query2 = "ALTER TABLE `books` ADD PRIMARY KEY (`id`)";
 			String query3 = "ALTER TABLE `users` ADD PRIMARY KEY (`id`)";
 			String query4 = "ALTER TABLE `user_customer_books`"
@@ -441,8 +434,6 @@ public class NACOADataHandler {
 			String query5 = "ALTER TABLE `user_seller_books`"
 						  + "ADD KEY `user_id` (`user_id`),"
 						  + "ADD KEY `book_id` (`book_id`)";
-			String query6 = "ALTER TABLE `admins`"
-						  + "MODIFY `id` int(11) NOT NULL AUTO_INCREMENT";
 			String query7 = "ALTER TABLE `books`"
 						  + "MODIFY `id` int(11) NOT NULL AUTO_INCREMENT";
 			String query8 = "ALTER TABLE `users`"
@@ -455,10 +446,10 @@ public class NACOADataHandler {
 						  + "ADD CONSTRAINT `user_seller_books_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`)";		
 											
 					
-			LinkedList<String> altQueries = new LinkedList<String>(Arrays.asList(query1, query2, query3, query4, query5, query6
+			LinkedList<String> altQueries = new LinkedList<String>(Arrays.asList(query2, query3, query4, query5
 					, query7, query8, query9, query10));
 			
-			for(int i = 0; i < 10; i++){
+			for(int i = 0; i < 8; i++){
 				PreparedStatement aStmt = conn.prepareStatement(altQueries.get(i));
 				aStmt.executeUpdate();
 				aStmt.close();
