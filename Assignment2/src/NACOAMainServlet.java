@@ -615,7 +615,7 @@ public class NACOAMainServlet extends HttpServlet {
 		
 		handler.setCartToSession("shoppingCartDoc", req.getSession());
 		*/
-		
+		//pie
 		try {
 			setUpCart(req, res);
 			
