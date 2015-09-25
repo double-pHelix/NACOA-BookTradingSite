@@ -2605,7 +2605,7 @@ public void changeCreditInfo(int user_id, String creditinfo) {
 				//System.out.println("Creating statement...");
 				
 				//Statement to change details of the database
-				String sql = "UPDATE users SET creditinfo=? WHERE (id = ?)";
+				String sql = "UPDATE users SET creditcarddetails=? WHERE (id = ?)";
 		
 				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				stmt.setString(1, creditinfo);
@@ -2793,7 +2793,6 @@ public void changeCreditInfo(int user_id, String creditinfo) {
 	}
 
 	public boolean userExists(String username) {
-		// TODO Verify the user with given code
 				Connection conn = null;
 				PreparedStatement stmt = null;
 				String usernameReturned = "";
@@ -2945,5 +2944,59 @@ public void changeCreditInfo(int user_id, String creditinfo) {
 		} //end try
 		
 		return users;
+	}
+
+	public ArrayList<String> getDetails(int id) {
+		ArrayList<String> details = new ArrayList<String>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		//String bookName = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM users WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, id);
+			stmt.executeQuery();
+			ResultSet rs = stmt.getResultSet();
+			System.out.println("id: " + id + "\nDetails: " + rs);
+			rs.next();
+			details.add(rs.getString("password"));
+			details.add(rs.getString("email"));
+			details.add(rs.getString("nickname"));
+			details.add(rs.getString("firstname"));
+			details.add(rs.getString("lastname"));
+			details.add(rs.getString("dob"));
+			details.add(rs.getString("address"));
+			details.add(rs.getString("creditcarddetails"));		
+
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		return details;
 	}
 }

@@ -58,16 +58,32 @@
             
             <div class="input-group">
               <input type="hidden" name="user_id" value="${sessionScope.user_id}">
-              <input type="password" class="form-control" aria-label="Text input with dropdown button" placeholder="Password" name="password">                         
-              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Email" name="email">              
-              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Nickname" name="nickname">                         
-              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="First Name" name="firstname">              
-              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Last Name" name="lastname">             
-              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="DOB (yyyy-mm-dd)" name="dob">         
-              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Home Address" name="address">             
-              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Credit Card Info (number)" name="creditinfo">
+   		  	  <label style="display:block">Password</label>
+           	  <input type="password" class="form-control" aria-label="Text input with dropdown button" placeholder="Password" name="password" value="${sessionScope.password}">   
+           	  <br><br> 
+           	  <label style="display:block">Email</label>                   
+              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Email" name="email" value="${sessionScope.email}">              
+			  <br><br> 
+			  <label style="display:block">Nickname</label>
+              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Nickname" name="nickname" value="${sessionScope.nickname}">                         
+ 			  <br><br> 
+ 			  <label style="display:block">First Name</label>
+              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="First Name" name="firstname" value="${sessionScope.firstname}">              
+		      <br><br> 
+		      <label style="display:block">Last Name</label>
+              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Last Name" name="lastname" value="${sessionScope.lastname}">             
+          	  <br><br> 
+          	  <label style="display:block">DOB (yyyy-mm-dd)</label>
+              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="DOB (yyyy-mm-dd)" name="dob" value="${sessionScope.dob}">         
+              <br><br> 
+              <label style="display:block">Home Address</label>
+              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Home Address" name="address" value="${sessionScope.address}">             
+              <br><br> 
+              <label style="display:block">Credit Card Number</label>
+              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Credit Card Info (number)" name="creditinfo" value="${sessionScope.creditinfo}">
             </div><!-- /input-group -->
-          
+          <br>
+          <br>
               <div class="input-group-btn">
                 <button class="btn btn-default" type="submit"><b>Save Changes</b></button>
               </div><!-- /btn-group -->

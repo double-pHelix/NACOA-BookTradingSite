@@ -342,6 +342,7 @@ public class NACOAMainServlet extends HttpServlet {
 														//TODO: display it if we redirect to login
 			if (authResult.equals("Successfully logged in...")) {
 				loginUser(req, res, id);
+				setUserDetails(req, id);
 				requestDispatcher = req.getRequestDispatcher("/Search.jsp");
 		    	requestDispatcher.forward(req, res);
 			}else {
@@ -516,6 +517,19 @@ public class NACOAMainServlet extends HttpServlet {
 	    	requestDispatcher.forward(req, res);
 		}
 
+	}
+
+	private void setUserDetails(HttpServletRequest req, int id) {
+		ArrayList<String> userDetails = dHandler.getDetails(id);
+		System.out.println("got details: " + userDetails);
+		req.getSession().setAttribute("password", userDetails.get(0));
+		req.getSession().setAttribute("email", userDetails.get(1));
+		req.getSession().setAttribute("nickname", userDetails.get(2));
+		req.getSession().setAttribute("firstname", userDetails.get(3));
+		req.getSession().setAttribute("lastname", userDetails.get(4));
+		req.getSession().setAttribute("dob", userDetails.get(5));
+		req.getSession().setAttribute("address", userDetails.get(6));
+		req.getSession().setAttribute("creditinfo", userDetails.get(7));
 	}
 
 	private void verifyUser(int id, String code) {
