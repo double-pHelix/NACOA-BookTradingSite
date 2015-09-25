@@ -61,7 +61,7 @@
               <td scope="col"><b>TITLE</b></td>
               <td scope="col"><b>AUTHOR</b></td>
               <td scope="col"><b>ISBN</b></td>
-              <td scope="col"><b>PRICE ($)</b></td>
+              <td scope="col"><b>PRICE</b></td>
               <td scope="col"><b>REMOVE</b></td>
             </tr>
 
@@ -73,7 +73,7 @@
                   <td class="active">${entry.booktitle}</td>
                   <td class="success">${entry.author}</td>
                   <td class="warning">${entry.isbn}</td>
-                  <td class="danger">${entry.price}</td>
+                  <td class="danger">$${entry.price}</td>
                   
                   <td class="info"><center> <input type="checkbox" name="entry${entry.bookID}" value="set" style="width: 20px;height: 20px;"> </center></td>
                 </tr>
@@ -91,11 +91,13 @@
               
           </table>
           </div>
-          
-          <a href="${pageContext.request.contextPath}/checkOut" class="btn btn-info" role="button">Purchase Books</a>
-          
-          <br>
+         
         </form> 
+        
+       	<form name="checkout_book" action="" method="POST">
+       		<input type="hidden" name="user_id" value="${sessionScope.user_id}">
+       		<a href="${pageContext.request.contextPath}/check_out" class="btn btn-info" role="button">Purchase Books</a>
+       	</form> 
       </c:when> 
 
     <c:otherwise>

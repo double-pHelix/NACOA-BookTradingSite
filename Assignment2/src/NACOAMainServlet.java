@@ -377,15 +377,17 @@ public class NACOAMainServlet extends HttpServlet {
 			
 			//for cart it only processes the cart page or remove action
 			
+			/*
 			try {
 				//just set up the cart to be read 
 				setUpCart(req, res);
 			} catch (Exception e){
 				System.out.println("setting pu cart fail: " + e );
-			} 
-			//setUpCartDB(req, res);
+			} */
+			setUpCartDB(req, res);
 			
 			if (req.getParameter("remove_cart") != null) {
+				System.out.println("removing...");
 				removeFromCart(req,res);
 			}	
 			
@@ -447,62 +449,30 @@ public class NACOAMainServlet extends HttpServlet {
 	    	requestDispatcher = req.getRequestDispatcher("/Upload_book.jsp");
 	    	requestDispatcher.forward(req, res);
 	    	
-		} else if (uri.contains("checkOut")) {
+		} else if (uri.contains("check_out")) {
+			System.out.println("Checking out");
 			
+			req.getSession().setAttribute("checkingOut", false);
 			//TODO Can sell multiple books
-			if(req.getParameter("checkingOut") != null){
+			//System.out.println("Checking out");
+			
+			if((boolean) req.getSession().getAttribute("checkingOut") == false){
 				//register the user
 				//int user_id = registerUser(req, res);
-				ArrayList<NACOACheckOutBook> users = (ArrayList<NACOACheckOutBook>) req.getAttribute("all_sellers");
+				System.out.println("Received parame " + req.getSession().getAttribute("user_id"));
 				
-				int size = 0;
+				int user_id = (int)req.getSession().getAttribute("user_id");
+				//System.out.println("Received id " + user_id);
+				String creditDetails = dHandler.getCreditCardDetails(user_id);
 				
-				while (size != users.size()) {
-					String to = dHandler.getEmail(users.get(size).getUserID());
-					String from = "info.nacoa@gmail.com";
-					
-			 		Properties props = new Properties();
-			 		props.put("mail.smtp.auth", "true");
-			 		props.put("mail.smtp.starttls.enable", "true");
-			 		props.put("mail.smtp.host", "smtp.gmail.com");
-			 		props.put("mail.smtp.port", "587");
-		
-			 		Session session = Session.getInstance(props,
-			 		  new javax.mail.Authenticator() {
-			 			protected PasswordAuthentication getPasswordAuthentication() {
-			 				return new PasswordAuthentication(from, "comp9321");
-			 			}
-			 		  });
-		
-			 		try {
-			 			System.out.println("starting...");
-			 			Message message = new MimeMessage(session);
-			 			message.setFrom(new InternetAddress(from));
-			 			message.setRecipients(Message.RecipientType.TO,
-			 					InternetAddress.parse(to));
-			 			message.setSubject("A book has been sold");
-			 			
-			 			//Get id of book
-			 			int bookID = users.get(size).getBookID();
-			 			
-			 			message.setText("The following book has been sold: \n"
-			 					+ "Title: " + dHandler.getBookTitle(bookID) + "\n"
-			 					+ "Author: " + dHandler.getBookAuthor(bookID) + "\n"
-			 					+ "Price: $" + dHandler.getBookPrice(bookID) + "\n"
-			 					+ "\n Have a nice day!");
-		
-			 			Transport.send(message);
-		
-			 			System.out.println("Sent emails to users with their books sold...");
-		
-			 		} catch (MessagingException e) {
-			 			throw new RuntimeException(e);
-			 		}	
-			 		
-			 		size++;
+				if (creditDetails.contentEquals("")) {
+					System.out.println("There are no credit details");
+				} else {
+					req.getSession().setAttribute("checkingOut", true);
 				}
 			}
-						
+					
+			sendEmailsToSellers(req, res);  
 			requestDispatcher = req.getRequestDispatcher("/checkOut.jsp");
 	    	requestDispatcher.forward(req, res);
 			System.out.println(uri);
@@ -539,7 +509,11 @@ public class NACOAMainServlet extends HttpServlet {
 	private void setUpCartDB(HttpServletRequest req, HttpServletResponse res) {
 		// TODO Auto-generated method stub
 		//String username = (String) req.getParameter("username");
-		int user_id = Integer.parseInt(req.getParameter("user_id"));
+		System.out.println("Setting up cart!!!");
+		System.out.println(req.getParameter("username"));
+		int user_id = dHandler.getId(req.getParameter("username"));
+		
+		
 		
 		//System.out.println("User name is " + username);
 		
@@ -548,7 +522,7 @@ public class NACOAMainServlet extends HttpServlet {
 		System.out.println("User id is " + user_id);
 		cartBeans = dHandler.getShoppingCart(user_id);
 		req.getSession().setAttribute("shoppingCart", cartBeans);
-		handler.setCartToSession("shoppingCartDoc", req.getSession());
+		//handler.setCartToSession("shoppingCartDoc", req.getSession());
 	}
 
 	public void appendToCartPage(HttpServletRequest req, HttpServletResponse res){
@@ -614,6 +588,7 @@ public class NACOAMainServlet extends HttpServlet {
 				
 				//Need to remove from database
 				//handler.removeFromCart(n);
+				System.out.println("Deleting book with id " + n);
 				dHandler.deleteBookCart(n);
 			}
 			
@@ -895,5 +870,69 @@ public class NACOAMainServlet extends HttpServlet {
 		
 	}
 
+	//Sends emails to sellers
+	private void sendEmailsToSellers(HttpServletRequest req, HttpServletResponse res) {
+
+		System.out.println("sending emails");
+		//ArrayList<NACOACheckOutBook> users = (ArrayList<NACOACheckOutBook>) req.getAttribute("all_sellers");
+		int user_id = (int)req.getSession().getAttribute("user_id");
+		ArrayList<NACOABean> cart = dHandler.getShoppingCart(user_id);
+		
+		System.out.println("size of cart is " + cart.size());
+		
+		int size = 0;
+		
+		while (size != cart.size()) {
+			int user_seller_id = dHandler.getUserID(cart.get(size).getBookID());
+			System.out.println("book id is " + cart.get(size).getBookID());
+			
+			String to = dHandler.getEmail(user_seller_id);
+			
+			System.out.println("sending to email " + to);
+			String from = "info.nacoa@gmail.com";
+			
+	 		Properties props = new Properties();
+	 		props.put("mail.smtp.auth", "true");
+	 		props.put("mail.smtp.starttls.enable", "true");
+	 		props.put("mail.smtp.host", "smtp.gmail.com");
+	 		props.put("mail.smtp.port", "587");
+
+	 		Session session = Session.getInstance(props,
+	 		  new javax.mail.Authenticator() {
+	 			protected PasswordAuthentication getPasswordAuthentication() {
+	 				return new PasswordAuthentication(from, "comp9321");
+	 			}
+	 		  });
+
+	 		try {
+	 			System.out.println("starting...");
+	 			Message message = new MimeMessage(session);
+	 			message.setFrom(new InternetAddress(from));
+	 			message.setRecipients(Message.RecipientType.TO,
+	 					InternetAddress.parse(to));
+	 			message.setSubject("A book has been sold");
+	 			
+	 			//Get id of book
+	 			int bookID = cart.get(size).getBookID();
+	 			
+	 			message.setText("The following book has been sold: \n"
+	 					+ "Title: " + dHandler.getBookTitle(bookID) + "\n"
+	 					+ "Author: " + dHandler.getBookAuthor(bookID) + "\n"
+	 					+ "Price: $" + dHandler.getBookPrice(bookID) + "\n"
+	 					+ "\n Have a nice day!");
+
+	 			Transport.send(message);
+
+	 			
+
+	 		} catch (MessagingException e) {
+	 			throw new RuntimeException(e);
+	 		}	
+	 		
+	 		size++;
+		}
+		
+		System.out.println("Sent emails to users with their books sold...");
+	}
 }
 

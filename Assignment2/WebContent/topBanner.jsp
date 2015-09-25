@@ -15,9 +15,9 @@
       <c:choose>
       <c:when test="${sessionScope.logged_in == true}">
         <li role="presentation"><a href="${pageContext.request.contextPath}/upload_book">Sell Book</a></li>
+		<li role="presentation"><a href="${pageContext.request.contextPath}/cart?username=${sessionScope.username}">Cart</a></li>     
       </c:when>
       </c:choose>
-      <li role="presentation"><a href="${pageContext.request.contextPath}/cart?username=${sessionScope.username}">Cart</a></li>
       <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
             <ul class="dropdown-menu">

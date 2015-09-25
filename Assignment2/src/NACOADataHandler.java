@@ -755,7 +755,7 @@ public class NACOADataHandler {
 			  //STEP 5: Extract data from result set
 			while(rs.next()){
 				//Retrieve by column name
-				username = rs.getInt("book_id");
+				username = rs.getInt("user_id");
 		
 			}
 			
@@ -1507,7 +1507,7 @@ public class NACOADataHandler {
 			//STEP 4: Execute a query
 			//System.out.println("Creating statement...");
 			
-			String sql = "DELETE * FROM books WHERE (id = ?)";
+			String sql = "DELETE FROM books WHERE (id = ?)";
 	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, book_id);
@@ -1551,7 +1551,7 @@ public class NACOADataHandler {
 			//STEP 4: Execute a query
 			//System.out.println("Creating statement...");
 			
-			String sql = "DELETE * FROM user_customer_books WHERE (id = ?)";
+			String sql = "DELETE FROM user_customer_books WHERE (book_id = ?)";
 	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, book_id);

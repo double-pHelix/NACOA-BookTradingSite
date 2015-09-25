@@ -57,7 +57,6 @@
           <h2>Thank you for shopping at NACOA ${sessionScope.username}</h2> 
         </c:when>    
         <c:otherwise>
-         
           <h1>Checkout</h1>
           <h4> Enter in your checkout details into the form</h4>
           <!--  Need to place search form here -->
@@ -65,9 +64,8 @@
 
           <form action="${pageContext.request.contextPath}/checkOut" method="POST"> 
             <input type="hidden" name="checkingOut" value="true">
-            
-            <div class="input-group">  
-              <input type="hidden" name="user_id" value="${sessionScope.user_id}">     
+            <input type="hidden" name="user_id" value="${sessionScope.user_id}">
+            <div class="input-group">   
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Credit Card Info (number)" name="creditinfo">
             </div><!-- /input-group -->
           
@@ -81,10 +79,6 @@
         </c:otherwise> 
       </c:choose>
       
-        
-             
-
-            
       </div>
   
    
