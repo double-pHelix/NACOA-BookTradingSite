@@ -390,7 +390,8 @@ public class NACOADataHandler {
 					  + "  `dob` date NOT NULL,"
 					  + "  `address` text NOT NULL,"
 					  + "  `creditcarddetails` text NOT NULL,"
-					  + "  `is_halted` tinyint(1) NOT NULL DEFAULT '0'"
+					  + "  `is_halted` tinyint(1) NOT NULL DEFAULT '0',"
+					  + "  `is_admin` tinyint(1) NOT NULL DEFAULT '0'"
 					+ ") ENGINE=InnoDB DEFAULT CHARSET=latin1";
 			
 			String cUBooks  = "CREATE TABLE IF NOT EXISTS `user_customer_books` ("
