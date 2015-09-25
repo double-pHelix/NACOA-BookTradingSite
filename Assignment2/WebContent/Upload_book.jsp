@@ -65,6 +65,7 @@
             <input type="hidden" name="uploading" value="true">
             
             <div class="input-group">
+              <input type="hidden" name="user_id" value="${sessionScope.user_id}">
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Title" name="title">
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Author" name="author">
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Picture" name="picture">

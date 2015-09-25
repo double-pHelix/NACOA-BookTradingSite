@@ -32,7 +32,7 @@ public class NACOADataHandler {
 	
 	//Tests
 	private boolean initialTests = false;
-	private boolean testCheckOut = false;
+	private boolean testCheckOut = true;
 	
 	public static void main(String [] args){
 		NACOADataHandler handler= new NACOADataHandler();
@@ -64,7 +64,7 @@ public class NACOADataHandler {
 		}
 		
 		if (testCheckOut) {
-			int newID = createUser("Seller", DUMMYDOS, DUMMYDOS, DUMMYDOS, DUMMYDOS, DUMMYDOS, DUMMYDOS, DUMMYDOS, DUMMYDOS);
+			//int newID = createUser("Seller", DUMMYDOS, DUMMYDOS, DUMMYDOS, DUMMYDOS, DUMMYDOS, DUMMYDOS, DUMMYDOS, DUMMYDOS);
 			//addBookToCart (int user_id, int book_id, int is_sold, String dou, String dos){
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		  
@@ -73,8 +73,10 @@ public class NACOADataHandler {
 			System.out.println(dateFormat.format(cal.getTime()).replace("/",  "-"));
 			   
 			//Need to get book_id somehow
-			handler.addBookToCart(newID, 7, 0, dateFormat.format(cal.getTime()).replace("/",  "-"), DUMMYDOS);
+			handler.addBookToCart(2, 3, 0, dateFormat.format(cal.getTime()).replace("/",  "-"), DUMMYDOS);
 		}
+		
+		//if (testUp)
 		//addBookToCart(newID, 7, 0, , DUMMYDOS);
 		//handler.setUpDatabase();
 		//Creating a test user

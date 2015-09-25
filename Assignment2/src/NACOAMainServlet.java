@@ -434,6 +434,8 @@ public class NACOAMainServlet extends HttpServlet {
 	    	requestDispatcher.forward(req, res);
 		} else if (uri.contains("upload_book")) {
 			// TODO
+			req.getSession().setAttribute("upload_success", false);
+			
 			if (req.getParameter("uploading") != null) {
 				int book_id = UploadBook(req, res);
 				if (book_id > 0) {
@@ -671,10 +673,10 @@ public class NACOAMainServlet extends HttpServlet {
 	}
 	
 	public int UploadBook(HttpServletRequest req, HttpServletResponse res){
-		String username = req.getParameter("username");
+		int user_id = Integer.parseInt(req.getParameter("user_id"));
 		
-		
-		int user_id = dHandler.getId(username);
+		System.out.println("User id is " + user_id);
+		//int user_id = dHandler.getId(username);
 		
 	    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	    Date date = new Date();
