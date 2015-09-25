@@ -2246,6 +2246,387 @@ public class NACOADataHandler {
 		return id; 
 	}
 	
+public void changeUserDetails(int user_id, String password, String email, String nickname, 
+		String firstname, String lastname, String dob, String address, String creditinfo) {
+		
+		changePassword(user_id, password);
+		changeEmail(user_id, email);
+		changeNickname(user_id, nickname);
+		changeFirstname(user_id, firstname);
+		changeLastname(user_id, lastname);
+		changeDOB(user_id, dob);
+		changeAddress(user_id, address);
+		changeCreditInfo(user_id, creditinfo);
+	}
+
+public void changeEmail(int user_id, String email) {
+	
+	Connection conn = null;
+	PreparedStatement stmt = null;
+
+	if (!email.contentEquals("")) {
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			//Statement to change details of the database
+			String sql = "UPDATE users SET email=? WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, email);
+			stmt.setInt(2, user_id);
+			stmt.executeUpdate();
+
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+	}
+}
+
+public void changePassword(int user_id, String password) {
+	
+	Connection conn = null;
+	PreparedStatement stmt = null;
+
+	if (!password.contentEquals("")) {
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			//Statement to change details of the database
+			String sql = "UPDATE users SET password=? WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, password);
+			stmt.setInt(2, user_id);
+			stmt.executeUpdate();
+
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+	}
+}
+
+public void changeNickname(int user_id, String nickname) {
+	
+	Connection conn = null;
+	PreparedStatement stmt = null;
+
+	if (!nickname.contentEquals("")) {
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			//Statement to change details of the database
+			String sql = "UPDATE users SET nickname=? WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, nickname);
+			stmt.setInt(2, user_id);
+			stmt.executeUpdate();
+
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+	}
+}
+
+public void changeFirstname(int user_id, String firstname) {
+	
+	Connection conn = null;
+	PreparedStatement stmt = null;
+
+	if (!firstname.contentEquals("")) {
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			//Statement to change details of the database
+			String sql = "UPDATE users SET firstname=? WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, firstname);
+			stmt.setInt(2, user_id);
+			stmt.executeUpdate();
+
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+	}
+}
+
+public void changeLastname(int user_id, String lastname) {
+	
+	Connection conn = null;
+	PreparedStatement stmt = null;
+
+	if (!lastname.contentEquals("")) {
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			//Statement to change details of the database
+			String sql = "UPDATE users SET lastname=? WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, lastname);
+			stmt.setInt(2, user_id);
+			stmt.executeUpdate();
+
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+	}
+}
+
+public void changeDOB(int user_id, String dob) {
+	
+	Connection conn = null;
+	PreparedStatement stmt = null;
+
+	if (!dob.contentEquals("")) {
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			//Statement to change details of the database
+			String sql = "UPDATE users SET dob=? WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, dob);
+			stmt.setInt(2, user_id);
+			stmt.executeUpdate();
+
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+	}
+}
+
+public void changeAddress(int user_id, String address) {
+	
+	Connection conn = null;
+	PreparedStatement stmt = null;
+
+	if (!address.contentEquals("")) {
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			//Statement to change details of the database
+			String sql = "UPDATE users SET address=? WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, address);
+			stmt.setInt(2, user_id);
+			stmt.executeUpdate();
+
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+	}
+}
+
+public void changeCreditInfo(int user_id, String creditinfo) {
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+
+		if (!creditinfo.contentEquals("")) {
+			try {
+				//STEP 2: Register JDBC driver
+				Class.forName("com.mysql.jdbc.Driver");
+				//
+				conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+				
+				//STEP 4: Execute a query
+				//System.out.println("Creating statement...");
+				
+				//Statement to change details of the database
+				String sql = "UPDATE users SET creditinfo=? WHERE (id = ?)";
+		
+				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				stmt.setString(1, creditinfo);
+				stmt.setInt(2, user_id);
+				stmt.executeUpdate();
+	
+				//STEP 6: Clean-up environment
+				stmt.close();
+				conn.close();	
+				
+			} catch (SQLException se) {
+				//Handle errors for JDBC
+				    se.printStackTrace();
+			} catch (Exception e) {
+			    //Handle errors for Class.forName
+			    e.printStackTrace();
+			} finally {
+			    //finally block used to close resources
+			 
+				try {
+				   if(conn!=null)
+				      conn.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				} //end finally try
+			} //end try
+		}
+	}
+
 	public Boolean checkPassword(int id, String pw) {
 		Boolean result = false;
 		Connection conn = null;

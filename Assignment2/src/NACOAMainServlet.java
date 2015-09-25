@@ -356,8 +356,22 @@ public class NACOAMainServlet extends HttpServlet {
 			verifyUser(id, code);
 	    	requestDispatcher = req.getRequestDispatcher("/Login.jsp");
 	    	requestDispatcher.forward(req, res);
-		} else if (uri.contains("account")){ //CART PAGE
+		} else if (uri.contains("account")){ //Update account details page
 			requestDispatcher = req.getRequestDispatcher("/Account_setting.jsp");
+	    	requestDispatcher.forward(req, res);
+		} else if (uri.contains("updacc")){ //Update the account details
+			int user_id = Integer.parseInt(req.getParameter("user_id"));
+			String newPassword = req.getParameter("password");
+			String newEmail = req.getParameter("email");
+			String newNickname = req.getParameter("nickname");
+			String newFirstname = req.getParameter("firstname");
+			String newLastname = req.getParameter("lastname");
+			String newDob = req.getParameter("dob");
+			String newAddress = req.getParameter("address");
+			String newCreditinfo = req.getParameter("creditinfo");
+			dHandler.changeUserDetails(user_id, newPassword, newEmail, newNickname, 
+					newFirstname, newLastname, newDob, newAddress, newCreditinfo);
+			requestDispatcher = req.getRequestDispatcher("/Search.jsp");
 	    	requestDispatcher.forward(req, res);
 		} else if (uri.contains("cart")){ //CART PAGE
 			

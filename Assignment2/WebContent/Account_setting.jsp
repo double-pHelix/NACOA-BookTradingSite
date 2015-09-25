@@ -53,11 +53,11 @@
       <c:choose>
         <c:when test="${sessionScope.logged_in == true}">
           <h2>Change Account Details</h2> 
-          <form action="${pageContext.request.contextPath}/register" method="POST"> 
-            <input type="hidden" name="registering" value="true">
+          <form action="${pageContext.request.contextPath}/updacc" method="POST"> 
+            <input type="hidden" name="username" value="${sessionScope.username}">
             
             <div class="input-group">
-              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Username" name="username">
+              <input type="hidden" name="user_id" value="${sessionScope.user_id}">
               <input type="password" class="form-control" aria-label="Text input with dropdown button" placeholder="Password" name="password">                         
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Email" name="email">              
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Nickname" name="nickname">                         

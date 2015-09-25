@@ -61,4 +61,9 @@
 		<servlet-name>MainServlet</servlet-name>
 		<url-pattern>/account</url-pattern>
 	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>MainServlet</servlet-name>
+		<url-pattern>/updacc</url-pattern>
+	</servlet-mapping>
 </web-app>
