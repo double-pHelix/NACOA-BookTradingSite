@@ -71,4 +71,11 @@
 		<servlet-name>MainServlet</servlet-name>
 		<url-pattern>/check_out</url-pattern>
 	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>MainServlet</servlet-name>
+		<url-pattern>/profile</url-pattern>
+	</servlet-mapping>
+	
+	
 </web-app>

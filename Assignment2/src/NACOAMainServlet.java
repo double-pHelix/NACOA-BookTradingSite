@@ -267,13 +267,32 @@ public class NACOAMainServlet extends HttpServlet {
 		//if we are logged in retrieve user id
 		if(req.getSession().getAttribute("logged_in") != null){
 			//write the code you want
-			
 		}
-		
 
 		//so as you can see it lol its just a series of if statements based on what page 
 		//if we are logged in retrieve user id
-		if (uri.contains("logout")){
+		if (uri.contains("profile")){ //WE WANT TO VIEW A PROFILE (CURRENT USERS OR SOMEONE ELSE)
+			String userToView = (String) req.getParameter("user");
+			String currUser = (String) req.getSession().getAttribute("username");
+			int user_id = (int) req.getSession().getAttribute("user_id");
+			
+			if(userToView.equals(currUser)){ //we view our own profile
+				//load user details
+				NACOAUserBean profileBean = dHandler.getUserDetails(user_id);
+				
+				req.getSession().setAttribute("profile", profileBean);
+	
+			} else {
+				
+				
+			}
+			
+			//generate random list
+			
+	    	requestDispatcher = req.getRequestDispatcher("/Profile.jsp");
+	    	requestDispatcher.forward(req, res);
+			
+		} else if (uri.contains("logout")){
 			//write the code you want
 			logoutUser(req, res);
 			
@@ -287,45 +306,13 @@ public class NACOAMainServlet extends HttpServlet {
 				//register the user
 				int user_id = registerUser(req, res);
 				System.out.println("got user id: " + user_id);
-				if (user_id > 0) { //will return -1 if username already exists
-					//send a email to the user...
-					String to = dHandler.getEmail(user_id);
-					String from = "info.nacoa@gmail.com";
-					SecureRandom random = new SecureRandom();
-					String code = new BigInteger(130, random).toString(32);
-	
-			 		Properties props = new Properties();
-			 		props.put("mail.smtp.auth", "true");
-			 		props.put("mail.smtp.starttls.enable", "true");
-			 		props.put("mail.smtp.host", "smtp.gmail.com");
-			 		props.put("mail.smtp.port", "587");
-		
-			 		Session session = Session.getInstance(props,
-			 		  new javax.mail.Authenticator() {
-			 			protected PasswordAuthentication getPasswordAuthentication() {
-			 				return new PasswordAuthentication(from, "comp9321");
-			 			}
-			 		  });
-		
-			 		try {
-			 			System.out.println("starting...");
-			 			Message message = new MimeMessage(session);
-			 			message.setFrom(new InternetAddress(from));
-			 			message.setRecipients(Message.RecipientType.TO,
-			 					InternetAddress.parse(to));
-			 			message.setSubject("Verify your NACOA account");
-			 			message.setText("Thanks for signing up for NACOA, please follow this link to  "
-			 	         		+ "verify your account: http://localhost:8080/Assignment2/verify?id=" + user_id);
-		
-			 			Transport.send(message);
-		
-			 			System.out.println("Sent verification email...");
-						requestDispatcher = req.getRequestDispatcher("/Waiting_confirmation.jsp");
-				    	requestDispatcher.forward(req, res);
-		
-			 		} catch (MessagingException e) {
-			 			throw new RuntimeException(e);
-			 		}	
+				if (user_id > 0) { //will return -1 if username already exists				
+					sendConfirmationEmail(user_id);
+			 		requestDispatcher = req.getRequestDispatcher("/Waiting_confirmation.jsp");
+			    	requestDispatcher.forward(req, res);
+				} else {
+					//TODO: return message saying user exists
+					
 				}
 			}
 			requestDispatcher = req.getRequestDispatcher("/Register.jsp");
@@ -360,17 +347,7 @@ public class NACOAMainServlet extends HttpServlet {
 			requestDispatcher = req.getRequestDispatcher("/Account_setting.jsp");
 	    	requestDispatcher.forward(req, res);
 		} else if (uri.contains("updacc")){ //Update the account details
-			int user_id = Integer.parseInt(req.getParameter("user_id"));
-			String newPassword = req.getParameter("password");
-			String newEmail = req.getParameter("email");
-			String newNickname = req.getParameter("nickname");
-			String newFirstname = req.getParameter("firstname");
-			String newLastname = req.getParameter("lastname");
-			String newDob = req.getParameter("dob");
-			String newAddress = req.getParameter("address");
-			String newCreditinfo = req.getParameter("creditinfo");
-			dHandler.changeUserDetails(user_id, newPassword, newEmail, newNickname, 
-					newFirstname, newLastname, newDob, newAddress, newCreditinfo);
+			changeUserDetails(req,res);
 			requestDispatcher = req.getRequestDispatcher("/Search.jsp");
 	    	requestDispatcher.forward(req, res);
 		} else if (uri.contains("cart")){ //CART PAGE
@@ -761,6 +738,60 @@ public class NACOAMainServlet extends HttpServlet {
 			handler.setSessionCartToDoc("shoppingCartDoc", req.getSession());
 			
 		}
+	}
+	
+	public void changeUserDetails(HttpServletRequest req, HttpServletResponse res){
+		int user_id = Integer.parseInt(req.getParameter("user_id"));
+		String newPassword = req.getParameter("password");
+		String newEmail = req.getParameter("email");
+		String newNickname = req.getParameter("nickname");
+		String newFirstname = req.getParameter("firstname");
+		String newLastname = req.getParameter("lastname");
+		String newDob = req.getParameter("dob");
+		String newAddress = req.getParameter("address");
+		String newCreditinfo = req.getParameter("creditinfo");
+		dHandler.changeUserDetails(user_id, newPassword, newEmail, newNickname, 
+				newFirstname, newLastname, newDob, newAddress, newCreditinfo);
+	}
+	
+	public void sendConfirmationEmail(int user_id){
+		//send a email to the user...
+		String to = dHandler.getEmail(user_id);
+		String from = "info.nacoa@gmail.com";
+		SecureRandom random = new SecureRandom();
+		String code = new BigInteger(130, random).toString(32);
+
+ 		Properties props = new Properties();
+ 		props.put("mail.smtp.auth", "true");
+ 		props.put("mail.smtp.starttls.enable", "true");
+ 		props.put("mail.smtp.host", "smtp.gmail.com");
+ 		props.put("mail.smtp.port", "587");
+
+ 		Session session = Session.getInstance(props,
+ 		  new javax.mail.Authenticator() {
+ 			protected PasswordAuthentication getPasswordAuthentication() {
+ 				return new PasswordAuthentication(from, "comp9321");
+ 			}
+ 		  });
+
+ 		try {
+ 			System.out.println("starting...");
+ 			Message message = new MimeMessage(session);
+ 			message.setFrom(new InternetAddress(from));
+ 			message.setRecipients(Message.RecipientType.TO,
+ 					InternetAddress.parse(to));
+ 			message.setSubject("Verify your NACOA account");
+ 			message.setText("Thanks for signing up for NACOA, please follow this link to  "
+ 	         		+ "verify your account: http://localhost:8080/Assignment2/verify?id=" + user_id);
+
+ 			Transport.send(message);
+
+ 			System.out.println("Sent verification email...");
+			
+
+ 		} catch (MessagingException e) {
+ 			throw new RuntimeException(e);
+ 		}	
 	}
 	
 	public void loadResultsXML(){

@@ -2991,4 +2991,65 @@ public void changeCreditInfo(int user_id, String creditinfo) {
 		} //end try
 		return details;
 	}
+	
+	
+	
+	public NACOAUserBean getUserDetails(int id) {
+		NACOAUserBean details = new NACOAUserBean();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		//String bookName = null;
+		
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM users WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, id);
+			stmt.executeQuery();
+			ResultSet rs = stmt.getResultSet();
+			System.out.println("id: " + id + "\nDetails: " + rs);
+			
+			while(rs.next()){
+				details.setUsername(rs.getString("username"));
+				details.setPassword(rs.getString("password"));
+				details.setEmailAddress(rs.getString("email"));
+				details.setNickname(rs.getString("nickname"));
+				details.setFirstname(rs.getString("firstname"));
+				details.setLastname(rs.getString("lastname"));
+				details.setDOB(rs.getString("dob"));
+				details.setAddress(rs.getString("address"));
+				details.setCreditDetails(rs.getString("creditcarddetails"));		
+			}
+			
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		return details;
+	}
 }
