@@ -29,6 +29,7 @@
 
     <!-- Custom styles for this template -->
     <link href="${pageContext.request.contextPath}/customBootstrap.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/loginPage.css" rel="stylesheet">
 
     <script type="text/JavaScript" src="/js/sha512.js"></script> 
     <script type="text/JavaScript" src="/js/forms.js"></script>
@@ -44,15 +45,21 @@
     <div class="container">
   
     <jsp:include page="/topBanner.jsp" />
-   	
-    <div class="loginForm">
-    	<h1>Login to NACOA</h1>
-      	<form method="post" action="/Assignment2/submitcred">
-        	<p><input type="text" name="username" value="" placeholder="Username"></p>
-        	<p><input type="password" name="password" value="" placeholder="Password"></p>
-        	<button class="btn btn-default" type="submit"><b>Login</b></button>
-      	</form>
-    </div>
+
+    <div class="container">
+
+      <form class="form-signin" method="post" action="/Assignment2/submitcred">
+        <h2 class="form-signin-heading">Login to NACOA</h2>
+        <label for="inputUsername" class="sr-only">Username</label>
+        <input type="text" name="username" id="inputEmail" class="form-control" placeholder="Username" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+
+    </div> <!-- /container -->
+    
+    
     <br>
     <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button">Back to Main</a>
     
