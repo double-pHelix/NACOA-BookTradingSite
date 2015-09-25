@@ -93,19 +93,19 @@ public class NACOABean implements Serializable {
 		this.genre = genre;
 	}
 	
-	public String getPrice (String price) {
+	public String getPrice () {
 		return this.price;
 	}
 	
-	public String getPicture (String picture) {
+	public String getPicture () {
 		return this.picture;
 	}
 	
-	public String getDOP (String dop) {
+	public String getDOP () {
 		return this.dop;
 	}
 	
-	public String getGenre (String genre) {
+	public String getGenre () {
 		return this.genre;
 	}
 

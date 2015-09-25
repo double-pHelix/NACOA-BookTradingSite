@@ -61,7 +61,7 @@
               <td scope="col"><b>TITLE</b></td>
               <td scope="col"><b>AUTHOR</b></td>
               <td scope="col"><b>ISBN</b></td>
-              <td scope="col"><b>PRICE</b></td>
+              <td scope="col"><b>PRICE ($)</b></td>
               <td scope="col"><b>REMOVE</b></td>
             </tr>
 
@@ -70,8 +70,8 @@
                 <!--  set for each of these entries some way of id to add to cart later -->
                  
                 <tr class="active">
-                  <td class="active">${entry.title}</td>
-                  <td class="success">${entry.authors}</td>
+                  <td class="active">${entry.booktitle}</td>
+                  <td class="success">${entry.author}</td>
                   <td class="warning">${entry.isbn}</td>
                   <td class="danger">${entry.price}</td>
                   
