@@ -57,34 +57,21 @@
          <!-- Default we show basic, if we have a request to have advanced we switch -->
          
           <c:choose>
-            <c:when test="${param.search=='Advanced Search'}">
-              <h2>Advanced Search</h2>
+            <c:when test="${param.search=='Book Search'}">
+              <h2>Book Search</h2>
               <form action="" method="GET">
-                <input class="btn btn-ss btn-info" type="submit" value="Basic Search">
+                <input class="btn btn-ss btn-info" type="submit" value="User Search">
               </form>
                 <br>
                 
               <form action="${pageContext.request.contextPath}/results" method="POST"> 
-                <input type="hidden" name="search_type" value="advanced">
+                <input type="hidden" name="search_type" value="book">
                 <div class="input-group">
                   <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Author" name="search_author">
                   <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Title" name="search_title">                         
-                  <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Venue" name="search_venue">              
-                  <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Year" name="search_year">
+                  <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Genre" name="search_genre">              
                 </div><!-- /input-group -->
                 <div class="input-group">
-                  <div class="input-group-btn">
-                    
-                    <select class="form-control" style="width: 200px" name="search_pubtype">
-                        <option value="" disabled selected>Select Publication Type</option>
-                        <option>Journal</option>
-                        <option>Conference</option>
-                        <option>Book/Collections</option>
-                        <option>Editorship/Proceedings</option>
-                    </select> 
-                    
-                  </div><!-- /btn-group -->
-                  
                   <div class="input-group-btn">
                     <button class="btn btn-default" type="submit"><b>Search</b></button>
                   </div><!-- /btn-group -->
@@ -96,27 +83,22 @@
             </c:when>    
             <c:otherwise>
             
-              <h2>Basic Search </h2>    
+              <h2>User Search </h2>    
               <form action="" method="GET">
-                <input class="btn btn-ss btn-info" type="submit" name="search" value="Advanced Search">
+                <input class="btn btn-ss btn-info" type="submit" name="search" value="Book Search">
               </form>
               <br> 
              
               <form action="${pageContext.request.contextPath}/results" method="POST">  
-                <input type="hidden" name="search_type" value="basic">
+                <input type="hidden" name="search_type" value="user">
                 <div class="input-group">
-                  <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Enter your search here and select a category" name="search_query">
+                  <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Username" name="search_username">          
+                </div><!-- /input-group -->
+                <div class="input-group">
                   <div class="input-group-btn">
-                    <select class="form-control" style="width: 159px" name="search_category">
-                        <option>Publication Title</option>
-                        <option>Author</option>                        
-                        <option>Venue</option>
-                        <option>Year</option>
-                    </select> 
+                    <button class="btn btn-default" type="submit"><b>Search</b></button>
                   </div><!-- /btn-group -->
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="submit"><b>Search</b></button>
-                    </span>
+                    
                 </div><!-- /input-group -->
               </form>
             <br>

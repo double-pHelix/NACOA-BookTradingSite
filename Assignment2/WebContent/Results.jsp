@@ -59,7 +59,7 @@
     <c:choose>
       <c:when test="${requestScope.viewBean.readMore == 'true'}">
         <!--  We display the specified content -->
-        <h1>${requestScope.viewBean.readEntry.title}</h1>
+        <h1>${requestScope.viewBean.readEntry.booktitle}</h1>
         
         <jsp:include page="/displayMore.jsp" />
         
@@ -78,8 +78,8 @@
             <tr class="active">
               <td scope="col"><b>TITLE</b></td>
               <td scope="col"><b>AUTHOR</b></td>
-              <td scope="col"><b>DATE PUBLISHED</b></td>
-              <td scope="col"><b>PUBTYPE</b></td>
+              <td scope="col"><b>PRICE</b></td>
+              <td scope="col"><b>GENRE</b></td>
               <td scope="col"><b>ACTIONS</b></td>
             </tr>
             
@@ -87,40 +87,13 @@
             
               <form name="articles_option" action="" method="POST">
                 <!--  set for each of these entries some way of id to add to cart later -->
-                <input type="hidden" name="publication_id" value="${entry.xmlID}">
+                <input type="hidden" name="book_id" value="${entry.bookID}">
                 <center>
                 <tr class="active">
-                  <td class="active"><a href="${pageContext.request.contextPath}/results?entryMoreView=${entry.xmlID}&page=${requestScope.viewBean.curr_page_num}">${entry.title}</a></td>
-                  <td class="success">${entry.authors}</td>
-                  <td class="warning">${entry.year}</td>
-                  <td class="danger">  
-
-                          <c:if test="${entry.pubType == 'article'}">           
-                            Journal Article
-                          </c:if>    
-                          <c:if test="${entry.pubType == 'inproceedings'}">
-                            Conference Paper
-                          </c:if>
-                          <c:if test="${entry.pubType == 'incollection'}">
-                            Book/Collection
-                          </c:if>
-                          <c:if test="${entry.pubType == 'proceedings'}">
-                            Editorship/Proceeding
-                          </c:if>
-                          <c:if test="${entry.pubType == 'book'}">
-                            Book
-                          </c:if>
-                          <c:if test="${entry.pubType == 'phdthesis'}">
-                            PhD Thesis
-                          </c:if>
-                          <c:if test="${entry.pubType == 'mastersthesis'}">
-                            Master's Thesis
-                          </c:if>
-                          <c:if test="${entry.pubType == 'www'}">
-                           www
-                          </c:if>          
-                                    
-                  </td>
+                  <td class="active"><a href="${pageContext.request.contextPath}/results?entryMoreView=${entry.bookID}&page=${requestScope.viewBean.curr_page_num}">${entry.booktitle}</a></td>
+                  <td class="success">${entry.author}</td>
+                  <td class="warning">${entry.price}</td>
+                  <td class="danger">${entry.genre}</td>
                   
                   <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart"></td>
                 </tr>
