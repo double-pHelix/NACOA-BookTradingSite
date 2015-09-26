@@ -52,6 +52,7 @@ public class NACOAMainServlet extends HttpServlet {
 	private ArrayList<NACOABean> cartBeans;
 	private ArrayList<NACOABean> sellingBeans;
 	private ArrayList<NACOABean> pausedBeans;
+	private ArrayList<NACOAUserBean> resultUserBeans; 
 	
 	/* XML Handler: abstract class for dealing with XML */
 	private NACOAHandler handler;
@@ -118,14 +119,14 @@ public class NACOAMainServlet extends HttpServlet {
     }
     
 
-    private void performAdvancedSearch(HttpServletRequest req, HttpServletResponse res){
+    private void performBookSearch(HttpServletRequest req, HttpServletResponse res){
     	//extract variables
 		String author = (String) req.getParameter("search_author");
 		String title = (String) req.getParameter("search_title");
-		String venue = (String) req.getParameter("search_venue");
-		String year = (String) req.getParameter("search_year");
-		String pubType = (String) req.getParameter("search_pubtype");
-		
+		String genre = (String) req.getParameter("search_genre");
+		//String year = (String) req.getParameter("search_year");
+		//String pubType = (String) req.getParameter("search_pubtype");
+		/*
 		try {
 			//we should only do this if we want to load the main xml
 			if(handler.fileExists(MAIN_FILE_LOCATION)){
@@ -146,16 +147,18 @@ public class NACOAMainServlet extends HttpServlet {
 			System.out.println("error loading main xml:" + e );
 		}
 		
-			
+		*/	
 		//this then just retrieves the results from the result doc (into bean format)
-		resultBeans = handler.getBeanFromResultDoc(0);
+		//resultBeans = handler.getBeanFromResultDoc(0);
+		resultBeans = dHandler.bookSearch(title, author, genre);
 		
 		//set up our bean to be displayed
 		ResultPageBean viewBean = new ResultPageBean();
 		viewBean.setResultBeans(resultBeans);
 		
-		int totalResults = handler.getNumResults();
+		int totalResults = resultBeans.size();
 		viewBean.setTotalResults(totalResults);
+		System.out.println("size is " + totalResults);
 		
 		
 		if(totalResults > 10){
@@ -176,12 +179,31 @@ public class NACOAMainServlet extends HttpServlet {
 
     }
     
-    private void performBasicSearch(HttpServletRequest req, HttpServletResponse res){
+    private void performUserSearch(HttpServletRequest req, HttpServletResponse res){
     	//extract variables
     	//same thing except basic search
-		String query = (String) req.getParameter("search_query");
-		String searchType = (String) req.getParameter("search_category");
+		//String query = (String) req.getParameter("search_query");
+		String query = (String) req.getParameter("search_username");
 		
+		//Search users
+		resultUserBeans = dHandler.userSearch(query);
+		
+		//Set up view for users?
+		ResultPageUserBean viewBean = new ResultPageUserBean();
+		viewBean.setResultBeans(resultUserBeans);
+		
+		int totalResults = resultUserBeans.size();
+		viewBean.setTotalResults(totalResults);
+		
+		if(totalResults > 10){
+			viewBean.setMore(true);
+		}
+		viewBean.setCurr_page_num(1);
+		viewBean.setNext_page_num(2);
+		
+		req.setAttribute("viewUserBean",viewBean);
+		
+		/*
 		try {
 			//we should only do this if we want to load the main xml
 			if(handler.fileExists(MAIN_FILE_LOCATION)){
@@ -210,13 +232,14 @@ public class NACOAMainServlet extends HttpServlet {
 			
 		} catch (Exception e){
 			System.out.println("error loading main xml:" + e );
-		}
+		}*/
 		
 		//Do a search and display the content (from results instead of main!)
 
-		resultBeans = handler.getBeanFromResultDoc(0);	
+		//resultBeans = handler.getBeanFromResultDoc(0);	
 		
 	  	//set up our bean to be displayed
+		/*
 		ResultPageBean viewBean = new ResultPageBean();
 		viewBean.setResultBeans(resultBeans);
 		
@@ -231,7 +254,7 @@ public class NACOAMainServlet extends HttpServlet {
 		viewBean.setNext_page_num(2);
 		
 		req.setAttribute("viewBean",viewBean);
-    	
+    	*/
 
     	//set up our bean to be displayed
 		//yeah um.. ill ask on the forum but i think searching will be easy
@@ -385,11 +408,11 @@ public class NACOAMainServlet extends HttpServlet {
 			//we will redirect to results
 			if (searchType != null){
 
-				if (searchType.matches(".*advanced.*")){
-					performAdvancedSearch(req,res);
+				if (searchType.matches(".*book.*")){
+					performBookSearch(req,res);
 
-				} else if (searchType.matches(".*basic.*")){
-					performBasicSearch(req,res);
+				} else if (searchType.matches(".*user.*")){
+					performUserSearch(req,res);
 					
 				} //uh yeah its kinda complicated...  yeah
 				
@@ -408,7 +431,7 @@ public class NACOAMainServlet extends HttpServlet {
 			} else {
 				//just looking at results 
 				
-				loadResultsXML(); //this stuff will probably be redundant as we are using sql
+				//loadResultsXML(); //this stuff will probably be redundant as we are using sql
 				
 				processResults(req,res);
 			}
@@ -856,7 +879,7 @@ public class NACOAMainServlet extends HttpServlet {
 	 */
 	public void processResults(HttpServletRequest req, HttpServletResponse res){
 		//just set up the cart to be read 
-
+		//TODO Change this!!!!!!!
 		String entryToview = req.getParameter("entryMoreView");//im trying to remember what my code does lol
 		
 		//oh yeah so this viewBean is just a bean to display stuff, is a series of boolean values
@@ -866,7 +889,8 @@ public class NACOAMainServlet extends HttpServlet {
 		if(entryToview != null){ //EXPANDING VIEW TO READ MORE
 			int entryToViewNum = Integer.parseInt(entryToview);
 			
-			resultBeans = handler.getBeanFromResultDoc(entryToViewNum);
+			//View num is the book_id
+			//resultBeans = handler.getBeanFromResultDoc(entryToViewNum);
 			NACOABean entry = resultBeans.get(0);
 			
 			//that is what a ResultPageBean does

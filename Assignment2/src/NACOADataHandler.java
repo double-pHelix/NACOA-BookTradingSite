@@ -3424,4 +3424,148 @@ public void changeCreditInfo(int user_id, String creditinfo) {
 			} //end finally try
 		} //end try
 	}
+	
+	//Searches database for book
+	public ArrayList<NACOABean> bookSearch(String title, String author, String genre) {
+		ArrayList<NACOABean> resultBook = new ArrayList<NACOABean>();
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		//String bookName = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM books "
+						 + "WHERE (title = ?)"
+						 + "AND (author = ?)"
+						 + "AND (genre = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, title);
+			stmt.setString(2, author);
+			stmt.setString(3, genre);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+			
+			while(rs.next()) {
+				
+				//Need to make sure that the book has not been sold yet?
+				int bookID = rs.getInt("id");
+				
+				//Search the user_seller_book for the id to see if sold
+				if (getBookAvail(bookID) == 0 && !checkHalted(bookID)) {
+					NACOABean book = new NACOABean();
+					
+					book.setBookID(rs.getInt("id"));
+					book.setBooktitle(rs.getString("title"));
+					book.setAuthor(rs.getString("author"));
+					book.setPicture(rs.getString("picture"));
+					book.setPublisher(rs.getString("publisher"));
+					book.setDOP(rs.getString("dateofpublication"));
+					book.setPages(Integer.toString(rs.getInt("pages")));
+					book.setIsbn(rs.getString("isbn"));
+					book.setGenre(rs.getString("genre"));
+					float price = rs.getFloat("price");
+					book.setPrice(Float.toString(price));
+					resultBook.add(book);
+				}
+			}	
+
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		return resultBook;
+	}
+	
+	//Searches database for users
+	public ArrayList<NACOAUserBean> userSearch(String username) {
+		ArrayList<NACOAUserBean> resultUser = new ArrayList<NACOAUserBean>();
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		//String bookName = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM users "
+						 + "WHERE (title = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, username);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+			
+			while(rs.next()) {
+
+				NACOAUserBean user = new NACOAUserBean();
+		
+				user.setUserID(rs.getInt("id"));
+				user.setFirstname(rs.getString("firstname"));
+				user.setLastname(rs.getString("lastname"));
+				user.setNickname(rs.getString("nickname"));
+				user.setEmailAddress(rs.getString("email"));
+				user.setDOB(rs.getString("dob"));
+				user.setPassword(rs.getString("password"));
+				user.setAddress(rs.getString("address"));
+				user.setCreditDetails(rs.getString("creditcarddetails"));
+				user.setHalted(rs.getInt("is_halted"));
+				
+				resultUser.add(user);
+			}	
+
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		return resultUser;
+	}
 }
