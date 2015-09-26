@@ -13,6 +13,7 @@ public class NACOAUserBean {
 	private String creditDetails;
 	private int isHalted;
 	private int isAdmin;
+	private String description;
 	
 	public NACOAUserBean() {
 		
@@ -66,6 +67,10 @@ public class NACOAUserBean {
 		this.isAdmin = admin;
 	}
 	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 	public int getUserID() {
 		return userID;
 	}
@@ -112,5 +117,9 @@ public class NACOAUserBean {
 	
 	public int getAdmin() {
 		return isAdmin;
+	}
+	
+	public String getDescription() {
+		return description;
 	}
 }

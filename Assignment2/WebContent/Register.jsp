@@ -76,6 +76,7 @@
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="DOB (yyyy-mm-dd)" name="dob">         
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Home Address" name="address">             
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Credit Card Info (number)" name="creditinfo">
+              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Introduce yourself!" name="description">
             </div><!-- /input-group -->
           
               <div class="input-group-btn">

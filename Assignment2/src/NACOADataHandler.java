@@ -38,7 +38,7 @@ public class NACOADataHandler {
 	//Tests
 	private boolean initialTests = false;
 	private boolean testCheckOut = false;
-	private boolean testCount = true;
+	private boolean testCount = false;
 	
 	public static void main(String [] args){
 		NACOADataHandler handler= new NACOADataHandler();
@@ -212,9 +212,9 @@ public class NACOADataHandler {
 		String tisbn1 = "123441-23322-111";
 		String tGenre1 = "Mystery";
 		String tDate = "2015-10-12";
-		
+		String tDescrip1 = "asdasda";
 		System.out.println("Creating Book...");
-		int bookID = handler.createBook(id, tDate, tTitle1, tAuthor1, tPicture1, tPrice1, tPublisher1, tdop1, tpages1, tisbn1, tGenre1);
+		int bookID = handler.createBook(id, tDate, tTitle1, tAuthor1, tPicture1, tPrice1, tPublisher1, tdop1, tpages1, tisbn1, tGenre1, tDescrip1);
 		
 		System.out.println("Testing get book title...");
 		if (!handler.getBookTitle(bookID).contentEquals(tTitle1)) {
@@ -294,9 +294,10 @@ public class NACOADataHandler {
 		String tdob1 = "1990-01-01";
 		String tAddress1 = "Fake Address 1";
 		String tCreditInfo1 = "Fake Credit info";
+		String tDescrip = "Blah Blah!";
 		
 		System.out.println("Creating user...");
-		int id = handler.createUser(tUserN1, tPass1, tEmail1, tNickN1, tFirstN1, tLastN1, tdob1, tAddress1, tCreditInfo1);
+		int id = handler.createUser(tUserN1, tPass1, tEmail1, tNickN1, tFirstN1, tLastN1, tdob1, tAddress1, tCreditInfo1, tDescrip);
 		//handler.addBookToCart(id, 0, 0, "1990-09-09", "1991-01-01");
 		
 		System.out.println("Testing get email...");
@@ -495,7 +496,7 @@ public class NACOADataHandler {
 	}
 	
 	public int createUser(String username, String password, String email, String nickname, 
-			String firstname, String lastname, String dob, String address, String creditinfo){
+			String firstname, String lastname, String dob, String address, String creditinfo, String description){
 		int auto_id = 0;
 		Connection conn = null;
 		try {
@@ -510,8 +511,8 @@ public class NACOADataHandler {
 			String sql;
 			
 			sql = "INSERT INTO `users` "
-					 + "(`username`, `password`, `email`, `firstname`, `lastname`, `nickname`, `dob`, `address`, `creditcarddetails`, `is_halted`, `is_admin`) "
-			  + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					 + "(`username`, `password`, `email`, `firstname`, `lastname`, `nickname`, `dob`, `address`, `creditcarddetails`, `description`, `is_halted`, `is_admin`) "
+			  + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				
 
 			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -524,8 +525,9 @@ public class NACOADataHandler {
 			stmt.setString(7, dob);
 			stmt.setString(8, address);
 			stmt.setString(9, creditinfo);
-			stmt.setInt(10, 1); //user is halted until email is verified
-			stmt.setInt(11, 0); //user is assumed not admin
+			stmt.setString(10, description);
+			stmt.setInt(11, 1); //user is halted until email is verified
+			stmt.setInt(12, 0); //user is assumed not admin
 			
 			stmt.executeUpdate();
 			
@@ -567,7 +569,7 @@ public class NACOADataHandler {
 	 * 
 	 */
 	public int createBook (int user_id, String date, String title, String author, String picture, String price, String publisher, 
-			String dateofpublication, String pages, String isbn, String genre) {
+			String dateofpublication, String pages, String isbn, String genre, String description) {
 		int auto_id = 0;
 		Connection conn = null;
 		
@@ -582,8 +584,8 @@ public class NACOADataHandler {
 			
 			//STEP 4: Execute a query
 			String sql = "INSERT INTO `books` "
-					 + "(`title`, `author`, `picture`, `price`, `publisher`, `dateofpublication`, `pages`, `isbn`, `genre`) "
-			  + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					 + "(`title`, `author`, `picture`, `price`, `publisher`, `dateofpublication`, `pages`, `isbn`, `genre`, `description`) "
+			  + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 			//Price conversion
 			float f = Float.parseFloat(price);
@@ -601,6 +603,7 @@ public class NACOADataHandler {
 			stmt.setInt(7, pageNum);
 			stmt.setString(8, isbn);
 			stmt.setString(9, genre);
+			stmt.setString(10, description);
 			
 			stmt.executeUpdate();
 			ResultSet rs = stmt.getGeneratedKeys();
@@ -2428,6 +2431,54 @@ public class NACOADataHandler {
 			} //end try
 		}
 	}
+	
+	//Change book genre
+	public void changeBookDescription(int book_id, String description){
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		//String bookName = null;
+		if (!description.contentEquals("")) {
+			try {
+				//STEP 2: Register JDBC driver
+				Class.forName("com.mysql.jdbc.Driver");
+				//
+				conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+				
+				//STEP 4: Execute a query
+				//System.out.println("Creating statement...");
+				
+				//Statement to change details of the database
+				String sql = "UPDATE books SET description=? WHERE (id = ?)";
+				
+				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				stmt.setString(1, description);
+				stmt.setInt(2, book_id);
+				stmt.executeUpdate();
+	
+				//STEP 6: Clean-up environment
+				stmt.close();
+				conn.close();	
+				
+			} catch (SQLException se) {
+				//Handle errors for JDBC
+				    se.printStackTrace();
+			} catch (Exception e) {
+			    //Handle errors for Class.forName
+			    e.printStackTrace();
+			} finally {
+			    //finally block used to close resources
+			 
+				try {
+				   if(conn!=null)
+				      conn.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				} //end finally try
+			} //end try
+		}
+	}
+		
 	//gets ID from username
 	public int getId (String username){
 		Connection conn = null;
@@ -2728,99 +2779,99 @@ public void changeLastname(int user_id, String lastname) {
 	}
 }
 
-public void changeDOB(int user_id, String dob) {
+	public void changeDOB(int user_id, String dob) {
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
 	
-	Connection conn = null;
-	PreparedStatement stmt = null;
-
-	if (!dob.contentEquals("")) {
-		try {
-			//STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-			//
-			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
-			
-			//STEP 4: Execute a query
-			//System.out.println("Creating statement...");
-			
-			//Statement to change details of the database
-			String sql = "UPDATE users SET dob=? WHERE (id = ?)";
-	
-			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, dob);
-			stmt.setInt(2, user_id);
-			stmt.executeUpdate();
-
-			//STEP 6: Clean-up environment
-			stmt.close();
-			conn.close();	
-			
-		} catch (SQLException se) {
-			//Handle errors for JDBC
-			    se.printStackTrace();
-		} catch (Exception e) {
-		    //Handle errors for Class.forName
-		    e.printStackTrace();
-		} finally {
-		    //finally block used to close resources
-		 
+		if (!dob.contentEquals("")) {
 			try {
-			   if(conn!=null)
-			      conn.close();
+				//STEP 2: Register JDBC driver
+				Class.forName("com.mysql.jdbc.Driver");
+				//
+				conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+				
+				//STEP 4: Execute a query
+				//System.out.println("Creating statement...");
+				
+				//Statement to change details of the database
+				String sql = "UPDATE users SET dob=? WHERE (id = ?)";
+		
+				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				stmt.setString(1, dob);
+				stmt.setInt(2, user_id);
+				stmt.executeUpdate();
+	
+				//STEP 6: Clean-up environment
+				stmt.close();
+				conn.close();	
+				
 			} catch (SQLException se) {
-				se.printStackTrace();
-			} //end finally try
-		} //end try
+				//Handle errors for JDBC
+				    se.printStackTrace();
+			} catch (Exception e) {
+			    //Handle errors for Class.forName
+			    e.printStackTrace();
+			} finally {
+			    //finally block used to close resources
+			 
+				try {
+				   if(conn!=null)
+				      conn.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				} //end finally try
+			} //end try
+		}
 	}
-}
 
-public void changeAddress(int user_id, String address) {
+	public void changeAddress(int user_id, String address) {
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
 	
-	Connection conn = null;
-	PreparedStatement stmt = null;
-
-	if (!address.contentEquals("")) {
-		try {
-			//STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-			//
-			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
-			
-			//STEP 4: Execute a query
-			//System.out.println("Creating statement...");
-			
-			//Statement to change details of the database
-			String sql = "UPDATE users SET address=? WHERE (id = ?)";
-	
-			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, address);
-			stmt.setInt(2, user_id);
-			stmt.executeUpdate();
-
-			//STEP 6: Clean-up environment
-			stmt.close();
-			conn.close();	
-			
-		} catch (SQLException se) {
-			//Handle errors for JDBC
-			    se.printStackTrace();
-		} catch (Exception e) {
-		    //Handle errors for Class.forName
-		    e.printStackTrace();
-		} finally {
-		    //finally block used to close resources
-		 
+		if (!address.contentEquals("")) {
 			try {
-			   if(conn!=null)
-			      conn.close();
+				//STEP 2: Register JDBC driver
+				Class.forName("com.mysql.jdbc.Driver");
+				//
+				conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+				
+				//STEP 4: Execute a query
+				//System.out.println("Creating statement...");
+				
+				//Statement to change details of the database
+				String sql = "UPDATE users SET address=? WHERE (id = ?)";
+		
+				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				stmt.setString(1, address);
+				stmt.setInt(2, user_id);
+				stmt.executeUpdate();
+	
+				//STEP 6: Clean-up environment
+				stmt.close();
+				conn.close();	
+				
 			} catch (SQLException se) {
-				se.printStackTrace();
-			} //end finally try
-		} //end try
+				//Handle errors for JDBC
+				    se.printStackTrace();
+			} catch (Exception e) {
+			    //Handle errors for Class.forName
+			    e.printStackTrace();
+			} finally {
+			    //finally block used to close resources
+			 
+				try {
+				   if(conn!=null)
+				      conn.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				} //end finally try
+			} //end try
+		}
 	}
-}
 
-public void changeCreditInfo(int user_id, String creditinfo) {
+	public void changeCreditInfo(int user_id, String creditinfo) {
 		
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -2840,6 +2891,52 @@ public void changeCreditInfo(int user_id, String creditinfo) {
 		
 				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				stmt.setString(1, creditinfo);
+				stmt.setInt(2, user_id);
+				stmt.executeUpdate();
+	
+				//STEP 6: Clean-up environment
+				stmt.close();
+				conn.close();	
+				
+			} catch (SQLException se) {
+				//Handle errors for JDBC
+				    se.printStackTrace();
+			} catch (Exception e) {
+			    //Handle errors for Class.forName
+			    e.printStackTrace();
+			} finally {
+			    //finally block used to close resources
+			 
+				try {
+				   if(conn!=null)
+				      conn.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				} //end finally try
+			} //end try
+		}
+	}
+
+	public void changeDescription(int user_id, String description) {
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+
+		if (!description.contentEquals("")) {
+			try {
+				//STEP 2: Register JDBC driver
+				Class.forName("com.mysql.jdbc.Driver");
+				//
+				conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+				
+				//STEP 4: Execute a query
+				//System.out.println("Creating statement...");
+				
+				//Statement to change details of the database
+				String sql = "UPDATE users SET description=? WHERE (id = ?)";
+		
+				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				stmt.setString(1, description);
 				stmt.setInt(2, user_id);
 				stmt.executeUpdate();
 	
@@ -3206,7 +3303,8 @@ public void changeCreditInfo(int user_id, String creditinfo) {
 			details.add(rs.getString("lastname"));
 			details.add(rs.getString("dob"));
 			details.add(rs.getString("address"));
-			details.add(rs.getString("creditcarddetails"));		
+			details.add(rs.getString("creditcarddetails"));	
+			details.add(rs.getString("description"));		
 
 			//STEP 6: Clean-up environment
 			stmt.close();

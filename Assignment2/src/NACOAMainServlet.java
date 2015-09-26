@@ -532,6 +532,7 @@ public class NACOAMainServlet extends HttpServlet {
 		req.getSession().setAttribute("dob", userDetails.get(5));
 		req.getSession().setAttribute("address", userDetails.get(6));
 		req.getSession().setAttribute("creditinfo", userDetails.get(7));
+		req.getSession().setAttribute("description", userDetails.get(8));
 	}
 
 	private void verifyUser(int id, String code) {
@@ -677,6 +678,8 @@ public class NACOAMainServlet extends HttpServlet {
 		String dob = (String) req.getParameter("dob");
 		String address = (String) req.getParameter("address");
 		String creditinfo = (String) req.getParameter("creditinfo");
+		String description = (String) req.getParameter("description");
+		
 		System.out.println(":" + username );
 		System.out.println(":" + password );
 		System.out.println(":" + email );
@@ -686,10 +689,11 @@ public class NACOAMainServlet extends HttpServlet {
 		System.out.println(":" + dob );
 		System.out.println(":" + address );
 		System.out.println(":" + creditinfo );
+		System.out.println(":" + description );
 		
 		System.out.println("Creating User in MySQL Database");
 		if (!dHandler.userExists(username)) {
-			int user_id = dHandler.createUser(username, password, email, nickname, firstname, lastname, dob, address, creditinfo);
+			int user_id = dHandler.createUser(username, password, email, nickname, firstname, lastname, dob, address, creditinfo, description);
 			return user_id;
 		}else {
 			return -1;
@@ -714,6 +718,8 @@ public class NACOAMainServlet extends HttpServlet {
 		String isbn = (String) req.getParameter("isbn");
 		String genre = (String) req.getParameter("genre");
 		String price = (String) req.getParameter("price");
+		String description = (String) req.getParameter("description");
+		
 		System.out.println(":" + user_id );
 		System.out.println(":" + today );
 		System.out.println(":" + title );
@@ -724,9 +730,10 @@ public class NACOAMainServlet extends HttpServlet {
 		System.out.println(":" + isbn );
 		System.out.println(":" + genre );
 		System.out.println(":" + price );
+		System.out.println(":" + description );
 		
 		System.out.println("Creating User in MySQL Database");
-		int book_id = dHandler.createBook(user_id, today, title, author, picture, price, publisher, dateofpublication, pages, isbn, genre);
+		int book_id = dHandler.createBook(user_id, today, title, author, picture, price, publisher, dateofpublication, pages, isbn, genre, description);
 		
 		return book_id;
 	}
