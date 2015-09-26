@@ -25,10 +25,11 @@
             <c:choose>
               <c:when test="${sessionScope.logged_in == true}">
                 <li class="dropdown-header">Logged in as "${sessionScope.username}"</li>
-                <li><a href="${pageContext.request.contextPath}/account">Change Details</a></li>
+                <li><a href="${pageContext.request.contextPath}/selling">My Books</a></li>
                 <li><a href="${pageContext.request.contextPath}/profile?user=${sessionScope.username}">View Profile</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Settings</li>
+                <li><a href="${pageContext.request.contextPath}/account">Change Details</a></li>
                 <li><a href="${pageContext.request.contextPath}/logout">Log Out</a></li>
                
               </c:when>

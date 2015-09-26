@@ -45,7 +45,7 @@
     <div class="container">
   
     <jsp:include page="/topBanner.jsp" />
-
+ 	<div class="jumbotron">
     <div class="container">
 
       <form class="form-signin" method="post" action="/Assignment2/submitcred">
@@ -64,11 +64,6 @@
 
     </div> <!-- /container -->
     
-    
-
-    <footer class="centering">
-      <p>&copy; Felix Yuen Dao Phu 2015</p>
-    </footer>
     </div> <!-- /container -->
   </body>
 </html>

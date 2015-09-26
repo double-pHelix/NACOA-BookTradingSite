@@ -77,5 +77,9 @@
 		<url-pattern>/profile</url-pattern>
 	</servlet-mapping>
 	
+	<servlet-mapping>
+		<servlet-name>MainServlet</servlet-name>
+		<url-pattern>/selling</url-pattern>
+	</servlet-mapping>
 	
 </web-app>

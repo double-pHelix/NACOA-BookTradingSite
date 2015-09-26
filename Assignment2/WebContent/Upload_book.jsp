@@ -76,7 +76,7 @@
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Genre" name="genre">
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Price" name="price">
             </div><!-- /input-group -->
-          
+          <br>
               <div class="input-group-btn">
                 <button class="btn btn-default" type="submit"><b>Sell</b></button>
               </div><!-- /btn-group -->

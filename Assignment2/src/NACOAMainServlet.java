@@ -50,6 +50,8 @@ public class NACOAMainServlet extends HttpServlet {
 	/* Files for the given session */
 	private ArrayList<NACOABean> resultBeans; 
 	private ArrayList<NACOABean> cartBeans;
+	private ArrayList<NACOABean> sellingBeans;
+	private ArrayList<NACOABean> pausedBeans;
 	
 	/* XML Handler: abstract class for dealing with XML */
 	private NACOAHandler handler;
@@ -65,6 +67,8 @@ public class NACOAMainServlet extends HttpServlet {
 
         resultBeans = new ArrayList<NACOABean>();
         cartBeans = new ArrayList<NACOABean>();
+        sellingBeans = new ArrayList<NACOABean>();
+        pausedBeans = new ArrayList<NACOABean>();
         handler = new NACOAHandler();
         dHandler = new NACOADataHandler();
     }
@@ -453,7 +457,35 @@ public class NACOAMainServlet extends HttpServlet {
 			requestDispatcher = req.getRequestDispatcher("/checkOut.jsp");
 	    	requestDispatcher.forward(req, res);
 			System.out.println(uri);
-			
+		} else if (uri.contains("selling")) {
+			int user_id = (int)req.getSession().getAttribute("user_id");
+			int num_books = dHandler.countBooks();
+			sellingBeans = dHandler.getSellingList(user_id);
+			req.getSession().setAttribute("sellingList", sellingBeans);
+			pausedBeans = dHandler.getPausedList(user_id);
+			req.getSession().setAttribute("pausedList", pausedBeans);
+			//TODO
+			for(int n = 1; n < num_books+1; n++){
+//				System.out.println("Entry " + n);
+				if(req.getParameter("entry"+n) != null){
+					System.out.println("Deleting book with id " + n);
+					dHandler.pauseSelling(user_id, n);
+				}
+				if(req.getParameter("paused"+n) != null){
+					System.out.println("Unpausing book with id " + n);
+					dHandler.resumeSelling(user_id, n);
+				}
+				sellingBeans = dHandler.getSellingList(user_id);
+				req.getSession().setAttribute("sellingList", sellingBeans);
+				pausedBeans = dHandler.getPausedList(user_id);
+				req.getSession().setAttribute("pausedList", pausedBeans);
+			}
+			sellingBeans = dHandler.getSellingList(user_id);
+			req.getSession().setAttribute("sellingList", sellingBeans);
+			pausedBeans = dHandler.getPausedList(user_id);
+			req.getSession().setAttribute("pausedList", pausedBeans);
+			requestDispatcher = req.getRequestDispatcher("/Selling.jsp");
+	    	requestDispatcher.forward(req, res);
 		} else {//MAIN PAGE (this is /search or welcome
 			//generate random list
 			loadMainXML();
