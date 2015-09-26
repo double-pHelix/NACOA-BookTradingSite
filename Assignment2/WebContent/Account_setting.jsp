@@ -83,6 +83,9 @@
               <br><br> 
               <label style="display:block">Credit Card Number</label>
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Credit Card Info (number)" name="creditinfo" value="${sessionScope.creditinfo}">
+              <br><br> 
+              <label style="display:block">Description</label>
+              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Description" name="description" value="${sessionScope.description}">
             </div><!-- /input-group -->
           <br>
           <br>

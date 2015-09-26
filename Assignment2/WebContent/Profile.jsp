@@ -53,15 +53,64 @@
       
   
           <h1>${sessionScope.profile.username}</h1>
-          <h2> Profile</h2>
+          <h2>User Profile</h2>
           <!--  Display this user's profile -->
           
           <!--  What kind of info?? -->
-
+          <!--  Number of books: sold, bought... -->
           
-            
-      </div>
-  
+
+          <div class="row placeholders">
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <img src="http://www.malwarwickonbooks.com/wp-content/uploads/2014/09/hand-sell-blur.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Books Sold</h4>
+              <span class="text-muted">Num here</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <img src="http://s3-media4.fl.yelpcdn.com/bphoto/N2lcaCuzP7u-0MDER3yL2g/ls.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Books On Sale</h4>
+              <span class="text-muted">Num here</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <img src="http://www.columbuspubliclibrary.info/sites/www.columbuspubliclibrary.info/files/images/events/Dogs-Reading.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Books Bought</h4>
+              <span class="text-muted">Num here</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <img src="https://playitagaindan.files.wordpress.com/2014/12/pile-of-books.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Books Wanted</h4>
+              <span class="text-muted">Num here</span>
+            </div>
+          </div>
+
+          <h2 class="sub-header">Seller's Books</h2>
+          <div class="table-responsive">
+          
+          
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Genre</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+                
+                <tbody>
+                <!--  retrieve list of user's books and display them -->
+                  <tr>
+                    <td>1,001</td>
+                    <td>Lorem</td>
+                    <td>ipsum</td>
+                    <td>dolor</td>
+                    <td>sit</td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+            </div>
    
     </div> <!-- /container -->
 
