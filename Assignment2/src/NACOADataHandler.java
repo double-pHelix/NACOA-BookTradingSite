@@ -470,9 +470,11 @@ public class NACOADataHandler {
 			String query2 = "ALTER TABLE `books` ADD PRIMARY KEY (`id`)";
 			String query3 = "ALTER TABLE `users` ADD PRIMARY KEY (`id`)";
 			String query4 = "ALTER TABLE `user_customer_books`"
+						  + "ADD PRIMARY KEY (`user_id`,`book_id`),"
 						  + "ADD KEY `user_id` (`user_id`),"
 						  + "ADD KEY `book_id` (`book_id`)";
 			String query5 = "ALTER TABLE `user_seller_books`"
+						  + "ADD PRIMARY KEY (`user_id`,`book_id`),"
 						  + "ADD KEY `user_id` (`user_id`),"
 						  + "ADD KEY `book_id` (`book_id`)";
 			String query7 = "ALTER TABLE `books`"
