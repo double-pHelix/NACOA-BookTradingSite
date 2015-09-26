@@ -17,7 +17,7 @@ public class NACOAUserBean {
 	private int numBooksSold;
 	private int numBooksSale;
 	private int numBooksBought;
-	
+	private int numBooksInCart;
 	
 	public NACOAUserBean() {
 		
@@ -173,5 +173,13 @@ public class NACOAUserBean {
 
 	public void setNumBooksBought(int numBooksBought) {
 		this.numBooksBought = numBooksBought;
+	}
+
+	public int getNumBooksInCart() {
+		return numBooksInCart;
+	}
+
+	public void setNumBooksInCart(int numBooksInCart) {
+		this.numBooksInCart = numBooksInCart;
 	}
 }

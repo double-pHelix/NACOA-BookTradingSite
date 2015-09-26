@@ -77,6 +77,11 @@ public class NACOADataHandler {
 		} else {
 			System.out.println("Test 3 Failed! ");
 		}
+		if(handler.getCountBooksInCart(2) == 1){
+			System.out.println("Test 4 Passed! ");
+		} else {
+			System.out.println("Test 4 Failed! ");
+		}
 		/*
 		if(handler.getCountBooksSold(3) == 3){
 			System.out.println("Test Passed! ");
@@ -3393,16 +3398,19 @@ public void changeLastname(int user_id, String lastname) {
 				details.setDOB(rs.getString("dob"));
 				details.setAddress(rs.getString("address"));
 				details.setCreditDetails(rs.getString("creditcarddetails"));		
+				details.setDescription(rs.getString("description"));	
 			}
 			//GET COUNTS
 			int numBought = (int) getCountBooksBought(id);
 			int numSale = (int) getCountBooksNotSold(id);
 			int numSold = (int) getCountBooksSold(id);
+			int numCart = (int) getCountBooksInCart(id);
 			
 			//set up the user with this data
 			details.setNumBooksBought(numBought);
 			details.setNumBooksSale(numSale);
 			details.setNumBooksSold(numSold);
+			details.setNumBooksInCart(numCart);
 			
 			//STEP 6: Clean-up environment
 			stmt.close();
@@ -4067,52 +4075,36 @@ public void changeLastname(int user_id, String lastname) {
 		PreparedStatement stmt = null;
 		long count = 0;
 		try {
-			//STEP 2: Register JDBC driver
 			Class.forName("com.mysql.jdbc.Driver");
-			//
 			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
 			
-			
-			//STEP 4: Execute a query
-			System.out.println("Creating statement...");
-			
 			String sql = "SELECT count(*) FROM user_seller_books WHERE (user_id = ? AND is_sold = FALSE)";
-	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, user_id);
 			stmt.executeQuery();
 			
 			ResultSet rs = stmt.getResultSet();
-	
-			  //STEP 5: Extract data from result set
 			while(rs.next()){
-				//Retrieve by column name
 				count = rs.getLong(1); 
 		
 			}
-					  //STEP 6: Clean-up environment
 			rs.close();
 			stmt.close();
 			conn.close();	
 			
 		} catch (SQLException se) {
-			//Handle errors for JDBC
 			    se.printStackTrace();
 		} catch (Exception e) {
-		    //Handle errors for Class.forName
 		    e.printStackTrace();
 		} finally {
-		    //finally block used to close resources
-		 
 			try {
 			   if(conn!=null)
 			      conn.close();
 			} catch (SQLException se) {
 				se.printStackTrace();
-			} //end finally try
-		} //end try
-			
-			
+			} 
+		} 
+	
 		return count; 
 		
 	}
@@ -4122,54 +4114,75 @@ public void changeLastname(int user_id, String lastname) {
 		PreparedStatement stmt = null;
 		long count = 0;
 		try {
-			//STEP 2: Register JDBC driver
 			Class.forName("com.mysql.jdbc.Driver");
-			//
 			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
-			
-			
-			//STEP 4: Execute a query
-			System.out.println("Creating statement...");
-			
+
 			String sql = "SELECT count(*) FROM user_customer_books WHERE (user_id = ? AND is_bought = TRUE)";
-	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, user_id);
 			stmt.executeQuery();
 			
 			ResultSet rs = stmt.getResultSet();
-	
-			  //STEP 5: Extract data from result set
+			
 			while(rs.next()){
-				//Retrieve by column name
 				count = rs.getLong(1); 
-		
 			}
-					  //STEP 6: Clean-up environment
 			rs.close();
 			stmt.close();
 			conn.close();	
 			
 		} catch (SQLException se) {
-			//Handle errors for JDBC
 			    se.printStackTrace();
 		} catch (Exception e) {
-		    //Handle errors for Class.forName
 		    e.printStackTrace();
 		} finally {
-		    //finally block used to close resources
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} 
+		} 
+		return count; 
+		
+	}
+	public long getCountBooksInCart(int user_id){
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		long count = 0;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			String sql = "SELECT count(*) FROM user_customer_books WHERE (user_id = ? AND is_bought = FALSE)";
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, user_id);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+			while(rs.next()){
+				count = rs.getLong(1); 
+		
+			}
+			rs.close();
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    e.printStackTrace();
+		} finally {
 		 
 			try {
 			   if(conn!=null)
 			      conn.close();
 			} catch (SQLException se) {
 				se.printStackTrace();
-			} //end finally try
-		} //end try
-			
-			
-		return count; 
-		
+			}
+		}
+
+		return count; 	
 	}
 	
 	//Bans user

@@ -84,7 +84,7 @@
               <div class="col-xs-6 col-sm-3 placeholder">
                 <img src="https://playitagaindan.files.wordpress.com/2014/12/pile-of-books.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
                 <h4>Books Wanted</h4>
-                <span class="text-muted">Num here</span>
+                <span class="text-muted">${sessionScope.profile.numBooksInCart}</span>
               </div>
             </div>
           </div>
