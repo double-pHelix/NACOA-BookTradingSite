@@ -14,6 +14,10 @@ public class NACOAUserBean {
 	private int isHalted;
 	private int isAdmin;
 	private String description;
+	private int numBooksSold;
+	private int numBooksSale;
+	private int numBooksBought;
+	
 	
 	public NACOAUserBean() {
 		
@@ -121,5 +125,53 @@ public class NACOAUserBean {
 	
 	public String getDescription() {
 		return description;
+	}
+
+	public String getDob() {
+		return dob;
+	}
+
+	public void setDob(String dob) {
+		this.dob = dob;
+	}
+
+	public int getIsHalted() {
+		return isHalted;
+	}
+
+	public void setIsHalted(int isHalted) {
+		this.isHalted = isHalted;
+	}
+
+	public int getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(int isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
+	public int getNumBooksSold() {
+		return numBooksSold;
+	}
+
+	public void setNumBooksSold(int numBooksSold) {
+		this.numBooksSold = numBooksSold;
+	}
+
+	public int getNumBooksSale() {
+		return numBooksSale;
+	}
+
+	public void setNumBooksSale(int numBooksSale) {
+		this.numBooksSale = numBooksSale;
+	}
+
+	public int getNumBooksBought() {
+		return numBooksBought;
+	}
+
+	public void setNumBooksBought(int numBooksBought) {
+		this.numBooksBought = numBooksBought;
 	}
 }
