@@ -58,9 +58,9 @@ public class NACOADataHandler {
 		System.out.println("User name is " +handler.getUserName(0));
 		
 		
-		handler.addHistoryBuyEntry(1,2); //
-		handler.addHistoryAddCartEntry(1, 2);//
-		handler.addHistoryRemoveCartEntry(1, 2);//
+		//handler.addHistoryBuyEntry(1,2); //
+		//handler.addHistoryAddCartEntry(1, 2);//
+		//handler.addHistoryRemoveCartEntry(1, 2);//
 	}
 	
 	//Runs tests to make sure the functions are working
@@ -89,8 +89,8 @@ public class NACOADataHandler {
 		
 		if (testCount) {
 			System.out.println("testing count");
-			countBooks();
-			countUsers();
+			maxBooksID();
+			maxUsersID();
 		}
 		//if (testUp)
 		//addBookToCart(newID, 7, 0, , DUMMYDOS);
@@ -287,7 +287,7 @@ public class NACOADataHandler {
 		// TODO Auto-generated method stub
 		String tUserN1 = "Riked";
 		String tPass1 = "password123";
-		String tEmail1 = "richard@hotdog.com";
+		String tEmail1 = "moetfowl@yahoo.com.au";
 		String tNickN1 = "DeathToAllThe";
 		String tFirstN1 = "Richard";
 		String tLastN1 = "Zhang";
@@ -508,8 +508,8 @@ public class NACOADataHandler {
 			String sql;
 			
 			sql = "INSERT INTO `users` "
-					 + "(`username`, `password`, `email`, `firstname`, `lastname`, `nickname`, `dob`, `address`, `creditcarddetails`, `is_halted`) "
-			  + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					 + "(`username`, `password`, `email`, `firstname`, `lastname`, `nickname`, `dob`, `address`, `creditcarddetails`, `is_halted`, `is_admin`) "
+			  + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				
 
 			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -523,6 +523,7 @@ public class NACOADataHandler {
 			stmt.setString(8, address);
 			stmt.setString(9, creditinfo);
 			stmt.setInt(10, 1); //user is halted until email is verified
+			stmt.setInt(11, 0); //user is assumed not admin
 			
 			stmt.executeUpdate();
 			
@@ -3071,8 +3072,8 @@ public void changeCreditInfo(int user_id, String creditinfo) {
 		}
 	}
 	
-	//Counts the number of books in the database
-	public int countBooks() {
+	//Get the max id of book in database
+	public int maxBooksID() {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		int books = 0;
@@ -3086,7 +3087,7 @@ public void changeCreditInfo(int user_id, String creditinfo) {
 			//STEP 4: Execute a query
 			//System.out.println("Creating statement...");
 			
-			String sql = "SELECT COUNT(*) AS Size FROM books";
+			String sql = "SELECT MAX(id) AS Size FROM books";
 	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.executeQuery();
@@ -3123,8 +3124,8 @@ public void changeCreditInfo(int user_id, String creditinfo) {
 		return books;
 	}
 	
-	//Counts the number of users in the database
-	public int countUsers() {
+	//Gets the max id of user in database
+	public int maxUsersID() {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		int users = 0;
@@ -3138,7 +3139,7 @@ public void changeCreditInfo(int user_id, String creditinfo) {
 			//STEP 4: Execute a query
 			//System.out.println("Creating statement...");
 			
-			String sql = "SELECT COUNT(*) AS Size FROM users";
+			String sql = "SELECT MAX(id) AS Size FROM users";
 	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.executeQuery();
@@ -3442,14 +3443,22 @@ public void changeCreditInfo(int user_id, String creditinfo) {
 			//System.out.println("Creating statement...");
 			
 			String sql = "SELECT * FROM books "
-						 + "WHERE (title = ?)"
-						 + "AND (author = ?)"
-						 + "AND (genre = ?)";
+						 + "WHERE title LIKE ?"
+						 + "AND author LIKE ?"
+						 + "AND genre LIKE ?";
 	
+			
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, title);
-			stmt.setString(2, author);
-			stmt.setString(3, genre);
+
+			//System.out.println("Title is " + title);
+			//System.out.println("Author is " + author);
+			//System.out.println("Genre is " + genre);
+			stmt.setString(1, "%"+title+"%");
+			stmt.setString(2, "%"+author+"%");
+			stmt.setString(3, "%"+genre+"%");
+			
+			//System.out.println("statement is: ");
+			//System.out.println(stmt);
 			stmt.executeQuery();
 			
 			ResultSet rs = stmt.getResultSet();
@@ -3460,7 +3469,7 @@ public void changeCreditInfo(int user_id, String creditinfo) {
 				int bookID = rs.getInt("id");
 				
 				//Search the user_seller_book for the id to see if sold
-				if (getBookAvail(bookID) == 0 && !checkHalted(bookID)) {
+				if (getBookAvail(bookID) == 0 && isBookPaused(bookID) == 0) {
 					NACOABean book = new NACOABean();
 					
 					book.setBookID(rs.getInt("id"));
@@ -3519,10 +3528,10 @@ public void changeCreditInfo(int user_id, String creditinfo) {
 			//System.out.println("Creating statement...");
 			
 			String sql = "SELECT * FROM users "
-						 + "WHERE (title = ?)";
+						 + "WHERE (username LIKE ?)";
 	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, username);
+			stmt.setString(1, "%"+username+"%");
 			stmt.executeQuery();
 			
 			ResultSet rs = stmt.getResultSet();
