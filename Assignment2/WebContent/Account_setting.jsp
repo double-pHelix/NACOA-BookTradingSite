@@ -31,6 +31,7 @@
 
     <!-- Custom styles for this template -->
     <link href="${pageContext.request.contextPath}/customBootstrap.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/accountsetpage.css" rel="stylesheet">
 
     
     <script type="text/JavaScript" src="/js/sha512.js"></script> 
@@ -50,6 +51,7 @@
     
     <jsp:include page="/topBanner.jsp" /> 
       
+      <div class= "account_form">
       <c:choose>
         <c:when test="${sessionScope.logged_in == true}">
           <h2>Change Account Details</h2> 
@@ -91,6 +93,7 @@
       	  </form>
         </c:when>    
       </c:choose>
+      </div>
     </div> <!-- /container -->
 
 
