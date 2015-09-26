@@ -3394,6 +3394,15 @@ public void changeLastname(int user_id, String lastname) {
 				details.setAddress(rs.getString("address"));
 				details.setCreditDetails(rs.getString("creditcarddetails"));		
 			}
+			//GET COUNTS
+			int numBought = (int) getCountBooksBought(id);
+			int numSale = (int) getCountBooksNotSold(id);
+			int numSold = (int) getCountBooksSold(id);
+			
+			//set up the user with this data
+			details.setNumBooksBought(numBought);
+			details.setNumBooksSale(numSale);
+			details.setNumBooksSold(numSold);
 			
 			//STEP 6: Clean-up environment
 			stmt.close();

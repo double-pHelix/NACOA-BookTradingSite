@@ -30,6 +30,7 @@
 
     <!-- Custom styles for this template -->
     <link href="${pageContext.request.contextPath}/customBootstrap.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/profilePage.css" rel="stylesheet">
 
     
     <script type="text/JavaScript" src="/js/sha512.js"></script> 
@@ -59,30 +60,34 @@
           <!--  What kind of info?? -->
           <!--  Number of books: sold, bought... -->
           
-
-          <div class="row placeholders">
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="http://www.malwarwickonbooks.com/wp-content/uploads/2014/09/hand-sell-blur.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Books Sold</h4>
-              <span class="text-muted">Num here</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="http://s3-media4.fl.yelpcdn.com/bphoto/N2lcaCuzP7u-0MDER3yL2g/ls.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Books On Sale</h4>
-              <span class="text-muted">Num here</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="http://www.columbuspubliclibrary.info/sites/www.columbuspubliclibrary.info/files/images/events/Dogs-Reading.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Books Bought</h4>
-              <span class="text-muted">Num here</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="https://playitagaindan.files.wordpress.com/2014/12/pile-of-books.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Books Wanted</h4>
-              <span class="text-muted">Num here</span>
+          <p>
+            ${sessionScope.profile.description}
+          </p>
+          
+          <div class="profile_info">
+            <div class="row placeholders">
+              <div class="col-xs-6 col-sm-3 placeholder">
+                <img src="http://www.malwarwickonbooks.com/wp-content/uploads/2014/09/hand-sell-blur.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
+                <h4>Books Sold</h4>
+                <span class="text-muted">${sessionScope.profile.numBooksSold}</span>
+              </div>
+              <div class="col-xs-6 col-sm-3 placeholder">
+                <img src="http://s3-media4.fl.yelpcdn.com/bphoto/N2lcaCuzP7u-0MDER3yL2g/ls.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
+                <h4>Books On Sale</h4>
+                <span class="text-muted">${sessionScope.profile.numBooksSale}</span>
+              </div>
+              <div class="col-xs-6 col-sm-3 placeholder">
+                <img src="http://www.columbuspubliclibrary.info/sites/www.columbuspubliclibrary.info/files/images/events/Dogs-Reading.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
+                <h4>Books Bought</h4>
+                <span class="text-muted">${sessionScope.profile.numBooksBought}</span>
+              </div>
+              <div class="col-xs-6 col-sm-3 placeholder">
+                <img src="https://playitagaindan.files.wordpress.com/2014/12/pile-of-books.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
+                <h4>Books Wanted</h4>
+                <span class="text-muted">Num here</span>
+              </div>
             </div>
           </div>
-
           <h2 class="sub-header">Seller's Books</h2>
           <div class="table-responsive">
           
