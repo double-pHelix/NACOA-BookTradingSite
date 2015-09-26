@@ -482,7 +482,7 @@ public class NACOAMainServlet extends HttpServlet {
 			System.out.println(uri);
 		} else if (uri.contains("selling")) {
 			int user_id = (int)req.getSession().getAttribute("user_id");
-			int num_books = dHandler.countBooks();
+			int num_books = dHandler.maxBooksID();
 			sellingBeans = dHandler.getSellingList(user_id);
 			req.getSession().setAttribute("sellingList", sellingBeans);
 			pausedBeans = dHandler.getPausedList(user_id);
@@ -582,8 +582,6 @@ public class NACOAMainServlet extends HttpServlet {
 			System.out.println("error adding to cart:" + e );
 		}*/
 		
-		
-		//TODO My Stuff here
 		//String creditinfo = (String) req.getParameter("creditinfo");
 		
 		int user_id = Integer.parseInt(req.getParameter("user_id"));
@@ -609,7 +607,7 @@ public class NACOAMainServlet extends HttpServlet {
 	public void removeFromCart(HttpServletRequest req, HttpServletResponse res){
 		//we need to load the "current" cart doc, either from session variable, or from xml
 		
-		int totalEntries =  dHandler.countBooks();
+		int totalEntries =  dHandler.maxBooksID();
 		int user_id = Integer.parseInt(req.getParameter("user_id"));
 		
 		cartBeans = dHandler.getShoppingCart(user_id);
@@ -881,17 +879,27 @@ public class NACOAMainServlet extends HttpServlet {
 		//just set up the cart to be read 
 		//TODO Change this!!!!!!!
 		String entryToview = req.getParameter("entryMoreView");//im trying to remember what my code does lol
-		
+		String entryToviewuser = req.getParameter("entryMoreViewUser");
 		//oh yeah so this viewBean is just a bean to display stuff, is a series of boolean values
 		//like do we show more results?
 		//do we show less results (like a back button?)
 		
+		//We are viewing books
+		//Need to separate viewing books and users
 		if(entryToview != null){ //EXPANDING VIEW TO READ MORE
 			int entryToViewNum = Integer.parseInt(entryToview);
 			
 			//View num is the book_id
 			//resultBeans = handler.getBeanFromResultDoc(entryToViewNum);
+			//Search for right entry
 			NACOABean entry = resultBeans.get(0);
+			
+			int i = 0;
+			
+			while (entry.getBookID() != entryToViewNum) {
+				entry = resultBeans.get(i);
+				i++;
+			}
 			
 			//that is what a ResultPageBean does
 			ResultPageBean viewBean = new ResultPageBean();
@@ -901,7 +909,9 @@ public class NACOAMainServlet extends HttpServlet {
 			
 			req.setAttribute("viewBean",viewBean);
 			
-		} else { //CHANGING PAGE NUMBER
+		} else { 
+			//TODO Not sure
+			//CHANGING PAGE NUMBER
 			ResultPageBean viewBean = new ResultPageBean();
 			
 			//get the current page number (default = 1)

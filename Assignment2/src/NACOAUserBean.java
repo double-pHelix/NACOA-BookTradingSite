@@ -12,6 +12,7 @@ public class NACOAUserBean {
 	private String address;
 	private String creditDetails;
 	private int isHalted;
+	private int isAdmin;
 	
 	public NACOAUserBean() {
 		
@@ -61,6 +62,10 @@ public class NACOAUserBean {
 		this.isHalted = halted;
 	}
 	
+	public void setAdmin(int admin) {
+		this.isAdmin = admin;
+	}
+	
 	public int getUserID() {
 		return userID;
 	}
@@ -103,5 +108,9 @@ public class NACOAUserBean {
 	
 	public int getHalted() {
 		return isHalted;
+	}
+	
+	public int getAdmin() {
+		return isAdmin;
 	}
 }

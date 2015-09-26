@@ -3541,6 +3541,7 @@ public void changeCreditInfo(int user_id, String creditinfo) {
 				NACOAUserBean user = new NACOAUserBean();
 		
 				user.setUserID(rs.getInt("id"));
+				user.setUsername(rs.getString("username"));
 				user.setFirstname(rs.getString("firstname"));
 				user.setLastname(rs.getString("lastname"));
 				user.setNickname(rs.getString("nickname"));
