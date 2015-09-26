@@ -386,7 +386,8 @@ public class NACOADataHandler {
 				    + " `dateofpublication` date NOT NULL,"
 					+ "  `pages` int(11) NOT NULL,"
 					+ "  `isbn` varchar(20) NOT NULL,"
-					+ "  `genre` varchar(20) NOT NULL"
+					+ "  `genre` varchar(20) NOT NULL,"
+					+ "  `description` text NULL"
 					+ ") ENGINE=InnoDB DEFAULT CHARSET=latin1";
 			
 			String cUsers  = "CREATE TABLE IF NOT EXISTS `users` ("
@@ -400,6 +401,7 @@ public class NACOADataHandler {
 					  + "  `dob` date NOT NULL,"
 					  + "  `address` text NOT NULL,"
 					  + "  `creditcarddetails` text NOT NULL,"
+					  + "  `description` text NULL,"
 					  + "  `is_halted` tinyint(1) NOT NULL DEFAULT '0',"
 					  + "  `is_admin` tinyint(1) NOT NULL DEFAULT '0'"
 					+ ") ENGINE=InnoDB DEFAULT CHARSET=latin1";
