@@ -410,7 +410,7 @@ public class NACOADataHandler {
 			String cUBooks  = "CREATE TABLE IF NOT EXISTS `user_customer_books` ("
 					 + " `user_id` int(11) NOT NULL,"
 					 + " `book_id` int(11) NOT NULL,"
-					 + " `is_sold` tinyint(1) NOT NULL DEFAULT '0'"
+					 + " `is_bought` tinyint(1) NOT NULL DEFAULT '0'"
 					+ ") ENGINE=InnoDB DEFAULT CHARSET=latin1";
 			
 			String cHistor  = "CREATE TABLE IF NOT EXISTS `user_history` ("
