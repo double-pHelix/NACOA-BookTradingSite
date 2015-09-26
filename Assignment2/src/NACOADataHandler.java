@@ -410,9 +410,7 @@ public class NACOADataHandler {
 			String cUBooks  = "CREATE TABLE IF NOT EXISTS `user_customer_books` ("
 					 + " `user_id` int(11) NOT NULL,"
 					 + " `book_id` int(11) NOT NULL,"
-					 + " `is_sold` tinyint(1) NOT NULL DEFAULT '0',"
-					 + " `dateofupload` date NOT NULL,"
-					 + " `dateofsale` date NOT NULL"
+					 + " `is_sold` tinyint(1) NOT NULL DEFAULT '0'"
 					+ ") ENGINE=InnoDB DEFAULT CHARSET=latin1";
 			
 			String cHistor  = "CREATE TABLE IF NOT EXISTS `user_history` ("
@@ -427,7 +425,7 @@ public class NACOADataHandler {
 					  + "`book_id` int(11) NOT NULL,"
 					  + "`is_sold` tinyint(1) NOT NULL DEFAULT '0',"
 					  + "`dateofupload` date NOT NULL,"
-					  + "`dateofsale` date NOT NULL,"
+					  + "`dateofsale` date NULL,"
 					  + " `is_paused` tinyint(1) NOT NULL DEFAULT '0'"
 					+ ") ENGINE=InnoDB DEFAULT CHARSET=latin1";
 			
@@ -3677,5 +3675,64 @@ public void changeLastname(int user_id, String lastname) {
 		} //end try
 		
 		return resultUser;
+	}
+	
+	public int getCountOf(String field, String condition, String table){
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		int id = -1;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			
+			//STEP 4: Execute a query
+			System.out.println("Creating statement...");
+			
+			String sql = "SELECT count(*) FROM users WHERE (? = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, field);
+			stmt.setString(2, condition);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+	
+			  //STEP 5: Extract data from result set
+			while(rs.next()){
+				//Retrieve by column name
+				id = rs.getInt("id");
+		
+			}
+					  //STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();	
+			
+			return id;
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+			
+			
+		return id; 
+		
+		
 	}
 }
