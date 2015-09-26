@@ -488,7 +488,7 @@ public class NACOAMainServlet extends HttpServlet {
 			pausedBeans = dHandler.getPausedList(user_id);
 			req.getSession().setAttribute("pausedList", pausedBeans);
 			//TODO
-			for(int n = 1; n < num_books+1; n++){
+			for(int n = 1; n != num_books+1; n++){
 //				System.out.println("Entry " + n);
 				if(req.getParameter("entry"+n) != null){
 					System.out.println("Deleting book with id " + n);
@@ -584,8 +584,11 @@ public class NACOAMainServlet extends HttpServlet {
 		
 		//String creditinfo = (String) req.getParameter("creditinfo");
 		
-		int user_id = Integer.parseInt(req.getParameter("user_id"));
+		int user_id = dHandler.getId(req.getParameter("username"));
+		System.out.println("Received username " + req.getParameter("username"));
+		System.out.println("Received user ID " + user_id);
 		int book_id = Integer.parseInt(req.getParameter("book_id"));
+		System.out.println("Received book ID " + book_id);
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		//get current date time with Date()
 		Date date = new Date();
@@ -600,7 +603,7 @@ public class NACOAMainServlet extends HttpServlet {
 		cartBeans = dHandler.getShoppingCart(user_id);
 		
 		req.getSession().setAttribute("shoppingCart", cartBeans);
-		handler.setCartToSession("shoppingCartDoc", req.getSession());
+		//handler.setCartToSession("shoppingCartDoc", req.getSession());
 		
 	}
 	
@@ -613,7 +616,7 @@ public class NACOAMainServlet extends HttpServlet {
 		cartBeans = dHandler.getShoppingCart(user_id);
 		
 		//TODO Need a way to get book id to delete from cart
-		for(int n = 0; n != totalEntries; n++){
+		for(int n = 0; n != totalEntries+1; n++){
 			if(req.getParameter("entry"+n) != null){
 				
 				//Need to remove from database
@@ -894,6 +897,7 @@ public class NACOAMainServlet extends HttpServlet {
 			//Search for right entry
 			NACOABean entry = resultBeans.get(0);
 			
+			System.out.println("Size of results is " + resultBeans.size());
 			int i = 0;
 			
 			while (entry.getBookID() != entryToViewNum) {
@@ -915,7 +919,8 @@ public class NACOAMainServlet extends HttpServlet {
 			ResultPageBean viewBean = new ResultPageBean();
 			
 			//get the current page number (default = 1)
-			int totalResults = handler.getNumResults();
+			//int totalResults = handler.getNumResults();
+			int totalResults = resultBeans.size();
 			viewBean.setTotalResults(totalResults);
 			
 			String pageNo = req.getParameter("page");
@@ -926,7 +931,7 @@ public class NACOAMainServlet extends HttpServlet {
 			//if the current page number is > 1 we can go backwards etc
 			if(pageNo == null){
 				//default is first page
-				resultBeans = handler.getBeanFromResultDoc(0);
+				//resultBeans = handler.getBeanFromResultDoc(0);
 				
 				if(currPageNo > 1){
 					viewBean.setLess(true);
@@ -942,9 +947,18 @@ public class NACOAMainServlet extends HttpServlet {
 				} 
 				
 				//retrieve results
-				resultBeans = handler.getBeanFromResultDoc(startEntry);
+				//resultBeans = handler.getBeanFromResultDoc(startEntry);
+				ArrayList<NACOABean> temp = new ArrayList<NACOABean>();
+				
+				int x = startEntry;
+				
+				while (x < resultBeans.size() + 1) {
+					temp.add(resultBeans.get(x));
+					x++;
+				}
+				
 				//set up our bean to be displayed
-				viewBean.setResultBeans(resultBeans); //we keep two copies
+				viewBean.setResultBeans(temp); //we keep two copies
 				
 				//set up entry
 				if(currPageNo > 1){

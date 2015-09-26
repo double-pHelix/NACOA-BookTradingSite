@@ -37,7 +37,12 @@
 		      </tr>
 		    </table> 
 		    <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button">Back to Search</a>
-		      <input class="btn btn-xx btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart">
+
+	  	</c:when>
+	  	<c:when test="${requestScope.logged_in == true}">
+	  		<input type="hidden" name="book_id" value="${requestScope.viewBean.readEntry.bookID}">
+		    <input type="hidden" name="page" value="${requestScope.viewBean.curr_page_num}">
+	  		<input class="btn btn-xx btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart">
 	  	</c:when>
 	  <c:otherwise>
 	  	<!-- Displaying a user -->

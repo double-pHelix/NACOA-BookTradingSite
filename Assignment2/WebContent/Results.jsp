@@ -88,14 +88,14 @@
               <form name="articles_option" action="" method="POST">
                 <!--  set for each of these entries some way of id to add to cart later -->
                 <input type="hidden" name="book_id" value="${entry.bookID}">
+                <input type="hidden" name="username" value="${sessionScope.username}">
                 <center>
                 <tr class="active">
                   <td class="active"><a href="${pageContext.request.contextPath}/results?entryMoreView=${entry.bookID}&page=${requestScope.viewBean.curr_page_num}">${entry.booktitle}</a></td>
                   <td class="success">${entry.author}</td>
                   <td class="warning">${entry.price}</td>
                   <td class="danger">${entry.genre}</td>
-                  
-                  <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart"></td>
+				  <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart"></td>
                 </tr>
                 
                 <input type="hidden" name="page" value="${requestScope.viewBean.curr_page_num}">
