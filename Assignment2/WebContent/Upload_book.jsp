@@ -54,7 +54,10 @@
       
       <c:choose>
         <c:when test="${sessionScope.upload_success == true}">
-          <h2>Your book has been uploaded successfully</h2> 
+          <h2>Your book has been uploaded successfully</h2>
+          <a href="${pageContext.request.contextPath}/upload_book" class="btn btn-default" role="button">Upload Another</a>
+          <br> <br>
+          <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button">Back to Main</a>
         </c:when>
         <c:otherwise>
          
@@ -70,11 +73,11 @@
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Author" name="author">
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Picture" name="picture">
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Publisher" name="publisher">
-              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Date of Publication" name="dateofpublication">
+              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Date of Publication (YYYY-MM-DD)" name="dateofpublication">
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Pages" name="pages">
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="ISBN" name="isbn">
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Genre" name="genre">
-              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Price" name="price">
+              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Price ($)" name="price">
             </div><!-- /input-group -->
           <br>
               <div class="input-group-btn">
