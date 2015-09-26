@@ -61,6 +61,35 @@ public class NACOADataHandler {
 		//handler.addHistoryBuyEntry(1,2); //
 		//handler.addHistoryAddCartEntry(1, 2);//
 		//handler.addHistoryRemoveCartEntry(1, 2);//
+		if(handler.getCountBooksSold(2) == 3){
+			System.out.println("Test 1 Passed! ");
+		} else {
+			System.out.println("Test 1 Failed! ");
+		}
+		
+		if(handler.getCountBooksNotSold(2) == 1){
+			System.out.println("Test 2 Passed! ");
+		} else {
+			System.out.println("Test 2 Failed! ");
+		}
+		if(handler.getCountBooksBought(2) == 2){
+			System.out.println("Test 3 Passed! ");
+		} else {
+			System.out.println("Test 3 Failed! ");
+		}
+		/*
+		if(handler.getCountBooksSold(3) == 3){
+			System.out.println("Test Passed! ");
+		} else {
+			System.out.println("Test Failed! ");
+		}
+		
+		if(handler.getCountBooksSold(3) == 3){
+			System.out.println("Test Passed! ");
+		} else {
+			System.out.println("Test Failed! ");
+		}
+		*/
 	}
 	
 	//Runs tests to make sure the functions are working
@@ -3677,10 +3706,10 @@ public void changeLastname(int user_id, String lastname) {
 		return resultUser;
 	}
 	
-	public int getCountOf(String field, String condition, String table){
+	public long getCountBooksSold(int user_id){
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		int id = -1;
+		long count = 0;
 		try {
 			//STEP 2: Register JDBC driver
 			Class.forName("com.mysql.jdbc.Driver");
@@ -3691,11 +3720,10 @@ public void changeLastname(int user_id, String lastname) {
 			//STEP 4: Execute a query
 			System.out.println("Creating statement...");
 			
-			String sql = "SELECT count(*) FROM users WHERE (? = ?)";
+			String sql = "SELECT count(*) FROM user_seller_books WHERE (user_id = ? AND is_sold = TRUE)";
 	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, field);
-			stmt.setString(2, condition);
+			stmt.setInt(1, user_id);
 			stmt.executeQuery();
 			
 			ResultSet rs = stmt.getResultSet();
@@ -3703,15 +3731,13 @@ public void changeLastname(int user_id, String lastname) {
 			  //STEP 5: Extract data from result set
 			while(rs.next()){
 				//Retrieve by column name
-				id = rs.getInt("id");
+				count = rs.getLong(1); 
 		
 			}
 					  //STEP 6: Clean-up environment
 			rs.close();
 			stmt.close();
 			conn.close();	
-			
-			return id;
 			
 		} catch (SQLException se) {
 			//Handle errors for JDBC
@@ -3731,8 +3757,120 @@ public void changeLastname(int user_id, String lastname) {
 		} //end try
 			
 			
-		return id; 
+		return count; 
+	}
+	
+	public long getCountBooksNotSold(int user_id){
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		long count = 0;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			
+			//STEP 4: Execute a query
+			System.out.println("Creating statement...");
+			
+			String sql = "SELECT count(*) FROM user_seller_books WHERE (user_id = ? AND is_sold = FALSE)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, user_id);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+	
+			  //STEP 5: Extract data from result set
+			while(rs.next()){
+				//Retrieve by column name
+				count = rs.getLong(1); 
 		
+			}
+					  //STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+			
+			
+		return count; 
 		
 	}
+	
+	public long getCountBooksBought(int user_id){
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		long count = 0;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			
+			//STEP 4: Execute a query
+			System.out.println("Creating statement...");
+			
+			String sql = "SELECT count(*) FROM user_customer_books WHERE (user_id = ? AND is_bought = TRUE)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, user_id);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+	
+			  //STEP 5: Extract data from result set
+			while(rs.next()){
+				//Retrieve by column name
+				count = rs.getLong(1); 
+		
+			}
+					  //STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+			
+			
+		return count; 
+		
+	}
+	
+	
+	
 }
+
