@@ -62,10 +62,13 @@
         <h1>${requestScope.viewBean.readEntry.booktitle}</h1>
         
         <jsp:include page="/displayMore.jsp" />
+      </c:when>  
+   
+      <c:when test="${sessionScope.banUser != null}">
+        <h1>"${sessionScope.username} has been banned"</h1>
         
-      </c:when>    
+      </c:when>  
     <c:otherwise>
-    
       <h1> Results </h1>
       <h4>Found ${requestScope.viewBean.totalResults} many results.</h4>
       
@@ -152,6 +155,8 @@
               <td scope="col"><b>LASTNAME</b></td>
               <td scope="col"><b>NICKNAME</b></td>
               <td scope="col"><b>ACTIONS</b></td>
+              <!--  Permissions -->
+              <td scope="col"><b>ACTIONS ADMIN</b></td>
             </tr>
             
             <c:forEach var="entry" items="${requestScope.viewUserBean.resultBeans}" varStatus="varStatus" >
@@ -159,6 +164,8 @@
               <form name="articles_option" action="" method="POST">
                 <!--  set for each of these entries some way of id to for banning purposes later -->
                 <input type="hidden" name="user_id" value="${entry.userID}">
+                <input type="hidden" name="banUser" value="true">
+                <input type="hidden" name="username" value="${entry.username}">
                 <center>
                 <tr class="active">
                   <td class="active"><a href="${pageContext.request.contextPath}/results?entryMoreViewUser=${entry.userID}&page=${requestScope.viewUserBean.curr_page_num}">${entry.username}</a></td>
@@ -166,6 +173,8 @@
                   <td class="warning">${entry.lastname}</td>
                   <td class="danger">${entry.nickname}</td>
                   
+                  <!-- Hyperlink to profile Felix?? -->
+                  <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="user_profile" id="edit_profile_button" value="View Profile"></td>
                   <!--  We need to set permissions to check if we can ban? -->
                   <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="ban_user" id="edit_profile_button" value="Ban User"></td>
                 </tr>
@@ -220,7 +229,6 @@
           
         </c:otherwise>
       </c:choose>
-       
       </c:otherwise>
     </c:choose>
 

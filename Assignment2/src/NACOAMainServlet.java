@@ -428,6 +428,9 @@ public class NACOAMainServlet extends HttpServlet {
 				
 				processResults(req,res); //this function lets have a look at it
 
+			} else if (req.getParameter("ban_user") != null) {
+				
+				banUser(req, res);
 			} else {
 				//just looking at results 
 				
@@ -519,6 +522,15 @@ public class NACOAMainServlet extends HttpServlet {
 	    	requestDispatcher.forward(req, res);
 		}
 
+	}
+
+	private void banUser(HttpServletRequest req, HttpServletResponse res) {
+		
+		int user_id = Integer.parseInt(req.getParameter("user_id"));
+		
+		System.out.println("Received user id " + user_id);
+		
+		dHandler.banUser(user_id);
 	}
 
 	private void setUserDetails(HttpServletRequest req, int id) {

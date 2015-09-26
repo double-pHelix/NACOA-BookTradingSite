@@ -3576,18 +3576,69 @@ public void changeLastname(int user_id, String lastname) {
 						 + "AND author LIKE ?"
 						 + "AND genre LIKE ?";
 	
+			String newTitle = title;
+			String newAuthor = author;
+			String newGenre = genre;
+			boolean exactTitle = false;
+			boolean exactAuthor = false;
+			boolean exactGenre = false;
+			//Exact match
+			if (!title.isEmpty() && title.toCharArray()[0] == '"') {
+				sql = "SELECT * FROM books "
+						 + "WHERE (title = ?)"
+						 + " AND ";
+				newTitle = title.substring(1, title.length() - 1);
+				exactTitle = true;
+			} else {
+				sql = "SELECT * FROM books "
+						 + "WHERE title LIKE ?"
+						 + " AND ";
+			}
+			
+			if (!author.isEmpty() && author.toCharArray()[0] == '"') {
+				sql = sql + "(author = ?)"
+						  + " AND ";
+				newAuthor = author.substring(1, author.length() - 1);
+				//System.out.println("New author is " + newAuthor);
+				exactAuthor = true;
+			} else {
+				sql = sql + " author LIKE ?"
+						 + " AND ";
+			}
+			
+			if (!genre.isEmpty() && genre.toCharArray()[0] == '"') {
+				sql = sql + "(genre = ?)";
+				newGenre = genre.substring(1, genre.length() - 1);
+				exactGenre = true;
+			} else {
+				sql = sql + "genre LIKE ?";
+			}
 			
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
 			//System.out.println("Title is " + title);
 			//System.out.println("Author is " + author);
 			//System.out.println("Genre is " + genre);
-			stmt.setString(1, "%"+title+"%");
-			stmt.setString(2, "%"+author+"%");
-			stmt.setString(3, "%"+genre+"%");
+			if (exactTitle) {
+				stmt.setString(1, newTitle);
+			} else {
+				stmt.setString(1, "%"+newTitle+"%");
+			}
 			
-			//System.out.println("statement is: ");
-			//System.out.println(stmt);
+			if (exactAuthor) {
+				stmt.setString(2, newAuthor);	
+			} else {
+				stmt.setString(2, "%"+newAuthor+"%");
+			}
+			
+			if (exactGenre) {
+				stmt.setString(3, newGenre);
+			} else {
+				stmt.setString(3, "%"+newGenre+"%");
+			}
+			
+			System.out.println("statement is: ");
+			System.out.println(stmt);
 			stmt.executeQuery();
 			
 			ResultSet rs = stmt.getResultSet();
@@ -3640,6 +3691,139 @@ public void changeLastname(int user_id, String lastname) {
 		return resultBook;
 	}
 	
+	//Searches database for book
+	public ArrayList<NACOABean> bookAdminSearch(String title, String author, String genre) {
+		ArrayList<NACOABean> resultBook = new ArrayList<NACOABean>();
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		//String bookName = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM books "
+						 + "WHERE title LIKE ?"
+						 + "AND author LIKE ?"
+						 + "AND genre LIKE ?";
+	
+			String newTitle = title;
+			String newAuthor = author;
+			String newGenre = genre;
+			boolean exactTitle = false;
+			boolean exactAuthor = false;
+			boolean exactGenre = false;
+			//Exact match
+			if (!title.isEmpty() && title.toCharArray()[0] == '"') {
+				sql = "SELECT * FROM books "
+						 + "WHERE (title = ?)"
+						 + " AND ";
+				newTitle = title.substring(1, title.length() - 1);
+				exactTitle = true;
+			} else {
+				sql = "SELECT * FROM books "
+						 + "WHERE title LIKE ?"
+						 + " AND ";
+			}
+			
+			if (!author.isEmpty() && author.toCharArray()[0] == '"') {
+				sql = sql + "(author = ?)"
+						  + " AND ";
+				newAuthor = author.substring(1, author.length() - 1);
+				exactAuthor = true;
+			} else {
+				sql = sql + "author LIKE ?"
+						 + " AND ";
+			}
+			
+			if (!genre.isEmpty() && genre.toCharArray()[0] == '"') {
+				sql = sql + "(genre = ?)";
+				newGenre = genre.substring(1, genre.length() - 1);
+				exactGenre = true;
+			} else {
+				sql = sql + "genre LIKE ?";
+			}
+			
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+			//System.out.println("Title is " + title);
+			//System.out.println("Author is " + author);
+			//System.out.println("Genre is " + genre);
+			if (exactTitle) {
+				stmt.setString(1, newTitle);
+			} else {
+				stmt.setString(1, "%"+newTitle+"%");
+			}
+			
+			if (exactAuthor) {
+				stmt.setString(2, newAuthor);	
+			} else {
+				stmt.setString(2, "%"+newAuthor+"%");
+			}
+			
+			if (exactGenre) {
+				stmt.setString(3, newGenre);
+			} else {
+				stmt.setString(3, "%"+newGenre+"%");
+			}
+			
+			System.out.println("statement is: ");
+			System.out.println(stmt);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+			
+			while(rs.next()) {
+				
+				//Need to make sure that the book has not been sold yet?
+				int bookID = rs.getInt("id");
+
+				NACOABean book = new NACOABean();
+				
+				book.setBookID(rs.getInt("id"));
+				book.setBooktitle(rs.getString("title"));
+				book.setAuthor(rs.getString("author"));
+				book.setPicture(rs.getString("picture"));
+				book.setPublisher(rs.getString("publisher"));
+				book.setDOP(rs.getString("dateofpublication"));
+				book.setPages(Integer.toString(rs.getInt("pages")));
+				book.setIsbn(rs.getString("isbn"));
+				book.setGenre(rs.getString("genre"));
+				float price = rs.getFloat("price");
+				book.setPrice(Float.toString(price));
+				resultBook.add(book);
+				
+			}	
+
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		return resultBook;
+	}
+		
 	//Searches database for users
 	public ArrayList<NACOAUserBean> userSearch(String username) {
 		ArrayList<NACOAUserBean> resultUser = new ArrayList<NACOAUserBean>();
@@ -3658,17 +3842,121 @@ public void changeLastname(int user_id, String lastname) {
 			
 			String sql = "SELECT * FROM users "
 						 + "WHERE (username LIKE ?)";
-	
+			boolean exactUsername = false;
+			String newUsername = username;
+			//Exact match
+			if (!username.isEmpty() && username.toCharArray()[0] == '"') {
+				sql = "SELECT * FROM users "
+						 + "WHERE (username = ?)";
+				exactUsername = true;
+				newUsername = username.substring(1, username.length() - 1);
+			}
+			
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, "%"+username+"%");
+			
+			if (exactUsername) {
+				stmt.setString(1, newUsername);
+			} else {
+				stmt.setString(1, "%"+newUsername+"%");
+			}
+			
 			stmt.executeQuery();
 			
 			ResultSet rs = stmt.getResultSet();
 			
 			while(rs.next()) {
 
-				NACOAUserBean user = new NACOAUserBean();
+				int id = rs.getInt("id");
+				if (!checkHalted(id)) {
+					NACOAUserBean user = new NACOAUserBean();
+					
+					user.setUserID(rs.getInt("id"));
+					user.setUsername(rs.getString("username"));
+					user.setFirstname(rs.getString("firstname"));
+					user.setLastname(rs.getString("lastname"));
+					user.setNickname(rs.getString("nickname"));
+					user.setEmailAddress(rs.getString("email"));
+					user.setDOB(rs.getString("dob"));
+					user.setPassword(rs.getString("password"));
+					user.setAddress(rs.getString("address"));
+					user.setCreditDetails(rs.getString("creditcarddetails"));
+					user.setHalted(rs.getInt("is_halted"));
+					
+					System.out.println("Username is " + user.getUsername());
+					//System.out.println(user);
+					resultUser.add(user);
+				}
+				
+			}	
+
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
 		
+		return resultUser;
+	}
+	
+	//Searches database for users
+	public ArrayList<NACOAUserBean> userAdminSearch(String username) {
+		ArrayList<NACOAUserBean> resultUser = new ArrayList<NACOAUserBean>();
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		//String bookName = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM users "
+						 + "WHERE (username LIKE ?)";
+	
+			boolean exactUsername = false;
+			String newUsername = username;
+			//Exact match
+			if (!username.isEmpty() && username.toCharArray()[0] == '"') {
+				sql = "SELECT * FROM users "
+						 + "WHERE (username = ?)";
+				exactUsername = true;
+				newUsername = username.substring(1, username.length() - 1);
+			}
+			
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			if (exactUsername) {
+				stmt.setString(1, newUsername);
+			} else {
+				stmt.setString(1, "%"+newUsername+"%");
+			}
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+			
+			while(rs.next()) {
+
+				int id = rs.getInt("id");
+				NACOAUserBean user = new NACOAUserBean();
+				
 				user.setUserID(rs.getInt("id"));
 				user.setUsername(rs.getString("username"));
 				user.setFirstname(rs.getString("firstname"));
@@ -3681,7 +3969,10 @@ public void changeLastname(int user_id, String lastname) {
 				user.setCreditDetails(rs.getString("creditcarddetails"));
 				user.setHalted(rs.getInt("is_halted"));
 				
+				System.out.println("Username is " + user.getUsername());
+				//System.out.println(user);
 				resultUser.add(user);
+				
 			}	
 
 			//STEP 6: Clean-up environment
@@ -3872,7 +4163,49 @@ public void changeLastname(int user_id, String lastname) {
 		
 	}
 	
+	//Bans user
+	public void banUser(int id) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		//String bookName = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "UPDATE users SET is_halted=? WHERE (id = ?)";
 	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, 1);
+			stmt.setInt(2, id);
+			stmt.executeUpdate();
+			
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+	}
 	
 }
 
