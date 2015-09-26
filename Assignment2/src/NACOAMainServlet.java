@@ -959,7 +959,7 @@ public class NACOAMainServlet extends HttpServlet {
 				
 				int x = startEntry;
 				
-				while (x < resultBeans.size() + 1) {
+				while (x < resultBeans.size()) {
 					temp.add(resultBeans.get(x));
 					x++;
 				}
