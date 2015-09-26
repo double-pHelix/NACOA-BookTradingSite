@@ -78,7 +78,7 @@
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Credit Card Info (number)" name="creditinfo">
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Introduce yourself!" name="description">
             </div><!-- /input-group -->
-          
+              <br>
               <div class="input-group-btn">
                 <button class="btn btn-default" type="submit"><b>Register</b></button>
               </div><!-- /btn-group -->
@@ -88,11 +88,6 @@
         
         </c:otherwise> 
       </c:choose>
-      
-        
-             
-
-            
       </div>
   
    

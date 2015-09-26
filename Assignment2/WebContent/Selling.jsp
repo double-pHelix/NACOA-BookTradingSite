@@ -50,9 +50,9 @@
     <jsp:include page="/topBanner.jsp" /> 
     <div class="jumbotron">
     <h1>My Books</h1>
-      <h2>Currently Selling</h2>
       <c:choose>
       <c:when test="${not empty sessionScope.sellingList}">
+      	<h2>Currently Selling</h2>
         <form name="articles_option" action="" method="POST">
           <input type="hidden" name="remove_cart" value="yes">
           <input type="hidden" name="user_id" value="${sessionScope.user_id}">
@@ -104,9 +104,6 @@
 
     <c:otherwise>
       <h2>No Books on Sale!</h2>
-      <a href="${pageContext.request.contextPath}/upload_book" class="btn btn-info" role="button">Sell a Book</a>
-      <br><br>
-      <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button">Back to Search</a>
     </c:otherwise>
     </c:choose>
     
@@ -170,6 +167,10 @@
     
     </c:otherwise>
     </c:choose>
+   	  <br>
+      <a href="${pageContext.request.contextPath}/upload_book" class="btn btn-info" role="button">Sell a Book</a>
+      <br><br>
+      <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button">Back to Search</a>
       </div>
   
    
