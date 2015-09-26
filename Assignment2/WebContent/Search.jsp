@@ -59,7 +59,7 @@
           <c:choose>
             <c:when test="${param.search=='Book Search'}">
               <h2>Book Search</h2>
-              <form action="" method="GET">
+              <form action="search" method="GET">
                 <input class="btn btn-ss btn-info" type="submit" value="User Search">
               </form>
                 <br>
@@ -84,7 +84,7 @@
             <c:otherwise>
             
               <h2>User Search </h2>    
-              <form action="" method="GET">
+              <form action="search" method="GET">
                 <input class="btn btn-ss btn-info" type="submit" name="search" value="Book Search">
               </form>
               <br> 

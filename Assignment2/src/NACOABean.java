@@ -42,6 +42,7 @@ public class NACOABean implements Serializable {
 	private String pages; //this tends to be ranges
 	private String isbn;
 	private String genre;
+	private String description;
 	
 	private String journal;
 	private String volume;
@@ -290,5 +291,13 @@ public class NACOABean implements Serializable {
 	
 	public void setBookID(int bID) {
 		this.bookID = bID;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public String getDescription() {
+		return description;
 	}
 }

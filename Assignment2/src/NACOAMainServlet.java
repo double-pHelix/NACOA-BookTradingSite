@@ -488,7 +488,7 @@ public class NACOAMainServlet extends HttpServlet {
 			pausedBeans = dHandler.getPausedList(user_id);
 			req.getSession().setAttribute("pausedList", pausedBeans);
 			//TODO
-			for(int n = 1; n < num_books+1; n++){
+			for(int n = 1; n != num_books+1; n++){
 //				System.out.println("Entry " + n);
 				if(req.getParameter("entry"+n) != null){
 					System.out.println("Deleting book with id " + n);
@@ -532,6 +532,7 @@ public class NACOAMainServlet extends HttpServlet {
 		req.getSession().setAttribute("dob", userDetails.get(5));
 		req.getSession().setAttribute("address", userDetails.get(6));
 		req.getSession().setAttribute("creditinfo", userDetails.get(7));
+		req.getSession().setAttribute("description", userDetails.get(8));
 	}
 
 	private void verifyUser(int id, String code) {
@@ -584,8 +585,11 @@ public class NACOAMainServlet extends HttpServlet {
 		
 		//String creditinfo = (String) req.getParameter("creditinfo");
 		
-		int user_id = Integer.parseInt(req.getParameter("user_id"));
+		int user_id = dHandler.getId(req.getParameter("username"));
+		System.out.println("Received username " + req.getParameter("username"));
+		System.out.println("Received user ID " + user_id);
 		int book_id = Integer.parseInt(req.getParameter("book_id"));
+		System.out.println("Received book ID " + book_id);
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		//get current date time with Date()
 		Date date = new Date();
@@ -600,7 +604,7 @@ public class NACOAMainServlet extends HttpServlet {
 		cartBeans = dHandler.getShoppingCart(user_id);
 		
 		req.getSession().setAttribute("shoppingCart", cartBeans);
-		handler.setCartToSession("shoppingCartDoc", req.getSession());
+		//handler.setCartToSession("shoppingCartDoc", req.getSession());
 		
 	}
 	
@@ -613,7 +617,7 @@ public class NACOAMainServlet extends HttpServlet {
 		cartBeans = dHandler.getShoppingCart(user_id);
 		
 		//TODO Need a way to get book id to delete from cart
-		for(int n = 0; n != totalEntries; n++){
+		for(int n = 0; n != totalEntries+1; n++){
 			if(req.getParameter("entry"+n) != null){
 				
 				//Need to remove from database
@@ -674,6 +678,8 @@ public class NACOAMainServlet extends HttpServlet {
 		String dob = (String) req.getParameter("dob");
 		String address = (String) req.getParameter("address");
 		String creditinfo = (String) req.getParameter("creditinfo");
+		String description = (String) req.getParameter("description");
+		
 		System.out.println(":" + username );
 		System.out.println(":" + password );
 		System.out.println(":" + email );
@@ -683,10 +689,11 @@ public class NACOAMainServlet extends HttpServlet {
 		System.out.println(":" + dob );
 		System.out.println(":" + address );
 		System.out.println(":" + creditinfo );
+		System.out.println(":" + description );
 		
 		System.out.println("Creating User in MySQL Database");
 		if (!dHandler.userExists(username)) {
-			int user_id = dHandler.createUser(username, password, email, nickname, firstname, lastname, dob, address, creditinfo);
+			int user_id = dHandler.createUser(username, password, email, nickname, firstname, lastname, dob, address, creditinfo, description);
 			return user_id;
 		}else {
 			return -1;
@@ -711,6 +718,8 @@ public class NACOAMainServlet extends HttpServlet {
 		String isbn = (String) req.getParameter("isbn");
 		String genre = (String) req.getParameter("genre");
 		String price = (String) req.getParameter("price");
+		String description = (String) req.getParameter("description");
+		
 		System.out.println(":" + user_id );
 		System.out.println(":" + today );
 		System.out.println(":" + title );
@@ -721,9 +730,10 @@ public class NACOAMainServlet extends HttpServlet {
 		System.out.println(":" + isbn );
 		System.out.println(":" + genre );
 		System.out.println(":" + price );
+		System.out.println(":" + description );
 		
 		System.out.println("Creating User in MySQL Database");
-		int book_id = dHandler.createBook(user_id, today, title, author, picture, price, publisher, dateofpublication, pages, isbn, genre);
+		int book_id = dHandler.createBook(user_id, today, title, author, picture, price, publisher, dateofpublication, pages, isbn, genre, description);
 		
 		return book_id;
 	}
@@ -894,6 +904,7 @@ public class NACOAMainServlet extends HttpServlet {
 			//Search for right entry
 			NACOABean entry = resultBeans.get(0);
 			
+			System.out.println("Size of results is " + resultBeans.size());
 			int i = 0;
 			
 			while (entry.getBookID() != entryToViewNum) {
@@ -915,7 +926,8 @@ public class NACOAMainServlet extends HttpServlet {
 			ResultPageBean viewBean = new ResultPageBean();
 			
 			//get the current page number (default = 1)
-			int totalResults = handler.getNumResults();
+			//int totalResults = handler.getNumResults();
+			int totalResults = resultBeans.size();
 			viewBean.setTotalResults(totalResults);
 			
 			String pageNo = req.getParameter("page");
@@ -926,7 +938,7 @@ public class NACOAMainServlet extends HttpServlet {
 			//if the current page number is > 1 we can go backwards etc
 			if(pageNo == null){
 				//default is first page
-				resultBeans = handler.getBeanFromResultDoc(0);
+				//resultBeans = handler.getBeanFromResultDoc(0);
 				
 				if(currPageNo > 1){
 					viewBean.setLess(true);
@@ -942,9 +954,18 @@ public class NACOAMainServlet extends HttpServlet {
 				} 
 				
 				//retrieve results
-				resultBeans = handler.getBeanFromResultDoc(startEntry);
+				//resultBeans = handler.getBeanFromResultDoc(startEntry);
+				ArrayList<NACOABean> temp = new ArrayList<NACOABean>();
+				
+				int x = startEntry;
+				
+				while (x < resultBeans.size() + 1) {
+					temp.add(resultBeans.get(x));
+					x++;
+				}
+				
 				//set up our bean to be displayed
-				viewBean.setResultBeans(resultBeans); //we keep two copies
+				viewBean.setResultBeans(temp); //we keep two copies
 				
 				//set up entry
 				if(currPageNo > 1){
