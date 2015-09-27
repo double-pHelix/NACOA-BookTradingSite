@@ -4185,6 +4185,8 @@ public void changeLastname(int user_id, String lastname) {
 		return count; 	
 	}
 	
+
+	
 	//Bans user
 	public void banUser(int id) {
 		Connection conn = null;

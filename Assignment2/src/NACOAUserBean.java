@@ -13,6 +13,7 @@ public class NACOAUserBean {
 	private String creditDetails;
 	private int isHalted;
 	private int isAdmin;
+	private boolean isUser;
 	private String description;
 	private int numBooksSold;
 	private int numBooksSale;
@@ -20,7 +21,7 @@ public class NACOAUserBean {
 	private int numBooksInCart;
 	
 	public NACOAUserBean() {
-		
+		isUser = false;
 	}
 	
 	public void setUserID(int user_id) {
@@ -182,4 +183,14 @@ public class NACOAUserBean {
 	public void setNumBooksInCart(int numBooksInCart) {
 		this.numBooksInCart = numBooksInCart;
 	}
+
+	public boolean isIsUser() {
+		return isUser;
+	}
+
+	public void setIsUser(boolean isUser) {
+		this.isUser = isUser;
+	}
+
+
 }

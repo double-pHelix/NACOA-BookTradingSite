@@ -306,9 +306,13 @@ public class NACOAMainServlet extends HttpServlet {
 			if(userToView.equals(currUser)){ //we view our own profile
 				//load user details
 				NACOAUserBean profileBean = dHandler.getUserDetails(user_id);
+				profileBean.setIsUser(true);
 				
+				ArrayList<NACOABean> sellingBeans = dHandler.getSellingList(user_id);
+				
+				req.getSession().setAttribute("selling_books", sellingBeans);
 				req.getSession().setAttribute("profile", profileBean);
-	
+				
 			} else {
 				
 				

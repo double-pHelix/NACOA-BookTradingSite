@@ -57,32 +57,8 @@
          <!-- Default we show basic, if we have a request to have advanced we switch -->
          
           <c:choose>
-            <c:when test="${param.search=='Book Search'}">
-              <h2>Book Search</h2>
-              <form action="search" method="GET">
-                <input class="btn btn-ss btn-info" type="submit" value="User Search">
-              </form>
-                <br>
-                
-              <form action="${pageContext.request.contextPath}/results" method="POST"> 
-                <input type="hidden" name="search_type" value="book">
-                <div class="input-group">
-                  <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Author" name="search_author">
-                  <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Title" name="search_title">                         
-                  <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Genre" name="search_genre">              
-                </div><!-- /input-group -->
-                <div class="input-group">
-                  <div class="input-group-btn">
-                    <button class="btn btn-default" type="submit"><b>Search</b></button>
-                  </div><!-- /btn-group -->
-                    
-                </div><!-- /input-group -->
-              </form>
-              <br>
-
-            </c:when>    
-            <c:otherwise>
-            
+            <c:when test="${param.search=='User Search'}">
+              
               <h2>User Search </h2>    
               <form action="search" method="GET">
                 <input class="btn btn-ss btn-info" type="submit" name="search" value="Book Search">
@@ -93,6 +69,31 @@
                 <input type="hidden" name="search_type" value="user">
                 <div class="input-group">
                   <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Username" name="search_username">          
+                </div><!-- /input-group -->
+                <div class="input-group">
+                  <div class="input-group-btn">
+                    <button class="btn btn-default" type="submit"><b>Search</b></button>
+                  </div><!-- /btn-group -->
+                    
+                </div><!-- /input-group -->
+              </form>
+              
+              <br>
+
+            </c:when>    
+            <c:otherwise>
+              <h2>Book Search</h2>
+              <form action="search" method="GET">
+                <input class="btn btn-ss btn-info" type="submit" name="search" value="User Search">
+              </form>
+                <br>
+                
+              <form action="${pageContext.request.contextPath}/results" method="POST"> 
+                <input type="hidden" name="search_type" value="book">
+                <div class="input-group">
+                  <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Author" name="search_author">
+                  <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Title" name="search_title">                         
+                  <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Genre" name="search_genre">              
                 </div><!-- /input-group -->
                 <div class="input-group">
                   <div class="input-group-btn">
