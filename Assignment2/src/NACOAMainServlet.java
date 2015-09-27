@@ -302,7 +302,7 @@ public class NACOAMainServlet extends HttpServlet {
 			String userToView = (String) req.getParameter("user");
 			String currUser = (String) req.getSession().getAttribute("username");
 			int user_id = (int) req.getSession().getAttribute("user_id");
-			
+			updateSessionUserDetails(req, user_id);
 			if(userToView.equals(currUser)){ //we view our own profile
 				//load user details
 				NACOAUserBean profileBean = dHandler.getUserDetails(user_id);
@@ -387,6 +387,8 @@ public class NACOAMainServlet extends HttpServlet {
 	    	requestDispatcher = req.getRequestDispatcher("/Login.jsp");
 	    	requestDispatcher.forward(req, res);
 		} else if (uri.contains("account")){ //Update account details page
+			int user_id = (int) req.getSession().getAttribute("user_id");
+			updateSessionUserDetails(req, user_id);
 			requestDispatcher = req.getRequestDispatcher("/Account_setting.jsp");
 	    	requestDispatcher.forward(req, res);
 		} else if (uri.contains("updacc")){ //Update the account details
@@ -623,6 +625,9 @@ public class NACOAMainServlet extends HttpServlet {
 		//Need to get book_id somehow
 		dHandler.addBookToCart(user_id, book_id, 0, dateFormat.format(date).replace("/",  "-"), dHandler.DUMMYDOS);
 		cartBeans = dHandler.getShoppingCart(user_id);
+		
+		//Don't forget to make an entry for our transaction history!
+		dHandler.addHistoryAddCartEntry(user_id,book_id);
 		
 		req.getSession().setAttribute("shoppingCart", cartBeans);
 		//handler.setCartToSession("shoppingCartDoc", req.getSession());
