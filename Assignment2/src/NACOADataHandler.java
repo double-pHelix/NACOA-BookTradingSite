@@ -82,6 +82,13 @@ public class NACOADataHandler {
 		} else {
 			System.out.println("Test 4 Failed! ");
 		}
+		
+		if(handler.getUserId("qwe") == 2){
+			System.out.println("Test 5 Passed! ");
+		} else {
+			System.out.println("Test 5 Failed! ");
+		}
+		
 		/*
 		if(handler.getCountBooksSold(3) == 3){
 			System.out.println("Test Passed! ");
@@ -771,7 +778,7 @@ public class NACOADataHandler {
 	}
 	
 	//Gets userID using book id
-	public int getUserID (int book_id){
+	public int getSellersUserID (int book_id){
 		
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -3400,11 +3407,6 @@ public void changeLastname(int user_id, String lastname) {
 				details.setCreditDetails(rs.getString("creditcarddetails"));		
 				details.setDescription(rs.getString("description"));
 				details.setIsAdmin(rs.getBoolean(("is_admin")));
-				if(rs.getBoolean(("is_admin"))){
-					System.out.println("We are admin!");
-				} else {
-					System.out.println("We are not admin!");
-				}
 				details.setIsHalted(Integer.parseInt(rs.getString("is_halted")));
 				
 			}
@@ -4238,6 +4240,126 @@ public void changeLastname(int user_id, String lastname) {
 		} //end try
 		
 	}
+	//Gets the shopping cart as beans
+	public ArrayList<NACOAHistoryBean> getUserHistory (int user_id){
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ArrayList<NACOAHistoryBean> history = new ArrayList<NACOAHistoryBean>();
+
+		int bookID = 0;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			String sql = "SELECT * FROM user_history LEFT JOIN books ON user_history.book_id = books.id"
+								+" WHERE (user_id = ?)";
+			
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, user_id);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+			
+			while(rs.next()){
+				NACOAHistoryBean newEntry = new NACOAHistoryBean();
+				//Retrieve by column name
+				newEntry.setBook_id(rs.getInt("book_id")); ;
+				newEntry.setUser_id(rs.getInt("user_id"));
+				newEntry.setAction(getActionName(rs.getInt("action_type")));
+				newEntry.setTimeStamp(Integer.toString(rs.getInt("book_id")));
+			}
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    e.printStackTrace();
+		} finally {
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+			
+		return history;
+	}
+	public String getActionName (int id){
+		if(id == ACTION_BUY){
+			return "Bought";
+		} else if (id == ACTION_ATC){
+			return "Added to Cart";
+		} else if (id == ACTION_RFC){
+			return "Removed from Cart";
+		} else {
+			return "Undefined Value";
+		}
+		
+	}
+	
+	//Gets userID using book id
+	//username should be unique
+		public int getUserId (String username){
+			
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			int userid = 0;
+			try {
+				//STEP 2: Register JDBC driver
+				Class.forName("com.mysql.jdbc.Driver");
+				//
+				conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+				
+				
+				//STEP 4: Execute a query
+				//System.out.println("Creating statement...");
+				
+				String sql = "SELECT * FROM users WHERE (username = ?)";
+		
+				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				stmt.setString(1, username);
+				stmt.executeQuery();
+				
+				ResultSet rs = stmt.getResultSet();
+		
+				  //STEP 5: Extract data from result set
+				while(rs.next()){
+					//Retrieve by column name
+					userid = rs.getInt("id");
+			
+				}
+				
+				//STEP 6: Clean-up environment
+				rs.close();
+				stmt.close();
+				conn.close();	
+
+			} catch (SQLException se) {
+				//Handle errors for JDBC
+				    se.printStackTrace();
+			} catch (Exception e) {
+			    //Handle errors for Class.forName
+			    e.printStackTrace();
+			} finally {
+			    //finally block used to close resources
+			 
+				try {
+				   if(conn!=null)
+				      conn.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				} //end finally try
+			} //end try
+			
+			
+			return userid; 
+		}
+	
 	
 }
 

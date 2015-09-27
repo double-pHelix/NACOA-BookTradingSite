@@ -23,7 +23,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-   	<title>${sessionScope.profile.username}'s Profile Page</title>
+   	<title>${sessionScope.profile.username}'s Transaction History</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
@@ -55,8 +55,7 @@
             <c:when test="${sessionScope.userDetails.isAdmin}">
               <c:choose>
                 <c:when test="${sessionScope.profile.isUser}">
-                  Admin cannot ban or view his own profile...but maybe just this once for testing... 
-                  <a href="${pageContext.request.contextPath}/transaction_history?user=${sessionScope.profile.username}">Click to test</a>
+                  Admin cannot ban or view his own profile
                 </c:when>    
                 <c:otherwise>
                   Not an admin1
@@ -70,69 +69,23 @@
       
       <div class="jumbotron">
       
-  
-          <h1>${sessionScope.profile.username}</h1>
-          <h2>User Profile</h2>
-          <!--  Display this user's profile -->
-          
-          <!--  What kind of info?? -->
-          <!--  Number of books: sold, bought... -->
-          
-          <p>
-            ${sessionScope.profile.description}
-          </p>
-          
-       </div> <!-- /container -->
-          
-        <div class="profile_info">
-          <div class="row placeholders">
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="http://www.malwarwickonbooks.com/wp-content/uploads/2014/09/hand-sell-blur.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Books Sold</h4>
-              <span class="text-muted">${sessionScope.profile.numBooksSold}</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="http://s3-media4.fl.yelpcdn.com/bphoto/N2lcaCuzP7u-0MDER3yL2g/ls.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Books On Sale</h4>
-              <span class="text-muted">${sessionScope.profile.numBooksSale}</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="http://www.columbuspubliclibrary.info/sites/www.columbuspubliclibrary.info/files/images/events/Dogs-Reading.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Books Bought</h4>
-              <span class="text-muted">${sessionScope.profile.numBooksBought}</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="https://playitagaindan.files.wordpress.com/2014/12/pile-of-books.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Books Wanted</h4>
-              <span class="text-muted">${sessionScope.profile.numBooksInCart}</span>
-            </div>
-          </div>
-        </div>
+        <h1>${sessionScope.profile.username}'s Transaction History</h1>
+
+        <!--  Display this user's profile -->
+   
+        <h2 class="sub-header"> History </h2>
         
-        
-        <h2 class="sub-header">
-          <c:choose>
-            <c:when test="${sessionScope.profile.isUser}">
-              My Books
-            </c:when>    
-            <c:otherwise>
-              Seller's Books
-            </c:otherwise>
-          </c:choose>
-        </h2>
         <div class="content">
         <table class="table table-bordered"> 
            <thead>
             <tr class="active">
               <td scope="col"><b>TITLE</b></td>
-              <td scope="col"><b>AUTHOR</b></td>
-              <td scope="col"><b>GENRE</b></td>
-              <td scope="col"><b>PRICE</b></td>
-              <td scope="col"><b>ACTIONS</b></td>
+              <td scope="col"><b>ACTION</b></td>
+              <td scope="col"><b>TIME STAMP</b></td>
             </tr>
            </thead> 
            <tbody>
-          <c:forEach var="entry" items="${sessionScope.selling_books}" varStatus="varStatus" >
+          <c:forEach var="entry" items="${sessionScope.transaction_history}" varStatus="varStatus" >
           
             <form name="articles_option" action="" method="POST">
               <!--  set for each of these entries some way of id to add to cart later -->
@@ -143,8 +96,6 @@
                   <td class="active"><a href="${pageContext.request.contextPath}/results?entryMoreView=${entry.bookID}&page=${requestScope.viewBean.curr_page_num}">${entry.booktitle}</a></td>
                   <td class="success">${entry.author}</td>
                   <td class="warning">${entry.genre}</td>
-                  <td class="danger">${entry.price}</td>
-                  <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart"></td>
                 </tr>
               </center>
               <input type="hidden" name="page" value="${requestScope.viewBean.curr_page_num}">

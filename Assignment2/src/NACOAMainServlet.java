@@ -323,7 +323,19 @@ public class NACOAMainServlet extends HttpServlet {
 	    	requestDispatcher = req.getRequestDispatcher("/Profile.jsp");
 	    	requestDispatcher.forward(req, res);
 			
+		} else if (uri.contains("transaction_history")){
+			String userToView = (String) req.getParameter("user");
+			int userId = dHandler.getUserId(userToView);
+			
+			ArrayList<NACOAHistoryBean> historyBeans = dHandler.getUserHistory(userId);
+			
+			req.getSession().setAttribute("transaction_history", historyBeans);
+			
+			requestDispatcher = req.getRequestDispatcher("/CustomerHistory.jsp");
+	    	requestDispatcher.forward(req, res);
+			
 		} else if (uri.contains("logout")){
+		
 			//write the code you want
 			logoutUser(req, res);
 			
@@ -1014,7 +1026,7 @@ public class NACOAMainServlet extends HttpServlet {
 		int size = 0;
 		
 		while (size != cart.size()) {
-			int user_seller_id = dHandler.getUserID(cart.get(size).getBookID());
+			int user_seller_id = dHandler.getSellersUserID(cart.get(size).getBookID());
 			System.out.println("book id is " + cart.get(size).getBookID());
 			
 			String to = dHandler.getEmail(user_seller_id);
