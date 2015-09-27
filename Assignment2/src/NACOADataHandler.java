@@ -3398,7 +3398,15 @@ public void changeLastname(int user_id, String lastname) {
 				details.setDOB(rs.getString("dob"));
 				details.setAddress(rs.getString("address"));
 				details.setCreditDetails(rs.getString("creditcarddetails"));		
-				details.setDescription(rs.getString("description"));	
+				details.setDescription(rs.getString("description"));
+				details.setIsAdmin(rs.getBoolean(("is_admin")));
+				if(rs.getBoolean(("is_admin"))){
+					System.out.println("We are admin!");
+				} else {
+					System.out.println("We are not admin!");
+				}
+				details.setIsHalted(Integer.parseInt(rs.getString("is_halted")));
+				
 			}
 			//GET COUNTS
 			int numBought = (int) getCountBooksBought(id);

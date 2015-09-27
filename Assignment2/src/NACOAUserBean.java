@@ -12,7 +12,9 @@ public class NACOAUserBean {
 	private String address;
 	private String creditDetails;
 	private int isHalted;
-	private int isAdmin;
+	private boolean isAdmin;
+
+
 	private boolean isUser;
 	private String description;
 	private int numBooksSold;
@@ -68,7 +70,7 @@ public class NACOAUserBean {
 		this.isHalted = halted;
 	}
 	
-	public void setAdmin(int admin) {
+	public void setIsAdmin(boolean admin) {
 		this.isAdmin = admin;
 	}
 	
@@ -120,7 +122,7 @@ public class NACOAUserBean {
 		return isHalted;
 	}
 	
-	public int getAdmin() {
+	public boolean getIsAdmin() {
 		return isAdmin;
 	}
 	
@@ -144,13 +146,6 @@ public class NACOAUserBean {
 		this.isHalted = isHalted;
 	}
 
-	public int getIsAdmin() {
-		return isAdmin;
-	}
-
-	public void setIsAdmin(int isAdmin) {
-		this.isAdmin = isAdmin;
-	}
 
 	public int getNumBooksSold() {
 		return numBooksSold;
@@ -191,6 +186,16 @@ public class NACOAUserBean {
 	public void setIsUser(boolean isUser) {
 		this.isUser = isUser;
 	}
+	public boolean isUser() {
+		return isUser;
+	}
 
+	public void setUser(boolean isUser) {
+		this.isUser = isUser;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
 
 }

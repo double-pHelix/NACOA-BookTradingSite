@@ -360,7 +360,7 @@ public class NACOAMainServlet extends HttpServlet {
 														//TODO: display it if we redirect to login
 			if (authResult.equals("Successfully logged in...")) {
 				loginUser(req, res, id);
-				setUserDetails(req, id);
+				updateSessionUserDetails(req, id);
 				requestDispatcher = req.getRequestDispatcher("/Search.jsp");
 		    	requestDispatcher.forward(req, res);
 			}else {
@@ -537,18 +537,11 @@ public class NACOAMainServlet extends HttpServlet {
 		dHandler.banUser(user_id);
 	}
 
-	private void setUserDetails(HttpServletRequest req, int id) {
-		ArrayList<String> userDetails = dHandler.getDetails(id);
+	private void updateSessionUserDetails(HttpServletRequest req, int id) {
+		NACOAUserBean userDetails = dHandler.getUserDetails(id);
+		
 		System.out.println("got details: " + userDetails);
-		req.getSession().setAttribute("password", userDetails.get(0));
-		req.getSession().setAttribute("email", userDetails.get(1));
-		req.getSession().setAttribute("nickname", userDetails.get(2));
-		req.getSession().setAttribute("firstname", userDetails.get(3));
-		req.getSession().setAttribute("lastname", userDetails.get(4));
-		req.getSession().setAttribute("dob", userDetails.get(5));
-		req.getSession().setAttribute("address", userDetails.get(6));
-		req.getSession().setAttribute("creditinfo", userDetails.get(7));
-		req.getSession().setAttribute("description", userDetails.get(8));
+		req.getSession().setAttribute("userDetails", userDetails);
 	}
 
 	private void verifyUser(int id, String code) {
@@ -775,6 +768,10 @@ public class NACOAMainServlet extends HttpServlet {
 		req.getSession().setAttribute("logged_in", true);
 		req.getSession().setAttribute("user_id", id);
 		req.getSession().setAttribute("username", dHandler.getUserName(id));
+		
+		NACOAUserBean userDetails = dHandler.getUserDetails(id);
+		req.getSession().setAttribute("userDetails", userDetails);
+		
 		//Add more stuff that you need for a login
 		
 	}
