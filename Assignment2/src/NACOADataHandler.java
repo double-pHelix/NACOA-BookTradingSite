@@ -540,6 +540,8 @@ public class NACOADataHandler {
 	
 	//inserts our sample data into the database i.e. users and books
 	public void insertSampleData() {
+		System.out.println("Entering sample data");
+		
 		String email = "richard.zhang94@hotmail.com";
 		String password = "password123";
 		String usernames[] = {
@@ -2169,7 +2171,7 @@ public class NACOADataHandler {
 			book.setPicture(this.getBookPicture(bID));
 			book.setPrice(this.getBookPrice(bID));
 			book.setPublisher(this.getBookPublisher(bID));
-			book.setDOP(this.getBookDOP(bID));
+			book.setDop(this.getBookDOP(bID));
 			book.setPages(this.getBookPages(bID));
 			book.setIsbn(this.getBookISBN(bID));
 			book.setGenre(this.getBookGenre(bID));
@@ -2254,7 +2256,7 @@ public class NACOADataHandler {
 				book.setPicture(this.getBookPicture(bID));
 				book.setPrice(this.getBookPrice(bID));
 				book.setPublisher(this.getBookPublisher(bID));
-				book.setDOP(this.getBookDOP(bID));
+				book.setDop(this.getBookDOP(bID));
 				book.setPages(this.getBookPages(bID));
 				book.setIsbn(this.getBookISBN(bID));
 				book.setGenre(this.getBookGenre(bID));
@@ -2339,7 +2341,7 @@ public class NACOADataHandler {
 				book.setPicture(this.getBookPicture(bID));
 				book.setPrice(this.getBookPrice(bID));
 				book.setPublisher(this.getBookPublisher(bID));
-				book.setDOP(this.getBookDOP(bID));
+				book.setDop(this.getBookDOP(bID));
 				book.setPages(this.getBookPages(bID));
 				book.setIsbn(this.getBookISBN(bID));
 				book.setGenre(this.getBookGenre(bID));
@@ -3994,7 +3996,7 @@ public void changeLastname(int user_id, String lastname) {
 					book.setAuthor(rs.getString("author"));
 					book.setPicture(rs.getString("picture"));
 					book.setPublisher(rs.getString("publisher"));
-					book.setDOP(rs.getString("dateofpublication"));
+					book.setDop(rs.getString("dateofpublication"));
 					book.setPages(Integer.toString(rs.getInt("pages")));
 					book.setIsbn(rs.getString("isbn"));
 					book.setGenre(rs.getString("genre"));
@@ -4127,7 +4129,7 @@ public void changeLastname(int user_id, String lastname) {
 				book.setAuthor(rs.getString("author"));
 				book.setPicture(rs.getString("picture"));
 				book.setPublisher(rs.getString("publisher"));
-				book.setDOP(rs.getString("dateofpublication"));
+				book.setDop(rs.getString("dateofpublication"));
 				book.setPages(Integer.toString(rs.getInt("pages")));
 				book.setIsbn(rs.getString("isbn"));
 				book.setGenre(rs.getString("genre"));
