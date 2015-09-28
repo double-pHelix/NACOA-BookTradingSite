@@ -79,11 +79,13 @@
           <div class="content">
           <table class="table table-bordered"> 
             <tr class="active">
+              <td scope="col"><b>IMAGE</b></td>
               <td scope="col"><b>TITLE</b></td>
               <td scope="col"><b>AUTHOR</b></td>
-              <td scope="col"><b>PRICE($)</b></td>
               <td scope="col"><b>GENRE</b></td>
-              <td scope="col"><b>ACTIONS</b></td>
+              <td scope="col"><b>DATE OF PUB</b></td>
+              <td scope="col"><b>PRICE</b></td>
+              <td scope="col"><b>ACTION</b></td>
             </tr>
             
             <c:forEach var="entry" items="${requestScope.viewBean.resultBeans}" varStatus="varStatus" >
@@ -94,10 +96,12 @@
                 <input type="hidden" name="username" value="${sessionScope.username}">
                 <center>
                 <tr class="active">
+                  <td class="active"><img class="book_image" src="${entry.picture}"></img></td>
                   <td class="active"><a href="${pageContext.request.contextPath}/results?entryMoreView=${entry.bookID}&page=${requestScope.viewBean.curr_page_num}">${entry.booktitle}</a></td>
                   <td class="success">${entry.author}</td>
-                  <td class="warning">${entry.price}</td>
-                  <td class="danger">${entry.genre}</td>
+                  <td class="warning">${entry.genre}</td>
+                  <td class="danger">${entry.dop}</td>
+                  <td class="danger">${entry.price}</td>
 				  <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart"></td>
                 </tr>
                 

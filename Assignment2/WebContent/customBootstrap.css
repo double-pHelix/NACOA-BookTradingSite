@@ -9,6 +9,11 @@
 
 @import url(https://fonts.googleapis.com/css?family=Droid+Sans:700);
 
+.book_image{
+	width: 170px;
+	
+}
+
 html{
  	font-family:sans-serif;
  	-webkit-text-size-adjust:100%;

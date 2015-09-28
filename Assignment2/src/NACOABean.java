@@ -300,4 +300,12 @@ public class NACOABean implements Serializable {
 	public String getDescription() {
 		return description;
 	}
+
+	public String getDop() {
+		return dop;
+	}
+
+	public void setDop(String dop) {
+		this.dop = dop;
+	}
 }
