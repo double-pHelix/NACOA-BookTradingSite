@@ -28,7 +28,7 @@
 	        <td class="warning">${requestScope.viewBean.readEntry.DOP}</td>
 	        <td class="danger">${requestScope.viewBean.readEntry.pages }</td>
 	        <td class="success">${requestScope.viewBean.readEntry.publisher}</td>
-	        <td class="warning">${requestScope.viewBean.readEntry.picture}</td>
+	        <td><img SRC="${requestScope.viewBean.readEntry.picture}" width="100" height="100"></td>
 	        <td class="danger">${requestScope.viewBean.readEntry.isbn }</td>
 	        <td class="success">${requestScope.viewBean.readEntry.genre}</td>
 	        <td class="warning">${requestScope.viewBean.readEntry.price}</td>

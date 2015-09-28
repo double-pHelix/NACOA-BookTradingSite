@@ -81,7 +81,7 @@
             <tr class="active">
               <td scope="col"><b>TITLE</b></td>
               <td scope="col"><b>AUTHOR</b></td>
-              <td scope="col"><b>PRICE</b></td>
+              <td scope="col"><b>PRICE($)</b></td>
               <td scope="col"><b>GENRE</b></td>
               <td scope="col"><b>ACTIONS</b></td>
             </tr>
