@@ -420,15 +420,15 @@ public class NACOADataHandler {
 			
 			String cBooks = "CREATE TABLE IF NOT EXISTS `books` ("
 					+ " `id` int(11) NOT NULL,"
-					+ " `title` varchar(52) NOT NULL,"
-					+ " `author` varchar(52) NOT NULL,"
+					+ " `title` varchar(128) NOT NULL,"
+					+ " `author` varchar(128) NOT NULL,"
 					+ "  `picture` varchar(128) NOT NULL,"
 					+ " `price` float NOT NULL,"
-					+ "  `publisher` varchar(52) NOT NULL,"
+					+ "  `publisher` varchar(128) NOT NULL,"
 				    + " `dateofpublication` date NOT NULL,"
 					+ "  `pages` int(11) NOT NULL,"
 					+ "  `isbn` varchar(20) NOT NULL,"
-					+ "  `genre` varchar(20) NOT NULL,"
+					+ "  `genre` varchar(52) NOT NULL,"
 					+ "  `description` text NULL"
 					+ ") ENGINE=InnoDB DEFAULT CHARSET=latin1";
 			
@@ -510,6 +510,8 @@ public class NACOADataHandler {
 				aStmt.close();
 			}
 			
+			//INSERT SAMPLE DATA
+			insertSampleData();
 			
 			System.out.println("...closing connection");
 			conn.close();
@@ -536,6 +538,314 @@ public class NACOADataHandler {
 
 	}
 	
+	//inserts our sample data into the database i.e. users and books
+	public void insertSampleData() {
+		String email = "richard.zhang94@hotmail.com";
+		String password = "password123";
+		String usernames[] = {
+			"annumcanapes", "devoteduntried", "strikersord", "fracturebirds", "nohitterpascal",
+			"atomsunderstand", "poppysmicgadolinium", "cheddarscypriot", "whilethorium", "birdslumpy",
+			"gilltrue", "wellingtonma", "vagaryunkind", "appealguaranteed", "microwaveconcede",
+			"dacitequalling", "fibrosisrye", "endemismperturb", "divingsuper", "pearldequeue", 
+			"furlongbiceps", "hoopoedismal", "reclusivebypass", "meterquirky", "itchyaboriginal"
+		};
+		
+		String firstnames[] = {
+			"Suzi", "Dollie", "Marshall", "Shannon", "Latoria",
+			"Shan", "Dannie", "Georgia", "Candance", "Evelia",
+			"Terrell", "Adell", "Enola", "Chassidy", "Yoko", 
+			"Tomika", "Desirae", "September", "Tamie", "Joya", 
+			"Carolee", "Yen", "Lynetta", "Hollis", "Dominga"
+		};
+		
+		String lastnames[] = {
+			"Avila", "Moss", "Spencer", "Doyle", "Sawyer",
+			"Leach", "Lam", "Lee", "Lara", "Kramer",
+			"Quinn", "Galvan", "Zuniga", "Young", "Woodard",
+			"Lindsey", "Navarro", "Carney", "Velazquez", "Nolan",
+			"Davis", "Solis", "Pitts", "Rodriguez", "Pace"
+		};
+		
+		String nicknames[] = {
+			"Morbid Ivory Titan", "Ox Bandit", "The Rebel", "Major Shadow", "The Lion",
+			"Freak Sad", "Colonel Pink", "Screaming Moose", "Alpha Stallion", "Worthy Butterfly",
+			"ProphetProphet", "Minimum Kitten", "Dreaded Villain", "TapirTapir", "Black Cockroach",
+			"Navy Spider", "Los Turtle", "GiraffeGiraffe", "Crazy Tiger", "Loose Toddler",
+			"Insane Wolverine", "Woodchuck Rotten", "Thirsty Panda", "Gold Student", "Los Cat"
+		};
+		
+		String dobs[] = {
+			"1915-05-11", "1916-08-10", "1921-08-17", "1923-12-26", "1930-01-01",
+			"1934-08-13", "1936-04-11", "1937-01-30", "1937-09-08", "1940-07-15",
+			"1942-09-16", "1945-07-16", "1947-05-18", "1958-02-22", "1959-01-26",
+			"1963-02-26", "1964-02-06", "1964-10-11", "1967-03-23", "1970-07-01",
+			"1971-04-29", "1977-01-05", "1990-08-02", "1999-07-26", "2000-04-28"
+		};
+		
+		String addresses[] = {
+			"77 Jackson St, Brotton, Saltburn-by-the-Sea, Redcar and Cleveland TS12 2TE, UK",
+			"52 Old St, Kilmarnock, East Ayrshire KA1 4DX, UK",
+			"2 Rectory Cl, Wells-next-the-Sea, Norfolk NR23, UK",
+			"55 Mark Ln, London EC3R 7NE, UK",
+			"12-14 High St, Crowthorne, Bracknell Forest RG45 7AZ, UK",
+			"Bellaghy Rd, Ballymena, Ballymena BT44 9PP, UK",
+			"16 Coombelands Ln, Addlestone, Surrey KT15 1JJ, UK",
+			"24A High St, West Wickham, Greater London BR4 0NJ, UK",
+			"228 Dersingham Ave, London E12, UK",
+			"88 Broadwater Rd, London N17 6ET, UK",
+			"38 Watford Cl, London SW11 4QT, UK",
+			"3 Prenton Way, Birkenhead, Prenton, Merseyside CH43 3DU, UK",
+			"Halesfield 25, Telford, Telford and Wrekin TF7 4LP, UK",
+			"18 Harbour Rd, Eyemouth, Scottish Borders TD14 5HU, UK",
+			"7 Shawberry Ave, Birmingham, West Midlands B35 6QU, UK",
+			"41 Castle Terrace, Aberdeen, Aberdeen City AB11 5EA, UK",
+			"10 Tingewick Rd, Buckingham, Buckinghamshire MK18 1EE, UK",
+			"Pool Cl, Rugby, Warwickshire CV22 7RN, UK",
+			"Unnamed Road, Morpeth, Northumberland NE65, UK",
+			"14 Ronald Toon Rd, Earl Shilton, Leicester, Leicestershire LE9 7BD, UK",
+			"Meachants Ln, Eastbourne, East Sussex BN20 9LS, UK",
+			"50 Commercial Rd, Lowestoft, Suffolk NR32, UK",
+			"Northclose Rd, Chulmleigh, Devon EX18 7SJ, UK",
+			"432A Ballyquin Rd, Dungiven, Londonderry, Limavady BT47 4LX, UK",
+			"7 Clachan Beag, Strachur, Cairndow, Argyll and Bute PA27 8DG, UK"
+		};
+		
+		String creditNumbers[] = {
+			"4485073495865233", "4485701937613767", "4716542505645000", "4539129598883006", "4532201019088841",
+			"5369599250479669", "5390110228781559", "5574735483131286", "5296171674319463", "5296761842686254",
+			"6011261841780713", "6011819623517163", "6011142590081950", "6011343119429890", "6011545623708342",
+			"344225877352755", "371329617134485", "344721400273773", "377987608088558", "373936901315980",
+			"36879841998144", "36805878687755", "36065797484277", "6011593327371132", "6011846088330238"
+		};
+		
+		int ids[] = {
+			18,	24,	8,	17,	24,
+			24,	5,	15,	21,	13,
+			22,	18,	12,	15,	7,
+			3,	8,	19,	19,	16,
+			8,	16,	19,	18,	22
+		};
+		
+		String dates[] = {
+			"2015-09-12", "2015-09-10", "2015-09-10", "2015-09-28", "2015-09-16",
+			"2015-09-16", "2015-09-28", "2015-09-18", "2015-09-16", "2015-09-13",
+			"2015-09-17", "2015-09-24", "2015-09-19", "2015-09-24", "2015-09-15",
+			"2015-09-24", "2015-09-11", "2015-09-27", "2015-09-13", "2015-09-21",
+			"2015-09-15", "2015-09-15", "2015-09-24", "2015-09-15", "2015-09-21"
+		};
+		
+		String titles[] = {
+			"Nopi: The Cookbook",
+			"The Red Notebook",
+			"Advances in Hydrogen Production, Storage and Distribution",
+			"Head First Design Patterns",
+			"Java in a Nutshell",
+			"Automate the Boring Stuff with Python : Practical Programming for Total Beginners",
+			"Voyager",
+			"I Let You Go",
+			"Gone Girl",
+			"Unicorns are Jerks",
+			"A Walk in the Woods : Rediscovering America on the Appalachian Trail",
+			"Thug Kitchen : Eat Like You Give a F**k",
+			"Plenty More",
+			"Grain Brain : The Surprising Truth About Wheat, Carbs, and Sugar - Your Brain's Silent Killers",
+			"Power Up Your Brain",
+			"The Law of Attraction : The Basics of the Teachings of Abraham",
+			"All the Light We Cannot See",
+			"Animorphia : An Extreme Colouring and Search Challenge",
+			"Corporate Finance : Theory and Practice",
+			"Becoming a Better Boss",
+			"Secret Garden : An Inky Treasure Hunt and Colouring Book",
+			"The Very Cranky Bear",
+			"The Tiger Who Came to Tea",
+			"Queen of Shadows",
+			"The Husband's Secret"
+			
+		};
+		
+		String authors[] = {
+			"Ebury Press, Ramael Scully and Yotam Ottolenghi",
+			"Antoine Laurain",
+			"Angelo Basile and Adolfo Iulianelli",
+			"Elisabeth Freeman, Eric Freeman and Bert Bates",
+			"Benjamin J. Evans and David Flanagan",
+			"Albert Sweigart",
+			"Diana Gabaldon",
+			"Clare Mackintosh",
+			"Gillian Flynn",
+			"Theo Nicole Lorenz",
+			"Bill Bryson",
+			"Thug Kitchen",
+			"Yotam Ottolenghi",
+			"David Perlmutter",
+			"David Perlmutter",
+			"Esther Hicks and Jerry Hicks",
+			"Anthony Doerr",
+			"Kerby Rosanes",
+			"Pierre Vernimmen, Pascal Quiry, Maurizio Dallocchio, Yann Le Fur and Antonio Salvi",
+			"Julian Birkinshaw",
+			"Johanna Basford",
+			"Nick Bland",
+			"Judith Kerr",
+			"Sarah J. Maas",
+			"Liane Moriarty"
+		};
+		
+		String pictures[] = {
+			"http://d3by36x8sj6cra.cloudfront.net/assets/images/book/large/9780/0919/9780091957162.jpg",
+			"http://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/large/9781/9083/9781908313867.jpg",
+			"http://d20eq91zdmkqd.cloudfront.net/assets/images/book/large/9780/8570/9780857097682.jpg",
+			"http://d20eq91zdmkqd.cloudfront.net/assets/images/book/large/9780/5960/9780596007126.jpg",
+			"http://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/large/9781/4493/9781449370824.jpg",
+			"http://d4rri9bdfuube.cloudfront.net/assets/images/book/large/9781/5932/9781593275990.jpg",
+			"http://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/large/9780/4402/9780440217565.jpg",
+			"http://d4rri9bdfuube.cloudfront.net/assets/images/book/large/9780/7515/9780751554151.jpg",
+			"http://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/large/9780/7538/9780753827666.jpg",
+			"http://d39ttiideeq0ys.cloudfront.net/assets/images/book/large/9781/4774/9781477468524.jpg",
+			"http://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/large/9781/1019/9781101970881.jpg",
+			"http://d20eq91zdmkqd.cloudfront.net/assets/images/book/large/9780/7515/9780751555516.jpg",
+			"http://d20eq91zdmkqd.cloudfront.net/assets/images/book/large/9780/0919/9780091957155.jpg",
+			"http://d39ttiideeq0ys.cloudfront.net/assets/images/book/large/9781/4447/9781444791907.jpg",
+			"http://d4rri9bdfuube.cloudfront.net/assets/images/book/large/9781/4019/9781401928186.jpg",
+			"http://d3by36x8sj6cra.cloudfront.net/assets/images/book/large/9781/4019/9781401912277.jpg",
+			"http://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/large/9780/0081/9780008138301.jpg",
+			"http://d39ttiideeq0ys.cloudfront.net/assets/images/book/large/9781/9105/9781910552070.jpg",
+			"http://d4rri9bdfuube.cloudfront.net/assets/images/book/large/9781/1188/9781118849330.jpg",
+			"http://d4rri9bdfuube.cloudfront.net/assets/images/book/large/9781/1186/9781118645468.jpg",
+			"http://d39ttiideeq0ys.cloudfront.net/assets/images/book/large/9781/7806/9781780671062.jpg",
+			"http://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/large/9780/3409/9780340989432.jpg",
+			"http://d4rri9bdfuube.cloudfront.net/assets/images/book/large/9780/0073/9780007393657.jpg",
+			"http://d4rri9bdfuube.cloudfront.net/assets/images/book/large/9781/4088/9781408858615.jpg",
+			"http://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/large/9781/4059/9781405911665.jpg"
+		};
+		
+		String prices[] = {
+			"39.93", "14.50", "315.42", "60.04", "59.39",
+			"35.84", "14.48", "15.83", "14.63", "12.51",
+			"12.46", "27.75", "40.94", "23.22", "16.03",
+			"19.75", "18.85", "16.03", "99.70", "30.68",
+			"14.61", "11.35", "11.28", "10.89", "14.43"
+		};
+		
+		String publishers[] = {
+			"Ebury Publishing",
+			"Gallic Books",
+			"Woodhead Publishing Ltd",
+			"O'Reilly Media, Inc, USA",
+			"O'Reilly Media, Inc, USA",
+			"No Starch Press,US",
+			"Bantam Doubleday Dell Publishing Group Inc",
+			"Little, Brown Book Group",
+			"Orion Publishing Co",
+			"Createspace",
+			"Anchor Books",
+			"Little, Brown Book Group",
+			"Ebury Press",
+			"Hodder & Stoughton General Division",
+			"Hay House Inc",
+			"Hay House Inc",
+			"HarperCollins Publishers",
+			"Michael O'Mara Books Ltd",
+			"John Wiley & Sons Inc",
+			"John Wiley & Sons Inc",
+			"Laurence King Publishing",
+			"Hachette Children's Group",
+			"HarperCollins Publishers",
+			"Bloomsbury Publishing PLC",
+			"Penguin Books Ltd"
+		};
+		
+		String dops[] = {
+			"2015-09-10", "2015-04-14", "2014-07-25", "2015-08-01", "2014-11-14",
+			"2015-09-01", "1994-11-01", "2015-05-07", "2013-01-03", "2012-08-29",
+			"2015-08-18", "2014-12-10", "2014-09-11", "2014-01-16", "2012-02-01",
+			"2007-01-01", "2015-05-01", "2015-06-25", "2014-11-17", "2013-10-28",
+			"2015-06-15", "2010-05-06", "2011-03-03", "2015-09-10", "2013-08-29"
+		};
+		
+		String pages[] = {
+			"352", "240", "574", "608", "418",
+			"504", "1059", "384", "512", "40",
+			"416", "240", "288", "336", "220",
+			"194", "544", "96", "1000", "176",
+			"96", "32", "32", "656", "432"
+		};
+		
+		String isbns[] = {
+			"0091957168", "1908313862", "0857097687", "0596007124", "1449370829",
+			"1593275994", "0440217563", "0751554154", "0753827662", "1477468528",
+			"110197088X", "0751555517", "009195715X", "1444791907", "1401928188",
+			"1401912273", "0008138303", "1910552070", "1118849337", "1118645464",
+			"1780671067", "0340989432", "0007393652", "1408858614", "1405911662"
+		};
+		
+		String genres[] = {
+			"Food and Drink",
+			"Romance",
+			"Technology and Engineering",
+			"Computer Programming",
+			"Computer Programming",
+			"Computer Programming",
+			"Romance",
+			"Crime / Thriller",
+			"Crime / Thriller",
+			"Humour",
+			"Humour / Travel",
+			"Food and Drink",
+			"Food and Drink",
+			"Health / Dieting",
+			"Health / Medicine",
+			"Personal Development / Psychology",
+			"Contemporary Fiction",
+			"Colouring / Painting",
+			"Finance",
+			"Management / Leadership",
+			"Colouring / Painting",
+			"Storybooks",
+			"Storybooks",
+			"Fantasy / Fiction",
+			"Contemporary Fiction"
+		};
+		
+		String descriptions[] = {
+			"Nopi: The Cookbook includes over 120 of the most popular dishes from Yotam's innovative Soho-based restaurant Nopi. It's written with long-time collaborator and Nopi head chef Ramael Scully, who brings his distinctive Asian twist to the Ottolenghi kitchen.",
+			"Bookseller Laurent Letellier comes across an abandoned handbag on a Parisian street, and feels impelled to return it to its owner. The bag contains no money, phone or contact information. But a small red notebook with handwritten thoughts and jottings reveals a person that Laurent would very much like to meet. Without even a name to go on, and only a few of her possessions to help him, how is he to find one woman in a city of millions?",
+			"Advances in Hydrogen Production, Storage and Distribution reviews recent developments in this key component of the emerging hydrogen economy, an energy infrastructure based on hydrogen. Since hydrogen can be produced without using fossil fuels, a move to such an economy has the potential to reduce greenhouse gas emissions and improve energy security.",
+			"You're not alone. At any given moment, somewhere in the world someone struggles with the same software design problems you have. You know you don't want to reinvent the wheel (or worse, a flat tire), so you look to Design Patterns--the lessons learned by those who've faced the same problems. With Design Patterns, you get to take advantage of the best practices and experience of others, so that you can spend your time on...something else.",
+			"The latest edition of Java in a Nutshell is designed to help experienced Java programmers get the most out of Java 7 and 8, but it's also a learning path for new developers. Chock full of examples that demonstrate how to take complete advantage of modern Java APIs and development best practices, the first section of this thoroughly updated book provides a fast-paced, no-fluff introduction to the Java programming language and the core runtime aspects of the Java platform.",
+			"If you've ever spent hours renaming files or updating hundreds of spreadsheet cells, you know how tedious tasks like these can be. But what if you could have your computer do them for you? In Automate the Boring Stuff with Python, you'll learn how to use Python to write programs that do in minutes what would take you hours to do by hand-no prior programming experience required.",
+			"From the author of the breathtaking bestsellers 'Outlander' and 'Dragonfly in Amber,' the extraordinary saga continues.Their passionate encounter happened long ago by whatever measurement ClaireRandall took. Two decades before, she had traveled back in time and into thearms of a gallant eighteenth-century Scot named Jamie Fraser.",
+			"THE SENSATIONAL SUNDAY TIMES BESTSELLER A tragic accident. It all happened so quickly. She couldn't have prevented it. Could she? In a split second, Jenna Gray's world descends into a nightmare. Her only hope of moving on is to walk away from everything she knows to start afresh.",
+			"THE ADDICTIVE No.1 BESTSELLER THAT EVERYONE IS TALKING ABOUT Who are you? What have we done to each other? These are the questions Nick Dunne finds himself asking on the morning of his fifth wedding anniversary, when his wife Amy suddenly disappears.",
+			"Unicorns think they're so great because they're all mysterious and magical, but they can be real jerks sometimes. This coloring book features eighteen examples of unicorns texting in theaters, farting in elevators, eating your leftovers, and generally acting like jerks.",
+			"Soon to be a major motion picture starring Robert Redford and Nick Nolte. The Appalachian Trail trail stretches from Georgia to Maine and covers some of the most breathtaking terrain in America majestic mountains, silent forests, sparking lakes. If you re going to take a hike, it s probably the place to go.",
+			"Thug Kitchen started their wildly popular website to inspire people to eat some Goddamn vegetables and adopt a healthier lifestyle. Beloved by Gwyneth Paltrow ('This might be my favorite thing ever') and with half a million Facebook fans and counting, Thug Kitchen wants to show everyone how to take charge of their plates and cook up some real f*cking food.",
+			"Yotam Ottolenghi's Plenty changed the way people cook and eat. Its focus on vegetable dishes, with the emphasis on flavour, original spicing and freshness of ingredients, caused a revolution not just in this country, but the world over. Plenty More picks up where Plenty left off, with 120 more dazzling vegetable-based dishes, this time organised by cooking method.",
+			"Renowned neurologist Dr David Perlmutter, blows the lid off a topic that's been buried in medical literature for far too long: gluten and carbs are destroying your brain.",
+			"The quest for enlightenment has occupied mankind for millennia. And from the depictions we've seen-monks sitting on meditation cushions, nuns kneeling in prayer, shamans communing with the universe-it seems that this elusive state is reserved for a chosen few. But now, neuroscientist David Perlmutter and medical anthropologist and shaman Alberto Villoldo have come together to explore the commonalities between their specialties with the aim of making enlightenment possible for anyone.",
+			"This book presents the powerful basics of the original Teachings of Abraham.' Within these pages, you'll learn how all things, wanted and unwanted, are brought to you by this most powerful law of the universe, the Law of Attraction. '(that which is like unto itself is drawn).",
+			"A beautiful, stunningly ambitious novel about a blind French girl and a German boy whose paths collide in occupied France as both try to survive the devastation of World War II When Marie Laure goes blind, aged six, her father builds her a model of their Paris neighborhood, so she can memorize it with her fingers and then navigate the real streets.",
+			"Welcome to this weird and wacky colouring challenge. There are pictures to colour in, drawings to complete, spaces to scribble in and lots of things to find in these super-detailed doodles by artist Kerby Rosanes. Featuring unique and intricate ink drawings of incredible animals, shape-shifting aliens and breathtaking scenes. Readers will have to keep their eyes peeled for hidden treasures and creatures scattered throughout the pages.",
+			"Merging theory and practice into a comprehensive, highly-anticipated text Corporate Finance continues its legacy as one of the most popular financial textbooks, with well-established content from a diverse and highly respected author team.",
+			"An employee's-eye view of what makes a great boss-and how you can become one Whereas most books on managing people approach the subject from the perspective of a manager of an idealised organisation, Becoming a Better Boss takes a real-world approach, looking at the topic from the perspective of an employee in a real-world organisation-dysfunctions, warts, and all.",
+			"Tumble down the rabbit hole and find yourself in an inky black-and-white wonderland. This interactive activity book takes you on a ramble through a secret garden created in beautifully detailed pen-and-ink illustrations - all waiting to be brought to life through colouring, but each also sheltering all kinds of tiny creatures just waiting to be found.",
+			"In the Jingle, jangle jungle, four friends encounter a very cranky bear. Moose, Lion and Zebra all think they know how to cheer him up, but it's plain, boring Sheep who has the answer. This is a hilarious picture book, with the over-riding message being: Don't underestimate the quiet ones! Sometime a little thought is all you need to solve a problem instead of rushing to immediate action.",
+			"The enchanting story of Sophie and her extraordinary tea-time guest has been loved by millions of children since it was first published 40 years ago. Now a new generation can enjoy this perennial children's classic in a mini edition. The doorbell rings just as Sophie and her mummy are sitting down to tea. Who could it possibly be?",
+			"Everyone Celaena Sardothien loves has been taken from her. Now she returns to the empire - to confront the shadows of her past ...The fourth breathtaking instalment in the New York Times bestselling Throne of Glass series. Bloodthirsty for revenge on the two men responsible for destroying her life, and desperate to find out if the prince and his captain are safe, Celaena returns to Rifthold, the seat of so much evil.",
+			"The Husband's Secret is a staggeringly brilliant novel. It is literally unputdownable. (Sophie Hannah). At the heart of the top ten bestselling The Husband's Secret by Liane Moriarty is a letter that's not meant to be read...Mother of three and wife of John-Paul, Cecilia discovers an old envelope in the attic. Written in her husband's hand, it says: to be opened only in the event of my death. Curious, she opens it - and time stops."
+		};
+		int id;
+		for (int i=0; i < usernames.length; i++) {
+			id = createUser(usernames[i], password, email, nicknames[i], firstnames[i], 
+							lastnames[i], dobs[i], addresses[i], creditNumbers[i], "");
+			verifyUser(id, null);
+		}
+		
+		for (int i=0; i < titles.length; i++) {
+			createBook (ids[i], dates[i], titles[i], authors[i], pictures[i], prices[i], publishers[i], 
+						dops[i], pages[i], isbns[i], genres[i], descriptions[i]);
+		}
+	}
 	public int createUser(String username, String password, String email, String nickname, 
 			String firstname, String lastname, String dob, String address, String creditinfo, String description){
 		int auto_id = 0;
