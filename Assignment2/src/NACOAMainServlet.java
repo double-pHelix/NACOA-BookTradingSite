@@ -300,23 +300,21 @@ public class NACOAMainServlet extends HttpServlet {
 		//if we are logged in retrieve user id
 		if (uri.contains("profile")){ //WE WANT TO VIEW A PROFILE (CURRENT USERS OR SOMEONE ELSE)
 			String userToView = (String) req.getParameter("user");
+			int user_id = dHandler.getId(userToView);
 			String currUser = (String) req.getSession().getAttribute("username");
-			int user_id = (int) req.getSession().getAttribute("user_id");
 			updateSessionUserDetails(req, user_id);
+			
+			//load user details
+			NACOAUserBean profileBean = dHandler.getUserDetails(user_id);
+			
 			if(userToView.equals(currUser)){ //we view our own profile
-				//load user details
-				NACOAUserBean profileBean = dHandler.getUserDetails(user_id);
-				profileBean.setIsUser(true);
-				
-				ArrayList<NACOABean> sellingBeans = dHandler.getSellingList(user_id);
-				
-				req.getSession().setAttribute("selling_books", sellingBeans);
-				req.getSession().setAttribute("profile", profileBean);
-				
-			} else {
-				
-				
+				profileBean.setIsUser(true);			
 			}
+			
+			ArrayList<NACOABean> sellingBeans = dHandler.getSellingList(user_id);
+			
+			req.getSession().setAttribute("selling_books", sellingBeans);
+			req.getSession().setAttribute("profile", profileBean);
 			
 			//generate random list
 			
