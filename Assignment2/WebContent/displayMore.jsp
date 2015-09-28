@@ -9,31 +9,27 @@
   		<!-- Displaying a book -->
 	    <input type="hidden" name="book_id" value="${requestScope.viewBean.readEntry.bookID}">
 	    <input type="hidden" name="page" value="${requestScope.viewBean.curr_page_num}">
-	    <table class="table table-bordered"> 
+	    <table class="table table-borderless">
 	      <tr class="active">
-	        <td scope="col"><b>TITLE</b></td>
-	        <td scope="col"><b>AUTHOR</b></td>
-	        <td scope="col"><b>DATE PUBLISHED</b></td>
-	        <td scope="col"><b>PAGES</b></td>
-	        <td scope="col"><b>PUBLISHER</b></td>
-	        <td scope="col"><b>PICTURE</b></td>
-	        <td scope="col"><b>ISBN</b></td>
-	        <td scope="col"><b>GENRE</b></td>
-	        <td scope="col"><b>PRICE</b></td>
+	        <td><img SRC="${requestScope.viewBean.readEntry.picture}" height="300"></td>
+	        <td align='left'><b>TITLE</b>
+	        <br><b>AUTHOR</b>
+	        <br><b>DATE PUBLISHED</b>
+	        <br><b>PAGES</b>
+	        <br><b>PUBLISHER</b>
+	        <br><b>ISBN</b>
+	        <br><b>GENRE</b>
+	        <br><b>PRICE</b></td>
+	        <td align='left'><a href="${pageContext.request.contextPath}/results?entryMoreView=${requestScope.viewBean.readEntry.bookID}">${requestScope.viewBean.readEntry.booktitle}</a>
+	        <br>${requestScope.viewBean.readEntry.author}
+	        <br>${requestScope.viewBean.readEntry.DOP}
+	        <br>${requestScope.viewBean.readEntry.pages }
+	        <br>${requestScope.viewBean.readEntry.publisher}
+	        <br>${requestScope.viewBean.readEntry.isbn }
+	        <br>${requestScope.viewBean.readEntry.genre}
+	        <br><font size="5" color="orange">$${requestScope.viewBean.readEntry.price}</font></td>
 	      </tr>
-	    
-	      <tr class="active">
-	        <td class="active"><a href="${pageContext.request.contextPath}/results?entryMoreView=${requestScope.viewBean.readEntry.bookID}">${requestScope.viewBean.readEntry.booktitle}</a></td>
-	        <td class="success">${requestScope.viewBean.readEntry.author}</td>
-	        <td class="warning">${requestScope.viewBean.readEntry.DOP}</td>
-	        <td class="danger">${requestScope.viewBean.readEntry.pages }</td>
-	        <td class="success">${requestScope.viewBean.readEntry.publisher}</td>
-	        <td><img SRC="${requestScope.viewBean.readEntry.picture}" width="100" height="100"></td>
-	        <td class="danger">${requestScope.viewBean.readEntry.isbn }</td>
-	        <td class="success">${requestScope.viewBean.readEntry.genre}</td>
-	        <td class="warning">${requestScope.viewBean.readEntry.price}</td>
-	      </tr>
-	    </table> 
+	    </table>
 	    <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button">Back to Search</a>
   		<input class="btn btn-xx btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart">
   </form>
