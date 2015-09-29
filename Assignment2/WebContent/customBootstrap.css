@@ -19,7 +19,7 @@
 
 .NACOABannerText {
 	color: #e8c8f6 !important;
-	font-family: 'Droid Sans', sans-serif
+	font-family: 'Droid Sans', sans-serif;
 }
 
 #bannerRegisterButton{
@@ -31,6 +31,12 @@
 	color: #B247DF;	
 }
 
+#NACOABannerHorizontalLine {
+	border-color: #e8c8f6;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	width: 75%;
+}
 .nav nav-tabs{
 	/* padding-top:30px; */
 }

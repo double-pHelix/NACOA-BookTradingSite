@@ -60,7 +60,8 @@
               <div class ="NACOABannerText">
                 <h1>Welcome to NACOA</h1>
                 <p>We are an online book trading platform that nearly offers all the features our rival provides.</p>
-                <br>
+              
+                <hr id="NACOABannerHorizontalLine">
                 <a href="${pageContext.request.contextPath}/register" class="btn btn-lg btn-danger" id="bannerRegisterButton" role="button">Register</a><br>
                 <a href="${pageContext.request.contextPath}/login" class="btn btn-lg btn-warning" id="bannerRegisterButton2" role="button">Login</a> 
                 
