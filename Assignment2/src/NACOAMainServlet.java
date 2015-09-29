@@ -528,6 +528,21 @@ public class NACOAMainServlet extends HttpServlet {
 			req.getSession().setAttribute("pausedList", pausedBeans);
 			requestDispatcher = req.getRequestDispatcher("/Selling.jsp");
 	    	requestDispatcher.forward(req, res);
+		} else if (uri.contains("forgot_password")) {
+			if(req.getParameter("forget") != null){
+				String username = (String) req.getParameter("username");
+				String email = (String) req.getParameter("email");
+				int user_id = dHandler.getId(username);
+				if (email.equals(dHandler.getEmail(user_id))) {		
+					sendPasswordEmail(user_id);
+					requestDispatcher = req.getRequestDispatcher("/Forgot_confirmation.jsp");
+			    	requestDispatcher.forward(req, res);
+				} else {
+					
+				}
+			}
+			requestDispatcher = req.getRequestDispatcher("/Forgot.jsp");
+	    	requestDispatcher.forward(req, res);
 		} else {//MAIN PAGE (this is /search or welcome
 			//generate random list
 			loadMainXML();
@@ -873,6 +888,40 @@ public class NACOAMainServlet extends HttpServlet {
  			System.out.println("Sent verification email...");
 			
 
+ 		} catch (MessagingException e) {
+ 			throw new RuntimeException(e);
+ 		}	
+	}
+	
+	public void sendPasswordEmail(int user_id){
+		String to = dHandler.getEmail(user_id);
+		String from = "info.nacoa@gmail.com";
+
+ 		Properties props = new Properties();
+ 		props.put("mail.smtp.auth", "true");
+ 		props.put("mail.smtp.starttls.enable", "true");
+ 		props.put("mail.smtp.host", "smtp.gmail.com");
+ 		props.put("mail.smtp.port", "587");
+
+ 		Session session = Session.getInstance(props,
+ 		  new javax.mail.Authenticator() {
+ 			protected PasswordAuthentication getPasswordAuthentication() {
+ 				return new PasswordAuthentication(from, "comp9321");
+ 			}
+ 		  });
+
+ 		try {
+ 			Message message = new MimeMessage(session);
+ 			message.setFrom(new InternetAddress(from));
+ 			String password = dHandler.getPassword(user_id);
+ 			message.setRecipients(Message.RecipientType.TO,
+ 					InternetAddress.parse(to));
+ 			message.setSubject("NACOA account - Forgot Password");
+ 			message.setText("The following is your NACOA password:\n"
+ 					 		+ password + "\n"
+ 					 		+ "Please keep it safe.");
+
+ 			Transport.send(message);
  		} catch (MessagingException e) {
  			throw new RuntimeException(e);
  		}	
