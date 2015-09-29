@@ -74,7 +74,7 @@
 	      </c:when>  
 	    <c:otherwise>
 	      <h1> Results </h1>
-	      <h4>Found ${requestScope.viewBean.totalResults} many results.</h4>
+	      <h4>Found ${requestScope.viewBean.totalResults} results.</h4>
 	      
 	      <c:choose>
 	        <c:when test="${not empty requestScope.viewBean.resultBeans}">

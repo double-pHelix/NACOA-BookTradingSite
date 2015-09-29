@@ -152,9 +152,18 @@ public class NACOAMainServlet extends HttpServlet {
 		//resultBeans = handler.getBeanFromResultDoc(0);
 		resultBeans = dHandler.bookSearch(title, author, genre);
 		
+		ArrayList<NACOABean> first10 = new ArrayList<NACOABean>();
+		
+		int x = 0;
+		
+		while (x != resultBeans.size() && first10.size() != 10) {
+			first10.add(resultBeans.get(x));
+			x++;
+		}
+		
 		//set up our bean to be displayed
 		ResultPageBean viewBean = new ResultPageBean();
-		viewBean.setResultBeans(resultBeans);
+		viewBean.setResultBeans(first10);
 		
 		int totalResults = resultBeans.size();
 		viewBean.setTotalResults(totalResults);
@@ -433,10 +442,11 @@ public class NACOAMainServlet extends HttpServlet {
 			//case of search
 			//we will redirect to results
 			if (searchType != null){
-
+				System.out.println("search");
 				if (searchType.matches(".*book.*")){
+					//System.out.println("Proc");
 					performBookSearch(req,res);
-
+					
 				} else if (searchType.matches(".*user.*")){
 					performUserSearch(req,res);
 					
@@ -444,17 +454,18 @@ public class NACOAMainServlet extends HttpServlet {
 				
 			} else if(req.getParameter("add_to_cart_view") != null){
 				//add to cart from extend view
-				
+				System.out.println("add");
 				appendToCartPage(req,res);	
 
 			} else if(req.getParameter("add_to_cart") != null){
 				//add to cart from results
-				
+				System.out.println("add");
 				appendToCartPage(req,res);
 				
 				processResults(req,res); //this function lets have a look at it
 
 			} else if (req.getParameter("ban_user") != null) {
+				System.out.println("ban");
 				System.out.println("Received " + req.getParameter("banUser"));
 				req.getSession().setAttribute("banUser", true);
 				banUser(req, res);
@@ -462,7 +473,7 @@ public class NACOAMainServlet extends HttpServlet {
 				//just looking at results 
 				
 				//loadResultsXML(); //this stuff will probably be redundant as we are using sql
-				
+				System.out.println("Proc");
 				processResults(req,res);
 			}
 			
@@ -912,7 +923,8 @@ public class NACOAMainServlet extends HttpServlet {
 		//oh yeah so this viewBean is just a bean to display stuff, is a series of boolean values
 		//like do we show more results?
 		//do we show less results (like a back button?)
-		
+		System.out.println("Processing results");
+		System.out.println("Received " + entryToview);
 		//We are viewing books
 		//Need to separate viewing books and users
 		if(entryToview != null){ //EXPANDING VIEW TO READ MORE
@@ -967,6 +979,7 @@ public class NACOAMainServlet extends HttpServlet {
 				//generate the appropriate
 				int startEntry = 10 * (currPageNo-1);
 				
+				System.out.println("Start entry is " + startEntry);
 				if(startEntry > totalResults){
 					//error
 					return;
@@ -978,7 +991,7 @@ public class NACOAMainServlet extends HttpServlet {
 				
 				int x = startEntry;
 				
-				while (x < resultBeans.size()) {
+				while (x < resultBeans.size() && x != (startEntry+10)) {
 					temp.add(resultBeans.get(x));
 					x++;
 				}
