@@ -46,5 +46,6 @@
       
     </ul>
   </nav>
-  <h3 class="text-muted" id="logo">NACOA</h3>
+  <h3 class="text-muted" id="logo">NACOA<br><font size="1" color="purple">not a copy of amazon.</font></h3>
+  
 </div>

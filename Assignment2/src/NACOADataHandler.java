@@ -61,6 +61,7 @@ public class NACOADataHandler {
 		//handler.addHistoryBuyEntry(1,2); //
 		//handler.addHistoryAddCartEntry(1, 2);//
 		//handler.addHistoryRemoveCartEntry(1, 2);//
+		/*
 		if(handler.getCountBooksSold(2) == 3){
 			System.out.println("Test 1 Passed! ");
 		} else {
@@ -89,7 +90,7 @@ public class NACOADataHandler {
 			System.out.println("Test 5 Failed! ");
 		}
 		
-		/*
+		
 		if(handler.getCountBooksSold(3) == 3){
 			System.out.println("Test Passed! ");
 		} else {
@@ -125,7 +126,7 @@ public class NACOADataHandler {
 			System.out.println(dateFormat.format(cal.getTime()).replace("/",  "-"));
 			   
 			//Need to get book_id somehow
-			handler.addBookToCart(2, 3, 0, dateFormat.format(cal.getTime()).replace("/",  "-"), DUMMYDOS);
+			handler.addBookToCart(2, 3, 0);
 		}
 		
 		if (testCount) {
@@ -1954,7 +1955,7 @@ public class NACOADataHandler {
 	}
 	
 	//Delete book from cart
-	public void deleteBookCart (int book_id){
+	public void deleteBookCart (int book_id, int user_id){
 		
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -1968,10 +1969,14 @@ public class NACOADataHandler {
 			//STEP 4: Execute a query
 			//System.out.println("Creating statement...");
 			
-			String sql = "DELETE FROM user_customer_books WHERE (book_id = ?)";
+			String sql = "DELETE FROM user_customer_books WHERE ((book_id = ?) AND (user_id = ?))";
 	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, book_id);
+			stmt.setInt(2, user_id);
+			
+			System.out.println("stmt is ");
+			System.out.println(stmt);
 			stmt.executeUpdate();
 
 			//STEP 6: Clean-up environment
@@ -1998,7 +2003,7 @@ public class NACOADataHandler {
 	}
 
 	//Add book to cart
-	public void addBookToCart (int user_id, int book_id, int is_sold, String dou, String dos){
+	public void addBookToCart (int user_id, int book_id, int is_bought){
 		
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -2013,15 +2018,13 @@ public class NACOADataHandler {
 			//System.out.println("Creating statement...");
 			
 			String sql = "INSERT INTO `user_customer_books` "
-					 + "(`user_id`, `book_id`, `is_sold`, `dateofupload`, `dateofsale`) "
-			  + "VALUES (?, ?, ?, ?, ?)";
+					 + "(`user_id`, `book_id`, `is_bought`) "
+			  + "VALUES (?, ?, ?)";
 	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, user_id);
 			stmt.setInt(2, book_id);
-			stmt.setInt(3, is_sold);
-			stmt.setString(4, dou);
-			stmt.setString(5, dos);
+			stmt.setInt(3, is_bought);
 			stmt.executeUpdate();
 
 			//STEP 6: Clean-up environment
@@ -2064,14 +2067,14 @@ public class NACOADataHandler {
 			//STEP 4: Execute a query
 			//System.out.println("Creating statement...");
 			
-			String sql = "UPDATE user_seller_books SET is_sold WHERE (book_id = ?)";
+			String sql = "UPDATE user_seller_books SET is_sold=? WHERE (book_id = ?)";
 	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, 1);
 			stmt.setInt(2, book_id);
 			stmt.executeUpdate();
 			
-			sql = "UPDATE user_customer_books SET is_sold WHERE (book_id = ?)";
+			sql = "UPDATE user_customer_books SET is_bought=? WHERE (book_id = ?)";
 			
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, 1);
@@ -4670,6 +4673,61 @@ public void changeLastname(int user_id, String lastname) {
 			
 			
 			return userid; 
+		}
+
+		public String getPassword(int user_id) {
+			
+			Connection conn = null;
+			PreparedStatement stmt = null;
+			String password = null;
+			try {
+				//STEP 2: Register JDBC driver
+				Class.forName("com.mysql.jdbc.Driver");
+				//
+				conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+				
+				
+				//STEP 4: Execute a query
+				//System.out.println("Creating statement...");
+				
+				String sql = "SELECT * FROM users WHERE (id = ?)";
+		
+				stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				stmt.setInt(1, user_id);
+				stmt.executeQuery();
+				
+				ResultSet rs = stmt.getResultSet();
+		
+				  //STEP 5: Extract data from result set
+				while(rs.next()){
+					//Retrieve by column name
+					password = rs.getString("password");
+			
+				}
+				
+				//STEP 6: Clean-up environment
+				rs.close();
+				stmt.close();
+				conn.close();	
+
+			} catch (SQLException se) {
+				//Handle errors for JDBC
+				    se.printStackTrace();
+			} catch (Exception e) {
+			    //Handle errors for Class.forName
+			    e.printStackTrace();
+			} finally {
+			    //finally block used to close resources
+			 
+				try {
+				   if(conn!=null)
+				      conn.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				} //end finally try
+			} //end try
+			
+			return password;
 		}
 	
 	

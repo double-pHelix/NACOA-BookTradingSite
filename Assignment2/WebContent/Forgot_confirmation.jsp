@@ -22,14 +22,13 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-   	<title>Log In</title>
+   	<title>Forgot Password</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 
     <!-- Custom styles for this template -->
     <link href="${pageContext.request.contextPath}/customBootstrap.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/loginPage.css" rel="stylesheet">
 
     <script type="text/JavaScript" src="/js/sha512.js"></script> 
     <script type="text/JavaScript" src="/js/forms.js"></script>
@@ -46,23 +45,15 @@
   
     <jsp:include page="/topBanner.jsp" />
  	<div class="jumbotron">
-    <div class="container">
+      <h1>Forgot Password</h1>
+	      <h3>Please check your email</h3>
+	      <a href="${pageContext.request.contextPath}/login" class="btn btn-default" role="button">Login</a>
 
-      <form class="form-signin" method="post" action="/Assignment2/submitcred">
-        <h2 class="form-signin-heading">Login to NACOA</h2>
-        <label for="inputUsername" class="sr-only">Username</label>
-        <input type="text" name="username" id="inputEmail" class="form-control" placeholder="Username" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <div align="right"><a href="${pageContext.request.contextPath}/forgot_password">Forgot your password?</a></div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      </form>
-      <br>
-    </div> <!-- /container -->
-    
     </div> <!-- /container -->
       <div class="center-block">
         <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button" id="backButton">Back to Main</a>
       </div>
+    
+    </div> <!-- /container -->
   </body>
 </html>
