@@ -295,6 +295,37 @@ public class NACOAMainServlet extends HttpServlet {
 			requestDispatcher = req.getRequestDispatcher("/Register.jsp");
 	    	requestDispatcher.forward(req, res);
 	    	
+		} else if (uri.contains("admin_login")){ //ADMIN LOGIN PAGE
+			req.getSession().setAttribute("login_result", "");
+		
+			if(req.getParameter("admin_login_process") != null){
+				String username = req.getParameter("username");
+				String password = req.getParameter("password");
+				int id = dHandler.getId(username);
+				
+				String authResult = null; 
+				if(!dHandler.isAdmin(username)){
+					authResult = "Not an admin account";
+				} else {
+					authResult = authUser(id, password); //contains a message of the authentication result
+				}
+				
+				req.getSession().setAttribute("login_result", authResult);
+				if (authResult.equals("") && dHandler.isAdmin(username)) {
+					loginUser(req, res, id);
+					updateSessionUserDetails(req, id);
+					requestDispatcher = req.getRequestDispatcher("/Search.jsp");
+			    	requestDispatcher.forward(req, res);
+				} else {
+					requestDispatcher = req.getRequestDispatcher("/Login.jsp");
+			    	requestDispatcher.forward(req, res);
+				}
+			}
+			
+			
+			requestDispatcher = req.getRequestDispatcher("/AdminLogin.jsp");
+	    	requestDispatcher.forward(req, res);
+	    	
 		} else if (uri.contains("login")){ //USER LOGIN PAGE
 			req.getSession().setAttribute("login_result", "");
 			requestDispatcher = req.getRequestDispatcher("/Login.jsp");
@@ -305,14 +336,20 @@ public class NACOAMainServlet extends HttpServlet {
 			System.out.println(username);
 			String password = req.getParameter("password");
 			int id = dHandler.getId(username);
-			String authResult = authUser(id, password); //contains a message of the authentication result
+			String authResult = null; 
+			if(dHandler.isAdmin(username)){
+				authResult = "Admin account cannot be used here";
+			} else {
+				authResult = authUser(id, password); //contains a message of the authentication result
+			}
+			
 			req.getSession().setAttribute("login_result", authResult);
-			if (authResult.equals("")) {
+			if (authResult.equals("") && !dHandler.isAdmin(username)) {
 				loginUser(req, res, id);
 				updateSessionUserDetails(req, id);
 				requestDispatcher = req.getRequestDispatcher("/Search.jsp");
 		    	requestDispatcher.forward(req, res);
-			}else {
+			} else {
 				requestDispatcher = req.getRequestDispatcher("/Login.jsp");
 		    	requestDispatcher.forward(req, res);
 			}
@@ -778,7 +815,7 @@ public class NACOAMainServlet extends HttpServlet {
 			}else {
 				result = "Incorrect username or password";
 			}
-		}else {
+		} else {
 			result = "User email not verified or account has been banned, please check your email";
 		}
 		return result;

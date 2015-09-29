@@ -92,4 +92,9 @@
 		<url-pattern>/forgot_password</url-pattern>
 	</servlet-mapping>
 	
+	<servlet-mapping>
+		<servlet-name>MainServlet</servlet-name>
+		<url-pattern>/admin_login</url-pattern>
+	</servlet-mapping>
+	
 </web-app>

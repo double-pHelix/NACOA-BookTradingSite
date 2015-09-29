@@ -4806,5 +4806,61 @@ public void changeLastname(int user_id, String lastname) {
 		
 		return realBooks;
 	}
+	
+	public boolean isAdmin(String username) {
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		boolean is_admin = false;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM users WHERE (username = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, username);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+	
+			  //STEP 5: Extract data from result set
+			while(rs.next()){
+				//Retrieve by column name
+				is_admin = rs.getBoolean("is_admin");
+		
+			}
+			
+			//STEP 6: Clean-up environment
+			rs.close();
+			stmt.close();
+			conn.close();	
+
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		
+		return is_admin; 
+	}
 }
 
