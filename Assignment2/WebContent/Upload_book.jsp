@@ -63,7 +63,7 @@
          
           <h1>Selling a Book</h1>
           <h4> Enter in the details of the book into the form to sell on NACOA</h4>
-
+		  <font color="red">${sessionScope.upload_message}</font>
           <form action="${pageContext.request.contextPath}/upload_book" method="POST"> 
             <input type="hidden" name="uploading" value="true">
             

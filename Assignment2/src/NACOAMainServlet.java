@@ -10,9 +10,11 @@ import java.util.Calendar;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Date;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import javax.servlet.RequestDispatcher;
@@ -361,6 +363,7 @@ public class NACOAMainServlet extends HttpServlet {
 			
 		} else if (uri.contains("register")){ //USER REGISTRATION PAGE
 			//if user has submitted form
+			req.getSession().setAttribute("register_message", "");
 			
 			if(req.getParameter("registering") != null){
 				//register the user
@@ -378,6 +381,7 @@ public class NACOAMainServlet extends HttpServlet {
 			requestDispatcher = req.getRequestDispatcher("/Register.jsp");
 	    	requestDispatcher.forward(req, res);
 		} else if (uri.contains("login")){ //USER LOGIN PAGE
+			req.getSession().setAttribute("login_result", "");
 			requestDispatcher = req.getRequestDispatcher("/Login.jsp");
 	    	requestDispatcher.forward(req, res);
 		} else if (uri.contains("submitcred")){ //SUBMIT LOGIN DETAILS
@@ -386,8 +390,8 @@ public class NACOAMainServlet extends HttpServlet {
 			String password = req.getParameter("password");
 			int id = dHandler.getId(username);
 			String authResult = authUser(id, password); //contains a message of the authentication result
-														//TODO: display it if we redirect to login
-			if (authResult.equals("Successfully logged in...")) {
+			req.getSession().setAttribute("login_result", authResult);
+			if (authResult.equals("")) {
 				loginUser(req, res, id);
 				updateSessionUserDetails(req, id);
 				requestDispatcher = req.getRequestDispatcher("/Search.jsp");
@@ -480,9 +484,8 @@ public class NACOAMainServlet extends HttpServlet {
 	    	requestDispatcher = req.getRequestDispatcher("/Results.jsp");
 	    	requestDispatcher.forward(req, res);
 		} else if (uri.contains("upload_book")) {
-			// TODO
 			req.getSession().setAttribute("upload_success", false);
-			
+			req.getSession().setAttribute("upload_message", "");
 			if (req.getParameter("uploading") != null) {
 				int book_id = UploadBook(req, res);
 				if (book_id > 0) {
@@ -577,6 +580,17 @@ public class NACOAMainServlet extends HttpServlet {
 
 	}
 
+	private boolean validEmail(String emailAddress) {
+		final String EMAIL_PATTERN = 
+				"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+		final Pattern pattern;
+		final Matcher matcher;
+		pattern = Pattern.compile(EMAIL_PATTERN);
+		matcher = pattern.matcher(emailAddress);
+		return matcher.matches();
+	}
+	
 	private void banUser(HttpServletRequest req, HttpServletResponse res) {
 		
 		int user_id = Integer.parseInt(req.getParameter("user_id"));
@@ -745,11 +759,29 @@ public class NACOAMainServlet extends HttpServlet {
 		System.out.println(":" + creditinfo );
 		System.out.println(":" + description );
 		
+		if (username.equals("") || password.equals("") || email.equals("") || nickname.equals("") || firstname.equals("")
+			|| lastname.equals("") || dob.equals("") || address.equals("") || creditinfo.equals("")) {
+			req.getSession().setAttribute("register_message", "Please check that all fields are filled in");
+			return -1;	
+		}
+		
+		if (!isValidDate(dob)) {
+			req.getSession().setAttribute("register_message", "Invalid date format, please check that your date is valid (yyyy-mm-dd)");
+			return -1;
+		}
+		
+		if (!validEmail(email)) {
+			req.getSession().setAttribute("register_message", "Invalid email address, please check that you spelt it correctly");
+			return -1;
+		}
+		
 		System.out.println("Creating User in MySQL Database");
 		if (!dHandler.userExists(username)) {
 			int user_id = dHandler.createUser(username, password, email, nickname, firstname, lastname, dob, address, creditinfo, description);
+			req.getSession().setAttribute("register_message", "");
 			return user_id;
 		}else {
+			req.getSession().setAttribute("register_message", "Username already exists, please choose another");
 			return -1;
 		}
 	}
@@ -785,6 +817,27 @@ public class NACOAMainServlet extends HttpServlet {
 		System.out.println(":" + genre );
 		System.out.println(":" + price );
 		System.out.println(":" + description );
+
+		if (today.equals("") || title.equals("") || author.equals("") || picture.equals("") || publisher.equals("") || 
+			dateofpublication.equals("") || pages.equals("") || isbn.equals("") || genre.equals("") || price.equals("")) {
+			req.getSession().setAttribute("upload_message", "Please check that all fields are filled in");
+			return -1;
+		}
+		
+		if (!isInteger(pages)) {
+			req.getSession().setAttribute("upload_message", "Pages must be an integer value");
+			return -1;
+		}
+		
+		if (!isFloat(price)) {
+			req.getSession().setAttribute("upload_message", "Price must be a number (no $ sign)");
+			return -1;
+		}
+		
+		if (!isValidDate(dateofpublication)) {
+			req.getSession().setAttribute("upload_message", "Invalid date format, please check that your date is valid (yyyy-mm-dd)");
+			return -1;
+		}
 		
 		System.out.println("Creating User in MySQL Database");
 		int book_id = dHandler.createBook(user_id, today, title, author, picture, price, publisher, dateofpublication, pages, isbn, genre, description);
@@ -792,13 +845,43 @@ public class NACOAMainServlet extends HttpServlet {
 		return book_id;
 	}
 	
+	private boolean isFloat(String input) {
+		try {
+	        Float.parseFloat( input );
+	        return true;
+	    }
+	    catch( Exception e ) {
+	        return false;
+	    }
+	}
+
+	public boolean isInteger( String input ) {
+	    try {
+	        Integer.parseInt( input );
+	        return true;
+	    }
+	    catch( Exception e ) {
+	        return false;
+	    }
+	}
+	
+	public boolean isValidDate(String inDate) {
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    dateFormat.setLenient(false);	    
+	    try {
+			dateFormat.parse(inDate.trim());
+		} catch (ParseException e) {
+			return false;
+		}
+	    return true;
+	 }
 	public String authUser(int id, String pw) {
 		String result = "Error authenticating user";
 		
 		//check if user is halted
 		if (!dHandler.checkHalted(id)) {
 			if (dHandler.checkPassword(id, pw)) {
-				result = "Successfully logged in...";
+				result = "";
 			}else {
 				result = "Incorrect username or password";
 			}
@@ -813,7 +896,6 @@ public class NACOAMainServlet extends HttpServlet {
 		req.getSession().setAttribute("logged_in", true);
 		req.getSession().setAttribute("user_id", id);
 		req.getSession().setAttribute("username", dHandler.getUserName(id));
-		
 		NACOAUserBean userDetails = dHandler.getUserDetails(id);
 		req.getSession().setAttribute("userDetails", userDetails);
 		
@@ -882,9 +964,9 @@ public class NACOAMainServlet extends HttpServlet {
 
 		String message = new String("Thanks for signing up for NACOA, please follow this link to  " +
  	         		 "verify your account: http://localhost:8080/Assignment2/verify?id=" + user_id);
-
- 		System.out.println("Sent verification email...");
+ 		
  		sendEmail(user_id, subject, message);
+ 		System.out.println("Sent verification email...");
 	}
 	
 	public void loadResultsXML(){
@@ -1105,7 +1187,6 @@ public class NACOAMainServlet extends HttpServlet {
  			message.setText(sendMessage);
 
  			Transport.send(message);
- 			
  		} catch (MessagingException e) {
  			throw new RuntimeException(e);
  		}	

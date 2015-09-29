@@ -47,9 +47,9 @@
     <jsp:include page="/topBanner.jsp" />
  	<div class="jumbotron">
     <div class="container">
-
       <form class="form-signin" method="post" action="/Assignment2/submitcred">
         <h2 class="form-signin-heading">Login to NACOA</h2>
+        <font color="red">${sessionScope.login_result}</font>
         <label for="inputUsername" class="sr-only">Username</label>
         <input type="text" name="username" id="inputEmail" class="form-control" placeholder="Username" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
