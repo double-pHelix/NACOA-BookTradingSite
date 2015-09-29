@@ -144,7 +144,7 @@ public class NACOAMainServlet extends HttpServlet {
 			handler.updateResultStoreXML(RESULTS_FILE_LOCATION);
 			
 		} catch (Exception e){
-			System.out.println("error loading main xml:" + e );
+			System.out.println("error loading main xml:"  e );
 		}
 		
 		*/	
@@ -231,7 +231,7 @@ public class NACOAMainServlet extends HttpServlet {
     		handler.updateResultStoreXML(RESULTS_FILE_LOCATION);
 			
 		} catch (Exception e){
-			System.out.println("error loading main xml:" + e );
+			System.out.println("error loading main xml:"  e );
 		}*/
 		
 		//Do a search and display the content (from results instead of main!)
@@ -302,6 +302,7 @@ public class NACOAMainServlet extends HttpServlet {
 			String userToView = (String) req.getParameter("user");
 			int user_id = dHandler.getId(userToView);
 			String currUser = (String) req.getSession().getAttribute("username");
+			updateSessionUserDetails(req, user_id);
 			
 			//load user details
 			NACOAUserBean profileBean = dHandler.getUserDetails(user_id);
@@ -323,8 +324,9 @@ public class NACOAMainServlet extends HttpServlet {
 		} else if (uri.contains("transaction_history")){
 			String userToView = (String) req.getParameter("user");
 			int userId = dHandler.getUserId(userToView);
-			String currUser = (String) req.getSession().getAttribute("username");
 			
+			String currUser = (String) req.getSession().getAttribute("username");
+						
 			//load user details
 			NACOAUserBean profileBean = dHandler.getUserDetails(userId);
 			
@@ -388,7 +390,7 @@ public class NACOAMainServlet extends HttpServlet {
 		} else if (uri.contains("verify")){ //SUBMIT LOGIN DETAILS
 			int id = Integer.parseInt(req.getParameter("id"));
 			String code = req.getParameter("code");
-			System.out.println("Verifying user " + id + "\nwith code: " + code);
+			System.out.println("Verifying user "+  id + "\nwith code: " + code);
 			verifyUser(id, code);
 	    	requestDispatcher = req.getRequestDispatcher("/Login.jsp");
 	    	requestDispatcher.forward(req, res);
@@ -410,7 +412,7 @@ public class NACOAMainServlet extends HttpServlet {
 				//just set up the cart to be read 
 				setUpCart(req, res);
 			} catch (Exception e){
-				System.out.println("setting pu cart fail: " + e );
+				System.out.println("setting pu cart fail: "  e );
 			} */
 			setUpCartDB(req, res);
 			
@@ -427,7 +429,7 @@ public class NACOAMainServlet extends HttpServlet {
 			//know what i mean?
 			
 			String searchType = (String) req.getParameter("search_type");
-
+			req.getSession().setAttribute("banUser", false);
 			//case of search
 			//we will redirect to results
 			if (searchType != null){
@@ -453,7 +455,8 @@ public class NACOAMainServlet extends HttpServlet {
 				processResults(req,res); //this function lets have a look at it
 
 			} else if (req.getParameter("ban_user") != null) {
-				
+				System.out.println("Received " + req.getParameter("banUser"));
+				req.getSession().setAttribute("banUser", true);
 				banUser(req, res);
 			} else {
 				//just looking at results 
@@ -493,7 +496,7 @@ public class NACOAMainServlet extends HttpServlet {
 				System.out.println("Received parame " + req.getSession().getAttribute("user_id"));
 				
 				int user_id = (int)req.getSession().getAttribute("user_id");
-				//System.out.println("Received id " + user_id);
+				//System.out.println("Received id "  user_id);
 				String creditDetails = dHandler.getCreditCardDetails(user_id);
 				
 				if (creditDetails.contentEquals("")) {
@@ -516,7 +519,7 @@ public class NACOAMainServlet extends HttpServlet {
 			req.getSession().setAttribute("pausedList", pausedBeans);
 			//TODO
 			for(int n = 1; n != num_books+1; n++){
-//				System.out.println("Entry " + n);
+//				System.out.println("Entry "  n);
 				if(req.getParameter("entry"+n) != null){
 					System.out.println("Deleting book with id " + n);
 					dHandler.pauseSelling(user_id, n);
@@ -592,7 +595,7 @@ public class NACOAMainServlet extends HttpServlet {
 		
 		
 		
-		//System.out.println("User name is " + username);
+		//System.out.println("User name is "  username);
 		
 		//int user_id = dHandler.getId(username);
 		
@@ -624,14 +627,14 @@ public class NACOAMainServlet extends HttpServlet {
     		
     		
 		} catch (Exception e){
-			System.out.println("error adding to cart:" + e );
+			System.out.println("error adding to cart:"  e );
 		}*/
 		
 		//String creditinfo = (String) req.getParameter("creditinfo");
 		
 		int user_id = dHandler.getId(req.getParameter("username"));
-		System.out.println("Received username " + req.getParameter("username"));
-		System.out.println("Received user ID " + user_id);
+		System.out.println("Received username "+  req.getParameter("username"));
+		System.out.println("Received user ID "+  user_id);
 		int book_id = Integer.parseInt(req.getParameter("book_id"));
 		System.out.println("Received book ID " + book_id);
 		   
@@ -686,7 +689,7 @@ public class NACOAMainServlet extends HttpServlet {
 
 			//to remove items i removed from last to first to avoid changing the indexes
 			for(int n = totalEntries-1; n >= 0; n--){
-				if(req.getParameter("entry"+n) != null){
+				if(req.getParameter("entry"n) != null){
 					
 					//remove from the document
 					handler.removeFromCart(n);
@@ -703,7 +706,7 @@ public class NACOAMainServlet extends HttpServlet {
     		handler.setCartToSession("shoppingCartDoc", req.getSession());
 			
 		} catch (Exception e){
-			System.out.println("error adding to cart:" + e );
+			System.out.println("error adding to cart:"  e );
 		}
 		*/
 	}
@@ -863,76 +866,14 @@ public class NACOAMainServlet extends HttpServlet {
 	
 	public void sendConfirmationEmail(int user_id){
 		//send a email to the user...
-		String to = dHandler.getEmail(user_id);
-		String from = "info.nacoa@gmail.com";
-		SecureRandom random = new SecureRandom();
-		String code = new BigInteger(130, random).toString(32);
+		
+		String subject = new String("Verify your NACOA account");
 
- 		Properties props = new Properties();
- 		props.put("mail.smtp.auth", "true");
- 		props.put("mail.smtp.starttls.enable", "true");
- 		props.put("mail.smtp.host", "smtp.gmail.com");
- 		props.put("mail.smtp.port", "587");
+		String message = new String("Thanks for signing up for NACOA, please follow this link to  " +
+ 	         		 "verify your account: http://localhost:8080/Assignment2/verify?id=" + user_id);
 
- 		Session session = Session.getInstance(props,
- 		  new javax.mail.Authenticator() {
- 			protected PasswordAuthentication getPasswordAuthentication() {
- 				return new PasswordAuthentication(from, "comp9321");
- 			}
- 		  });
-
- 		try {
- 			System.out.println("starting...");
- 			Message message = new MimeMessage(session);
- 			message.setFrom(new InternetAddress(from));
- 			message.setRecipients(Message.RecipientType.TO,
- 					InternetAddress.parse(to));
- 			message.setSubject("Verify your NACOA account");
- 			message.setText("Thanks for signing up for NACOA, please follow this link to  "
- 	         		+ "verify your account: http://localhost:8080/Assignment2/verify?id=" + user_id);
-
- 			Transport.send(message);
-
- 			System.out.println("Sent verification email...");
-			
-
- 		} catch (MessagingException e) {
- 			throw new RuntimeException(e);
- 		}	
-	}
-	
-	public void sendPasswordEmail(int user_id){
-		String to = dHandler.getEmail(user_id);
-		String from = "info.nacoa@gmail.com";
-
- 		Properties props = new Properties();
- 		props.put("mail.smtp.auth", "true");
- 		props.put("mail.smtp.starttls.enable", "true");
- 		props.put("mail.smtp.host", "smtp.gmail.com");
- 		props.put("mail.smtp.port", "587");
-
- 		Session session = Session.getInstance(props,
- 		  new javax.mail.Authenticator() {
- 			protected PasswordAuthentication getPasswordAuthentication() {
- 				return new PasswordAuthentication(from, "comp9321");
- 			}
- 		  });
-
- 		try {
- 			Message message = new MimeMessage(session);
- 			message.setFrom(new InternetAddress(from));
- 			String password = dHandler.getPassword(user_id);
- 			message.setRecipients(Message.RecipientType.TO,
- 					InternetAddress.parse(to));
- 			message.setSubject("NACOA account - Forgot Password");
- 			message.setText("The following is your NACOA password:\n"
- 					 		+ password + "\n"
- 					 		+ "Please keep it safe.");
-
- 			Transport.send(message);
- 		} catch (MessagingException e) {
- 			throw new RuntimeException(e);
- 		}	
+ 		System.out.println("Sent verification email...");
+ 		sendEmail(user_id, subject, message);
 	}
 	
 	public void loadResultsXML(){
@@ -982,7 +923,7 @@ public class NACOAMainServlet extends HttpServlet {
 			//Search for right entry
 			NACOABean entry = resultBeans.get(0);
 			
-			System.out.println("Size of results is " + resultBeans.size());
+			System.out.println("Size of results is "+ resultBeans.size());
 			int i = 0;
 			
 			while (entry.getBookID() != entryToViewNum) {
@@ -1074,7 +1015,7 @@ public class NACOAMainServlet extends HttpServlet {
 		int user_id = (int)req.getSession().getAttribute("user_id");
 		ArrayList<NACOABean> cart = dHandler.getShoppingCart(user_id);
 		
-		System.out.println("size of cart is " + cart.size());
+		System.out.println("size of cart is "+ cart.size());
 		
 		int size = 0;
 		
@@ -1082,60 +1023,79 @@ public class NACOAMainServlet extends HttpServlet {
 			int user_seller_id = dHandler.getSellersUserID(cart.get(size).getBookID());
 			System.out.println("book id is " + cart.get(size).getBookID());
 			
-			String to = dHandler.getEmail(user_seller_id);
-			
-			System.out.println("sending to email " + to);
-			String from = "info.nacoa@gmail.com";
-			
-	 		Properties props = new Properties();
-	 		props.put("mail.smtp.auth", "true");
-	 		props.put("mail.smtp.starttls.enable", "true");
-	 		props.put("mail.smtp.host", "smtp.gmail.com");
-	 		props.put("mail.smtp.port", "587");
+	 		int bookID = cart.get(size).getBookID();
+	 		
+	 		String subject = new String("A book has been sold");
+	 		String message = new String("The following book has been sold: \n"
+	 					 + "Title: " + dHandler.getBookTitle(bookID) + "\n"
+	 					 + "Author: " +  dHandler.getBookAuthor(bookID) + "\n"
+	 					 + "Price: $" +  dHandler.getBookPrice(bookID) + "\n"
+	 					 + "\n Have a nice day!");
 
-	 		Session session = Session.getInstance(props,
-	 		  new javax.mail.Authenticator() {
-	 			protected PasswordAuthentication getPasswordAuthentication() {
-	 				return new PasswordAuthentication(from, "comp9321");
-	 			}
-	 		  });
-
-	 		try {
-	 			System.out.println("starting...");
-	 			Message message = new MimeMessage(session);
-	 			message.setFrom(new InternetAddress(from));
-	 			message.setRecipients(Message.RecipientType.TO,
-	 					InternetAddress.parse(to));
-	 			message.setSubject("A book has been sold");
-	 			
-	 			//Get id of book
-	 			int bookID = cart.get(size).getBookID();
-	 			
-	 			message.setText("The following book has been sold: \n"
-	 					+ "Title: " + dHandler.getBookTitle(bookID) + "\n"
-	 					+ "Author: " + dHandler.getBookAuthor(bookID) + "\n"
-	 					+ "Price: $" + dHandler.getBookPrice(bookID) + "\n"
-	 					+ "\n Have a nice day!");
-
-	 			Transport.send(message);
-
-	 			//Remove the books from the cart
-	 			System.out.println("Deleting book from cart");
-	 			dHandler.deleteBookCart(bookID, user_id);
-	 			
-	 			//Set the book to sold
-	 			System.out.println("Setting book to sold");
-	 			dHandler.setBookSold(bookID);
-	 			
-	 		} catch (MessagingException e) {
-	 			throw new RuntimeException(e);
-	 		}	
+	 		//Sending email
+	 		System.out.println("Sending email");
+	 		sendEmail(user_seller_id, subject, message);
+	 		
+ 			//Remove the books from the cart
+ 			System.out.println("Deleting book from cart");
+ 			dHandler.deleteBookCart(bookID, user_id);
+ 			
+ 			//Set the book to sold
+ 			System.out.println("Setting book to sold");
+ 			dHandler.setBookSold(bookID);
 	 		
 	 		size++;
 		}
 		
 		
 		System.out.println("Sent emails to users with their books sold...");
+	}
+	
+	public void sendPasswordEmail(int user_id) {
+
+		String password = dHandler.getPassword(user_id);
+		String subject = new String("NACOA account - Forgot Password");
+		String message = new String("The following is your NACOA password:\n");
+		message = message + password + "\n Please keep it safe.";
+		
+		sendEmail(user_id, subject, message);
+	}
+	
+	//Use to send all emails
+	public void sendEmail(int user_id, String subject, String sendMessage) {
+		String to = dHandler.getEmail(user_id);
+		
+		System.out.println("sending to email "+ to);
+		String from = "info.nacoa@gmail.com";
+		
+ 		Properties props = new Properties();
+ 		props.put("mail.smtp.auth", "true");
+ 		props.put("mail.smtp.starttls.enable", "true");
+ 		props.put("mail.smtp.host", "smtp.gmail.com");
+ 		props.put("mail.smtp.port", "587");
+
+ 		Session session = Session.getInstance(props,
+ 		  new javax.mail.Authenticator() {
+ 			protected PasswordAuthentication getPasswordAuthentication() {
+ 				return new PasswordAuthentication(from, "comp9321");
+ 			}
+ 		  });
+
+ 		try {
+ 			System.out.println("starting...");
+ 			Message message = new MimeMessage(session);
+ 			message.setFrom(new InternetAddress(from));
+ 			message.setRecipients(Message.RecipientType.TO,
+ 					InternetAddress.parse(to));
+ 			message.setSubject(subject);
+ 			
+ 			message.setText(sendMessage);
+
+ 			Transport.send(message);
+ 			
+ 		} catch (MessagingException e) {
+ 			throw new RuntimeException(e);
+ 		}	
 	}
 }
 
