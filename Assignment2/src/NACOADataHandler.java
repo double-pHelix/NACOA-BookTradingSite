@@ -548,7 +548,7 @@ public class NACOADataHandler {
 			"atomsunderstand", "poppysmicgadolinium", "cheddarscypriot", "whilethorium", "birdslumpy",
 			"gilltrue", "wellingtonma", "vagaryunkind", "appealguaranteed", "microwaveconcede",
 			"dacitequalling", "fibrosisrye", "endemismperturb", "divingsuper", "pearldequeue", 
-			"furlongbiceps", "hoopoedismal", "reclusivebypass", "meterquirky", "itchyaboriginal"
+			"furlongbiceps", "hoopoedismal", "reclusivebypass", "meterquirky", "admin"
 		};
 		
 		String firstnames[] = {
@@ -752,7 +752,8 @@ public class NACOADataHandler {
 			"Hachette Children's Group",
 			"HarperCollins Publishers",
 			"Bloomsbury Publishing PLC",
-			"Penguin Books Ltd"
+			"Penguin Books Ltd",
+			"G.P. Putnam's Sons"
 		};
 		
 		String dops[] = {
@@ -845,7 +846,10 @@ public class NACOADataHandler {
 			createBook (ids[i], dates[i], titles[i], authors[i], pictures[i], prices[i], publishers[i], 
 						dops[i], pages[i], isbns[i], genres[i], descriptions[i]);
 		}
+		
+		setAdmin(26);
 	}
+	
 	public int createUser(String username, String password, String email, String nickname, 
 			String firstname, String lastname, String dob, String address, String creditinfo, String description){
 		int auto_id = 0;
@@ -2209,7 +2213,6 @@ public class NACOADataHandler {
 			stmt.executeQuery();
 			
 			ResultSet rs = stmt.getResultSet();
-			//TODO
 			//STEP 5: Extract data from result set
 			while(rs.next()){
 				//Retrieve by column name
@@ -3427,6 +3430,7 @@ public void changeLastname(int user_id, String lastname) {
 		return result;
 	}
 
+	//TODO Do we need code anymore?
 	public void verifyUser(int id, String code) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -3768,10 +3772,7 @@ public void changeLastname(int user_id, String lastname) {
 	}
 	
 	public void createHistoryEntry(int user_id, int book_id, int action){
-		int auto_id = 0;
 		Connection conn = null;
-		
-		//String bookName = null;
 		try {
 			//STEP 2: Register JDBC driver
 			Class.forName("com.mysql.jdbc.Driver");
@@ -4118,9 +4119,7 @@ public void changeLastname(int user_id, String lastname) {
 			
 			while(rs.next()) {
 				
-				//Need to make sure that the book has not been sold yet?
-				int bookID = rs.getInt("id");
-
+				//Need to make sure that the book has not been sold yet? TODO
 				NACOABean book = new NACOABean();
 				
 				book.setBookID(rs.getInt("id"));
@@ -4292,7 +4291,6 @@ public void changeLastname(int user_id, String lastname) {
 			
 			while(rs.next()) {
 
-				int id = rs.getInt("id");
 				NACOAUserBean user = new NACOAUserBean();
 				
 				user.setUserID(rs.getInt("id"));
@@ -4558,7 +4556,6 @@ public void changeLastname(int user_id, String lastname) {
 		PreparedStatement stmt = null;
 		ArrayList<NACOAHistoryBean> history = new ArrayList<NACOAHistoryBean>();
 
-		int bookID = 0;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			//
@@ -4861,6 +4858,43 @@ public void changeLastname(int user_id, String lastname) {
 		
 		
 		return is_admin; 
+	}
+	
+	public void setAdmin(int id) {
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			String sql = "UPDATE users SET is_admin=1 WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, id);
+			stmt.executeUpdate();
+			
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
 	}
 }
 

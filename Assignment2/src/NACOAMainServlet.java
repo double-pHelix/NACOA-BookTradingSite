@@ -302,9 +302,10 @@ public class NACOAMainServlet extends HttpServlet {
 				String username = req.getParameter("username");
 				String password = req.getParameter("password");
 				int id = dHandler.getId(username);
-				
-				String authResult = null; 
-				if(!dHandler.isAdmin(username)){
+				String authResult = null;
+				if (id == -1) {
+					authResult = "No such username. Please register first";
+				} else if (!dHandler.isAdmin(username)){
 					authResult = "Not an admin account";
 				} else {
 					authResult = authUser(id, password); //contains a message of the authentication result
@@ -337,7 +338,9 @@ public class NACOAMainServlet extends HttpServlet {
 			String password = req.getParameter("password");
 			int id = dHandler.getId(username);
 			String authResult = null; 
-			if(dHandler.isAdmin(username)){
+			if (id == -1) {
+				authResult = "No such username. Please register first";
+			} else if(dHandler.isAdmin(username)){
 				authResult = "Admin account cannot be used here";
 			} else {
 				authResult = authUser(id, password); //contains a message of the authentication result

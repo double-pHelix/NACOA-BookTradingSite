@@ -50,6 +50,7 @@
     <div class="container">
     
     <jsp:include page="/topBanner.jsp" /> 
+      <div class="jumbotron">
       
       <div class= "account_form">
       <c:choose>
