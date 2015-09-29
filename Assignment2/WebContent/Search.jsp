@@ -55,7 +55,7 @@
          
          <!--  Need to place search form here -->
          <!-- Default we show basic, if we have a request to have advanced we switch -->
-         
+        
         <h3>Search</h3>
 
         <!-- Nav tabs -->
