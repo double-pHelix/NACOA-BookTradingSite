@@ -172,7 +172,7 @@
                 <input type="hidden" name="username" value="${entry.username}">
                 <center>
                 <tr class="active">
-                  <td class="active"><a href="${pageContext.request.contextPath}/results?entryMoreViewUser=${entry.userID}&page=${requestScope.viewUserBean.curr_page_num}">${entry.username}</a></td>
+                  <td class="active"><a href="${pageContext.request.contextPath}/profile?user=${entry.username}">${entry.username}</a></td>
                   <td class="success">${entry.firstname}</td>
                   <td class="warning">${entry.lastname}</td>
                   <td class="danger">${entry.nickname}</td>
