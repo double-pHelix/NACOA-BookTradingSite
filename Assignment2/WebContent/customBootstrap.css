@@ -23,12 +23,12 @@
 }
 
 #bannerRegisterButton{
-	color: #B247DF;	
+	color: #DFB2F2;	
+	margin-bottom: 10px;
 }
 
 #bannerRegisterButton2{
-	color: #DFB2F2;	
-	margin-bottom: 10px;
+	color: #B247DF;	
 }
 
 .nav nav-tabs{

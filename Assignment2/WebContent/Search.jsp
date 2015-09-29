@@ -60,10 +60,10 @@
               <div class ="NACOABannerText">
                 <h1>Welcome to NACOA</h1>
                 <p>We are an online book trading platform that nearly offers all the features our rival provides.</p>
-                <br>   
-                <a href="${pageContext.request.contextPath}/login" class="btn btn-lg btn-danger" id="bannerRegisterButton2" role="button">Login</a><br>
-                <a href="${pageContext.request.contextPath}/register" class="btn btn-lg btn-warning" id="bannerRegisterButton" role="button">Register</a>
-             
+                <br>
+                <a href="${pageContext.request.contextPath}/register" class="btn btn-lg btn-danger" id="bannerRegisterButton" role="button">Register</a><br>
+                <a href="${pageContext.request.contextPath}/login" class="btn btn-lg btn-warning" id="bannerRegisterButton2" role="button">Login</a> 
+                
               </div>
               </center>
             </div>
@@ -119,39 +119,11 @@
           </div>
         </div>
       
-                
-         
         <!-- 
         <p><a class="btn btn-lg btn-success" href="${pageContext.request.contextPath}/Results.jsp" role="button">Sign up today</a></p>
         -->
       </div>
   
-      <h3>Randomised</h3>
-      <div class="content">
-      <table class="table table-bordered"> 
-        <tr class="active">
-          <td scope="col"><b>TITLE</b></td>
-          <td scope="col"><b>AUTHOR</b></td>
-          <td scope="col"><b>DATE PUBLISHED</b></td>
-          <td scope="col"><b>ISBN</b></td>
-        </tr>
-        
-        <c:forEach var="entry" items="${requestScope.randomBeans}" varStatus="varStatus" >
-        
-          <form name="articles_option" action="" method="POST">
-          <!--  set for each of these entries some way of id to add to cart later -->
-          <input type="hidden" name="publication_id" value="${entry.xmlID}">
-          
-          <tr class="active">
-            <td class="active">${entry.title}</td>
-            <td class="success">${entry.authors}</td>
-            <td class="warning">${entry.year}</td>
-            <td class="danger"><b>${entry.isbn}</b></td>
-          </tr>
-          </form>
-        </c:forEach>
-      </table>
-      </div>
 
       <footer class="footer">
         <p>&copy; Felix Yuen Dao Phu 2015</p>
