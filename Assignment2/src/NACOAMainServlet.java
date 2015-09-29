@@ -611,19 +611,12 @@ public class NACOAMainServlet extends HttpServlet {
 		System.out.println("Received user ID " + user_id);
 		int book_id = Integer.parseInt(req.getParameter("book_id"));
 		System.out.println("Received book ID " + book_id);
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-		//get current date time with Date()
-		Date date = new Date();
-		System.out.println(dateFormat.format(date));
-	  
-		//get current date time with Calendar()
-		Calendar cal = Calendar.getInstance();
-		System.out.println(dateFormat.format(cal.getTime()));
 		   
 		//Need to get book_id somehow
-		dHandler.addBookToCart(user_id, book_id, 0, dateFormat.format(date).replace("/",  "-"), dHandler.DUMMYDOS);
+		dHandler.addBookToCart(user_id, book_id, 0);
 		cartBeans = dHandler.getShoppingCart(user_id);
 		
+		System.out.println("Cart is size " + cartBeans.size());
 		//Don't forget to make an entry for our transaction history!
 		dHandler.addHistoryAddCartEntry(user_id,book_id);
 		
@@ -647,7 +640,7 @@ public class NACOAMainServlet extends HttpServlet {
 				//Need to remove from database
 				//handler.removeFromCart(n);
 				System.out.println("Deleting book with id " + n);
-				dHandler.deleteBookCart(n);
+				dHandler.deleteBookCart(n, user_id);
 			}
 			
 		}
@@ -1069,14 +1062,21 @@ public class NACOAMainServlet extends HttpServlet {
 
 	 			Transport.send(message);
 
+	 			//Remove the books from the cart
+	 			System.out.println("Deleting book from cart");
+	 			dHandler.deleteBookCart(bookID, user_id);
 	 			
-
+	 			//Set the book to sold
+	 			System.out.println("Setting book to sold");
+	 			dHandler.setBookSold(bookID);
+	 			
 	 		} catch (MessagingException e) {
 	 			throw new RuntimeException(e);
 	 		}	
 	 		
 	 		size++;
 		}
+		
 		
 		System.out.println("Sent emails to users with their books sold...");
 	}
