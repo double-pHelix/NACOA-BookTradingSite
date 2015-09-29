@@ -13,6 +13,9 @@
 	height: 100px;
 }
 
+#homeLink { 
+	color: inherit;
+} 
 #NACOABanner {
 	background-image: url(images/paper_fibers.png) ;
 	/*background: #BB5DE3 ;*/

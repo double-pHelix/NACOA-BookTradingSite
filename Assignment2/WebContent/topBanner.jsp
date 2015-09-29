@@ -46,6 +46,6 @@
       
     </ul>
   </nav>
-  <h3 class="text-muted" style="margin:7px" id="logo">NACOA<br><font size="1" color="purple">not a copy of amazon.</font></h3>
+  <h3 class="text-muted" style="margin:7px" id="logo"><a href="${pageContext.request.contextPath}/" id="homeLink">NACOA</a><br><font size="1" color="purple">not a copy of amazon.</font></h3>
   
 </div>
