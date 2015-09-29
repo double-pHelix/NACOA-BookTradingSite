@@ -13,6 +13,22 @@
 	height: 100px;
 }
 
+#NACOABanner {
+	background: DarkOrchid ;
+}
+
+.NACOABannerText {
+	color: #D6ADEB !important;
+	font-family: 'Droid Sans', sans-serif
+}
+.nav nav-tabs{
+	/* padding-top:30px; */
+}
+
+#customisedJumbotron{
+	padding-top: 25px;
+}
+
 html{
  	font-family:sans-serif;
  	-webkit-text-size-adjust:100%;

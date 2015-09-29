@@ -49,14 +49,22 @@
     <div class="container">
     
     <jsp:include page="/topBanner.jsp" /> 
+      
+      <div class="jumbotron" id="NACOABanner">
+        <center>
+        <div class ="NACOABannerText">
+          <h1>Welcome to NACOA</h1>
+          <p>We are an online book trading platform that nearly offers all the features our rival provides.</p>
+        </div>
+        </center>
+      </div>
     
-      <div class="jumbotron">
-        <h1>Welcome to NACOA</h1>
-         
+      <div class="jumbotron" id="customisedJumbotron">
+
          <!--  Need to place search form here -->
          <!-- Default we show basic, if we have a request to have advanced we switch -->
         
-        <h3>Search</h3>
+        <h2>Search</h2>
 
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
