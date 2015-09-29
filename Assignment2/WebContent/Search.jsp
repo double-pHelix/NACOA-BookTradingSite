@@ -48,20 +48,27 @@
   <body>
     <div class="container">
     
-    <jsp:include page="/topBanner.jsp" /> 
+      <jsp:include page="/topBanner.jsp" /> 
       
-      <div class="jumbotron" id="NACOABanner">
-        <center>
-        <div class ="NACOABannerText">
-          <h1>Welcome to NACOA</h1>
-          <p>We are an online book trading platform that nearly offers all the features our rival provides.</p>
-          <br>
-          <a href="${pageContext.request.contextPath}/register" class="btn btn-lg btn-warning" id="bannerRegisterButton" role="button">Register</a> 
-          
-        </div>
-        </center>
-      </div>
-      
+       <c:choose>
+          <c:when test="${sessionScope.logged_in == true}">
+            <!-- PUT WHATEVER YOU WANT HERE FOR THE LOGGED IN USER -->
+          </c:when>    
+          <c:otherwise>
+            <div class="jumbotron" id="NACOABanner">
+              <center>
+              <div class ="NACOABannerText">
+                <h1>Welcome to NACOA</h1>
+                <p>We are an online book trading platform that nearly offers all the features our rival provides.</p>
+                <br>
+                <a href="${pageContext.request.contextPath}/register" class="btn btn-lg btn-warning" id="bannerRegisterButton" role="button">Register</a> 
+                
+              </div>
+              </center>
+            </div>
+          </c:otherwise>
+        </c:choose>
+
          
       <div class="jumbotron" id="customisedJumbotron">
 
