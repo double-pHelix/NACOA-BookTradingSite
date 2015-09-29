@@ -60,6 +60,7 @@
          
           <h1>Registration</h1>
           <h4> Enter in your details into the form to begin shopping at NACOA</h4>
+          <font color="red">${sessionScope.register_message}</font>
           <!--  Need to place search form here -->
           <!-- Default we show basic, if we have a request to have advanced we switch -->
 

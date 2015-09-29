@@ -748,7 +748,6 @@ public class NACOADataHandler {
 			"Hay House Inc",
 			"Hay House Inc",
 			"HarperCollins Publishers",
-			"Michael O'Mara Books Ltd",
 			"John Wiley & Sons Inc",
 			"John Wiley & Sons Inc",
 			"Laurence King Publishing",
