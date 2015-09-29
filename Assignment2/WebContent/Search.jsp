@@ -126,13 +126,15 @@
       </div>
   
 
-      <footer class="footer">
-        <p>&copy; Felix Yuen Dao Phu 2015</p>
-      </footer>
-
-    </div> <!-- /container -->
-
-
+      <h3>Popular Reads</h3>
+          <table class="table table-borderless"> 
+          <c:forEach var="random" items="${sessionScope.randomBeans}" varStatus="varStatus">
+            <tr class="active">
+	          <a href="${pageContext.request.contextPath}/results?entryMoreView=${random.bookID}"> <img SRC="${random.picture}" height="150"> </a> &nbsp;
+            </tr>
+          </c:forEach>
+          </table>
+      </div>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>

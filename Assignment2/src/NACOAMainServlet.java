@@ -80,12 +80,6 @@ public class NACOAMainServlet extends HttpServlet {
      * Call this function if you want to generate a number if randomly selected entries
      */
     private ArrayList<NACOABean> generateRandomBeans(int num){
-    	//we dont need this right?
-    	//yeah... just returns an array of beans
-    	//ok this is redundant
-    	//TODO: Remove
-    	//generate num number of entries into an xml
-    	
     	Random rand = new Random();
     	int totalEntries = handler.getNumMain();
     	
@@ -571,8 +565,8 @@ public class NACOAMainServlet extends HttpServlet {
 		} else {//MAIN PAGE (this is /search or welcome
 			//generate random list
 			loadMainXML();
-
-			req.setAttribute("randomBeans",generateRandomBeans(10));
+			
+			req.getSession().setAttribute("randomBeans", dHandler.getRandomList(5));
 			
 	    	requestDispatcher = req.getRequestDispatcher("/Search.jsp");
 	    	requestDispatcher.forward(req, res);

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.LinkedList;
+import java.util.Random;
 /**
  * Class which deals with the data access needs of the NACOAMainServlet
  * 
@@ -2296,7 +2297,6 @@ public class NACOADataHandler {
 			stmt.executeQuery();
 			
 			ResultSet rs = stmt.getResultSet();
-			//TODO
 			//STEP 5: Extract data from result set
 			while(rs.next()){
 				//Retrieve by column name
@@ -4727,6 +4727,83 @@ public void changeLastname(int user_id, String lastname) {
 		} //end try
 		
 		return password;
+	}
+	
+	public ArrayList<NACOABean> getRandomList (int entries) {
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ArrayList<Integer> listOfBooks = new ArrayList<Integer>();
+		//String bookName = null;
+		int bookID = 0;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			String sql = "SELECT * FROM user_seller_books WHERE (is_paused = 0 AND is_sold = 0)";
+			
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+			//STEP 5: Extract data from result set
+			while(rs.next()){
+				//Retrieve by column name
+				bookID = rs.getInt("book_id");
+				listOfBooks.add(bookID);
+			}
+
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+			//return listOfBooks;
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		//Convert books to beans
+		ArrayList<NACOABean> realBooks = new ArrayList<NACOABean>();
+		
+		while (entries != realBooks.size()) {
+			int bID = listOfBooks.get(new Random().nextInt(listOfBooks.size()));
+			NACOABean book = new NACOABean();
+			
+			//Set Details
+			book.setBookID(bID);
+			book.setBooktitle(this.getBookTitle(bID));
+			book.setAuthor(this.getBookAuthor(bID));
+			book.setPicture(this.getBookPicture(bID));
+			book.setPrice(this.getBookPrice(bID));
+			book.setPublisher(this.getBookPublisher(bID));
+			book.setDop(this.getBookDOP(bID));
+			book.setPages(this.getBookPages(bID));
+			book.setIsbn(this.getBookISBN(bID));
+			book.setGenre(this.getBookGenre(bID));
+			
+			//Add book
+			realBooks.add(book);
+		}
+		
+		System.out.println("realbooks size: "+realBooks.size());
+		return realBooks;
 	}
 }
 
