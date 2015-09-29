@@ -14,21 +14,22 @@
 }
 
 #NACOABanner {
-	background: #BB5DE3 ;
+	background-image: url(images/paper_fibers.png) ;
+	/*background: #BB5DE3 ;*/
 }
 
 .NACOABannerText {
-	color: #e8c8f6 !important;
+	color: Indigo  !important;
 	font-family: 'Droid Sans', sans-serif;
 }
 
 #bannerRegisterButton{
-	color: #DFB2F2;	
+	color: Indigo;	
 	margin-bottom: 10px;
 }
 
 #bannerRegisterButton2{
-	color: #B247DF;	
+	color: Indigo;	
 }
 
 #NACOABannerHorizontalLine {
@@ -51,13 +52,18 @@ html{
  	-ms-text-size-adjust:100%}
 
 body {
-  margin-right: auto;
-  margin-left: auto;
-  max-width: 1320px; /* or 950px */
+	background-image: url(images/groovepaper.png) ;
+	margin-right: auto;
+	margin-left: auto;
+	max-width: 1320px; /* or 950px */
 }
 
 .content {
   text-align: center;
+}
+
+.jumbotron{
+	background-image: url(images/creampaper.png) !important;
 }
 
 #logo {
