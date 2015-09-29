@@ -14,16 +14,21 @@
 }
 
 #NACOABanner {
-	background: DarkOrchid ;
+	background: #BB5DE3 ;
 }
 
 .NACOABannerText {
-	color: #D6ADEB !important;
+	color: #e8c8f6 !important;
 	font-family: 'Droid Sans', sans-serif
 }
 
 #bannerRegisterButton{
-	color: DarkOrchid;	
+	color: #B247DF;	
+}
+
+#bannerRegisterButton2{
+	color: #DFB2F2;	
+	margin-bottom: 10px;
 }
 
 .nav nav-tabs{
