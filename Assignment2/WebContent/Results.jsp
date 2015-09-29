@@ -177,9 +177,9 @@
                   <td class="warning">${entry.lastname}</td>
                   <td class="danger">${entry.nickname}</td>
                   
-                  <!-- Hyperlink to profile Felix?? -->
+                  <!-- Hyperlink to profile Felix?? um the username should be enough I think-->
                   <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="user_profile" id="edit_profile_button" value="View Profile"></td>
-                  <!--  We need to set permissions to check if we can ban? -->
+                  <!--  We need to set permissions to check if we can ban? yes-->
                   <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="ban_user" id="edit_profile_button" value="Ban User"></td>
                 </tr>
                 

@@ -302,7 +302,6 @@ public class NACOAMainServlet extends HttpServlet {
 			String userToView = (String) req.getParameter("user");
 			int user_id = dHandler.getId(userToView);
 			String currUser = (String) req.getSession().getAttribute("username");
-			updateSessionUserDetails(req, user_id);
 			
 			//load user details
 			NACOAUserBean profileBean = dHandler.getUserDetails(user_id);
@@ -324,10 +323,19 @@ public class NACOAMainServlet extends HttpServlet {
 		} else if (uri.contains("transaction_history")){
 			String userToView = (String) req.getParameter("user");
 			int userId = dHandler.getUserId(userToView);
+			String currUser = (String) req.getSession().getAttribute("username");
+			
+			//load user details
+			NACOAUserBean profileBean = dHandler.getUserDetails(userId);
+			
+			if(userToView.equals(currUser)){ //we view our own profile
+				profileBean.setIsUser(true);			
+			}
 			
 			ArrayList<NACOAHistoryBean> historyBeans = dHandler.getUserHistory(userId);
 			
 			req.getSession().setAttribute("transaction_history", historyBeans);
+			req.getSession().setAttribute("profile", profileBean);
 			
 			requestDispatcher = req.getRequestDispatcher("/CustomerHistory.jsp");
 	    	requestDispatcher.forward(req, res);

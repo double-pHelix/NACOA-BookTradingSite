@@ -3,3 +3,7 @@
 .profile_info {
 	text-align: center;
 }
+
+.admin_options {
+	float: right;
+}

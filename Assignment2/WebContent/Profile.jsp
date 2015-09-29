@@ -55,16 +55,19 @@
             <c:when test="${sessionScope.userDetails.isAdmin}">
               <c:choose>
                 <c:when test="${sessionScope.profile.isUser}">
-                  Admin cannot ban or view his own profile...but maybe just this once for testing... 
-                  <a href="${pageContext.request.contextPath}/transaction_history?user=${sessionScope.profile.username}">Click to test</a>
+                  
+                  <!-- Admin cannot view his own transaction history (doesnt have one) -->
+    
                 </c:when>    
                 <c:otherwise>
-                  Not an admin1
+                  <div class="admin_options">
+                   <a href="${pageContext.request.contextPath}/transaction_history?user=${sessionScope.profile.username}" class="btn btn-success" role="button">View Customer Transaction Report</a> 
+                  </div>
                 </c:otherwise>
               </c:choose>
             </c:when>    
             <c:otherwise>
-              Not an admin2
+              <!--  Not an admin2 -->
             </c:otherwise>
           </c:choose>
       

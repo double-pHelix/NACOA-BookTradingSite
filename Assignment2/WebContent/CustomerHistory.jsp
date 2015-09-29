@@ -55,57 +55,63 @@
             <c:when test="${sessionScope.userDetails.isAdmin}">
               <c:choose>
                 <c:when test="${sessionScope.profile.isUser}">
-                  Admin cannot ban or view his own profile
+                  <div class="jumbotron">                
+                    <h1>You do not have a transaction history because you are an Admin</h1>             
+                  </div>
                 </c:when>    
                 <c:otherwise>
-                  Not an admin1
+                    <div class="jumbotron">                
+                    	<h1>${sessionScope.profile.username}'s Transaction History</h1>             
+                    </div>
+                    <!--  Display this user's profile -->
+                    <div class="content">
+                    
+                    <h2 class="sub-header"> History </h2>
+                    <table class="table table-bordered"> 
+                       <thead>
+                        <tr class="active">
+                          <td scope="col"><b>TITLE</b></td>
+                          <td scope="col"><b>ACTION</b></td>
+                          <td scope="col"><b>TIME STAMP</b></td>
+                        </tr>
+                       </thead> 
+                       <tbody>
+                      <c:forEach var="entry" items="${sessionScope.transaction_history}" varStatus="varStatus" >
+                      
+                        <form name="articles_option" action="" method="POST">
+                          <!--  set for each of these entries some way of id to add to cart later -->
+                          <input type="hidden" name="book_id" value="${entry.bookID}">
+                          <input type="hidden" name="username" value="${sessionScope.username}">
+                          <center>
+                            <tr class="active">
+                              <td class="active"><a href="${pageContext.request.contextPath}/results?entryMoreView=${entry.bookID}&page=${requestScope.viewBean.curr_page_num}">${entry.booktitle}</a></td>
+                              <td class="success">${entry.author}</td>
+                              <td class="warning">${entry.genre}</td>
+                            </tr>
+                          </center>
+                          <input type="hidden" name="page" value="${requestScope.viewBean.curr_page_num}">
+                        </form>
+                      </c:forEach>
+                      </tbody>
+                    </table>
+                    </div> 
+
+                
                 </c:otherwise>
               </c:choose>
             </c:when>    
             <c:otherwise>
-              Not an admin2
+              <div class="jumbotron">                
+              	<h1>You cannot view ${sessionScope.profile.username}'s Transaction History</h1>             
+              </div>
+            
             </c:otherwise>
           </c:choose>
       
-      <div class="jumbotron">
       
-        <h1>${sessionScope.profile.username}'s Transaction History</h1>
 
-        <!--  Display this user's profile -->
-   
-        <h2 class="sub-header"> History </h2>
-        
-        <div class="content">
-        <table class="table table-bordered"> 
-           <thead>
-            <tr class="active">
-              <td scope="col"><b>TITLE</b></td>
-              <td scope="col"><b>ACTION</b></td>
-              <td scope="col"><b>TIME STAMP</b></td>
-            </tr>
-           </thead> 
-           <tbody>
-          <c:forEach var="entry" items="${sessionScope.transaction_history}" varStatus="varStatus" >
-          
-            <form name="articles_option" action="" method="POST">
-              <!--  set for each of these entries some way of id to add to cart later -->
-              <input type="hidden" name="book_id" value="${entry.bookID}">
-              <input type="hidden" name="username" value="${sessionScope.username}">
-              <center>
-                <tr class="active">
-                  <td class="active"><a href="${pageContext.request.contextPath}/results?entryMoreView=${entry.bookID}&page=${requestScope.viewBean.curr_page_num}">${entry.booktitle}</a></td>
-                  <td class="success">${entry.author}</td>
-                  <td class="warning">${entry.genre}</td>
-                </tr>
-              </center>
-              <input type="hidden" name="page" value="${requestScope.viewBean.curr_page_num}">
-            </form>
-          </c:forEach>
-          </tbody>
-        </table>
-        </div> 
 
-      </div>
+     
    
 
 
