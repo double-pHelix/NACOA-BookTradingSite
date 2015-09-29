@@ -11,7 +11,7 @@
 <div class="header clearfix">
   <nav>
     <ul class="nav nav-pills pull-right">
-      <li role="presentation" class="active"><a href="${pageContext.request.contextPath}/search"><span class="glyphicon glyphicon-home"></span></a></li>
+      <li role="presentation" class="active"><a href="${pageContext.request.contextPath}/"><span class="glyphicon glyphicon-home"></span></a></li>
       <c:choose>
       <c:when test="${sessionScope.logged_in == true}">
         <li role="presentation"><a href="${pageContext.request.contextPath}/upload_book"><span class="glyphicon glyphicon-upload"></span></a></li>
