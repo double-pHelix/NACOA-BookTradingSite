@@ -1,15 +1,6 @@
-
-
-
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Properties;
-import java.util.Random;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Date;
@@ -26,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import javax.mail.*;
 import javax.mail.internet.*;
-import javax.activation.*;
 
 /***
  * This program if for the s2/2015 COMP9234 Web Applications Assignment 1
@@ -43,21 +33,12 @@ import javax.activation.*;
 @WebServlet(name="NACOAMainServlet",urlPatterns="/start")
 public class NACOAMainServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	final static int NUM_ENTRIES_NEW_FILE = 20; 
-
-	final static String RESULTS_FILE_LOCATION = "./Assignment2/WebContent/WEB-INF/results.xml";
-	final static String MAIN_FILE_LOCATION = "./Assignment2/WebContent/WEB-INF/DBLPSmallGen.xml";
-	//final static String MAIN_FILE_LOCATION = "./workspace/DBLP/WebContent/WEB-INF/smallDBLP.xml";
-	final static String CART_FILE_LOCATION = "./Assignment2/WebContent/WEB-INF/cart.xml";
 	/* Files for the given session */
 	private ArrayList<NACOABean> resultBeans; 
 	private ArrayList<NACOABean> cartBeans;
 	private ArrayList<NACOABean> sellingBeans;
 	private ArrayList<NACOABean> pausedBeans;
 	private ArrayList<NACOAUserBean> resultUserBeans; 
-	
-	/* XML Handler: abstract class for dealing with XML */
-	private NACOAHandler handler;
 	
 	/* Data Handler: class for dealing with databases */
 	private NACOADataHandler dHandler;
@@ -72,48 +53,8 @@ public class NACOAMainServlet extends HttpServlet {
         cartBeans = new ArrayList<NACOABean>();
         sellingBeans = new ArrayList<NACOABean>();
         pausedBeans = new ArrayList<NACOABean>();
-        handler = new NACOAHandler();
         dHandler = new NACOADataHandler();
     }
-    
-    /**
-     * Call this function if you want to generate a number if randomly selected entries
-     */
-    private ArrayList<NACOABean> generateRandomBeans(int num){
-    	Random rand = new Random();
-    	int totalEntries = handler.getNumMain();
-    	
-    	ArrayList<Integer> listOfNum = new ArrayList<Integer>();
-    	ArrayList<NACOABean> randomEntriesList = new ArrayList<NACOABean>();
-    	
-    	for(int i = 0;  i < num*5; i++ ){
-    		
-    		int n = rand.nextInt(totalEntries-1) + 1;
-    	
-    		listOfNum.add(n);
-    	}
-    	
-    	int counter = 0;
-    	for (int n : listOfNum){
-    		counter++;
-    		
-    		if(counter > 10){
-    			break;
-    		}
-    		
-    		NACOABean newBean = handler.getEntryMain(n);
-    		if(newBean == null){
-    			counter--;
-    		} else {
-    			randomEntriesList.add(newBean);
-    		}
-    	}
-    	
-    	//set to be used by main for display!
-    	return randomEntriesList;
-    	
-    }
-    
 
     private void performBookSearch(HttpServletRequest req, HttpServletResponse res){
     	//extract variables
@@ -288,96 +229,77 @@ public class NACOAMainServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
     	RequestDispatcher requestDispatcher; 
-		//where did the user want to go?
 		String uri = req.getRequestURI();
 		System.out.println("GOT URI: " + uri);
 		//create database if not created
 		if(!dHandler.databaseExists("nacoadatabase")){
 			dHandler.setUpDatabase();
 		}
-		
 		//if we are logged in retrieve user id
 		if(req.getSession().getAttribute("logged_in") != null){
 			//write the code you want
 		}
-
-		//so as you can see it lol its just a series of if statements based on what page 
-		//if we are logged in retrieve user id
+		
 		if (uri.contains("profile")){ //WE WANT TO VIEW A PROFILE (CURRENT USERS OR SOMEONE ELSE)
 			String userToView = (String) req.getParameter("user");
 			int user_id = dHandler.getId(userToView);
 			String currUser = (String) req.getSession().getAttribute("username");
 			updateSessionUserDetails(req, user_id);
-			
 			//load user details
 			NACOAUserBean profileBean = dHandler.getUserDetails(user_id);
-			
 			if(userToView.equals(currUser)){ //we view our own profile
 				profileBean.setIsUser(true);			
 			}
-			
 			ArrayList<NACOABean> sellingBeans = dHandler.getSellingList(user_id);
-			
 			req.getSession().setAttribute("selling_books", sellingBeans);
 			req.getSession().setAttribute("profile", profileBean);
-			
 			//generate random list
-			
 	    	requestDispatcher = req.getRequestDispatcher("/Profile.jsp");
 	    	requestDispatcher.forward(req, res);
 			
 		} else if (uri.contains("transaction_history")){
 			String userToView = (String) req.getParameter("user");
 			int userId = dHandler.getUserId(userToView);
-			
 			String currUser = (String) req.getSession().getAttribute("username");
-						
 			//load user details
 			NACOAUserBean profileBean = dHandler.getUserDetails(userId);
-			
-			if(userToView.equals(currUser)){ //we view our own profile
+			if(userToView.equals(currUser)) { //we view our own profile
 				profileBean.setIsUser(true);			
 			}
-			
 			ArrayList<NACOAHistoryBean> historyBeans = dHandler.getUserHistory(userId);
-			
 			req.getSession().setAttribute("transaction_history", historyBeans);
 			req.getSession().setAttribute("profile", profileBean);
-			
 			requestDispatcher = req.getRequestDispatcher("/CustomerHistory.jsp");
 	    	requestDispatcher.forward(req, res);
 			
-		} else if (uri.contains("logout")){
-		
+		} else if (uri.contains("logout")) {
 			//write the code you want
 			logoutUser(req, res);
-			
 			requestDispatcher = req.getRequestDispatcher("/Logout.jsp");
 	    	requestDispatcher.forward(req, res);
 			
-		} else if (uri.contains("register")){ //USER REGISTRATION PAGE
-			//if user has submitted form
+		} else if (uri.contains("register")) { //USER REGISTRATION PAGE
 			req.getSession().setAttribute("register_message", "");
-			
 			if(req.getParameter("registering") != null){
 				//register the user
 				int user_id = registerUser(req, res);
 				System.out.println("got user id: " + user_id);
-				if (user_id > 0) { //will return -1 if username already exists				
+				if (user_id > 0) {
 					sendConfirmationEmail(user_id);
 			 		requestDispatcher = req.getRequestDispatcher("/Waiting_confirmation.jsp");
 			    	requestDispatcher.forward(req, res);
 				} else {
-					//TODO: return message saying user exists
-					
+					// User already exists
 				}
 			}
 			requestDispatcher = req.getRequestDispatcher("/Register.jsp");
 	    	requestDispatcher.forward(req, res);
+	    	
 		} else if (uri.contains("login")){ //USER LOGIN PAGE
 			req.getSession().setAttribute("login_result", "");
 			requestDispatcher = req.getRequestDispatcher("/Login.jsp");
 	    	requestDispatcher.forward(req, res);
+	    	
 		} else if (uri.contains("submitcred")){ //SUBMIT LOGIN DETAILS
 			String username = req.getParameter("username");
 			System.out.println(username);
@@ -394,6 +316,7 @@ public class NACOAMainServlet extends HttpServlet {
 				requestDispatcher = req.getRequestDispatcher("/Login.jsp");
 		    	requestDispatcher.forward(req, res);
 			}
+			
 		} else if (uri.contains("verify")){ //SUBMIT LOGIN DETAILS
 			int id = Integer.parseInt(req.getParameter("id"));
 			String code = req.getParameter("code");
@@ -401,17 +324,19 @@ public class NACOAMainServlet extends HttpServlet {
 			verifyUser(id, code);
 	    	requestDispatcher = req.getRequestDispatcher("/Login.jsp");
 	    	requestDispatcher.forward(req, res);
+	    	
 		} else if (uri.contains("account")){ //Update account details page
 			int user_id = (int) req.getSession().getAttribute("user_id");
 			updateSessionUserDetails(req, user_id);
 			requestDispatcher = req.getRequestDispatcher("/Account_setting.jsp");
 	    	requestDispatcher.forward(req, res);
+	    	
 		} else if (uri.contains("updacc")){ //Update the account details
 			changeUserDetails(req,res);
 			requestDispatcher = req.getRequestDispatcher("/Search.jsp");
 	    	requestDispatcher.forward(req, res);
+	    	
 		} else if (uri.contains("cart")){ //CART PAGE
-			
 			//for cart it only processes the cart page or remove action
 			
 			/*
@@ -422,19 +347,14 @@ public class NACOAMainServlet extends HttpServlet {
 				System.out.println("setting pu cart fail: "  e );
 			} */
 			setUpCartDB(req, res);
-			
 			if (req.getParameter("remove_cart") != null) {
 				System.out.println("removing...");
 				removeFromCart(req,res);
-			}	
-			
+			}
 	    	requestDispatcher = req.getRequestDispatcher("/Cart.jsp");
 	    	requestDispatcher.forward(req, res);
-				
-		} else if (uri.contains("results")){  //RESULT PAGE (changing page No. OR extra detail for an entry)
-			//for result it does searches (basic/advanced) or add to cart for (result view or expanded detail view)
-			//know what i mean?
-			
+	    	
+		} else if (uri.contains("results")){  //RESULT PAGE
 			String searchType = (String) req.getParameter("search_type");
 			req.getSession().setAttribute("banUser", false);
 			//case of search
@@ -444,39 +364,30 @@ public class NACOAMainServlet extends HttpServlet {
 				if (searchType.matches(".*book.*")){
 					//System.out.println("Proc");
 					performBookSearch(req,res);
-					
 				} else if (searchType.matches(".*user.*")){
 					performUserSearch(req,res);
-					
-				} //uh yeah its kinda complicated...  yeah
-				
+				}
 			} else if(req.getParameter("add_to_cart_view") != null){
 				//add to cart from extend view
 				System.out.println("add");
-				appendToCartPage(req,res);	
-
+				appendToCartPage(req,res);
 			} else if(req.getParameter("add_to_cart") != null){
 				//add to cart from results
 				System.out.println("add");
 				appendToCartPage(req,res);
-				
-				processResults(req,res); //this function lets have a look at it
-
+				processResults(req,res);
 			} else if (req.getParameter("ban_user") != null) {
 				System.out.println("ban");
 				System.out.println("Received " + req.getParameter("banUser"));
 				req.getSession().setAttribute("banUser", true);
 				banUser(req, res);
 			} else {
-				//just looking at results 
-				
-				//loadResultsXML(); //this stuff will probably be redundant as we are using sql
 				System.out.println("Proc");
 				processResults(req,res);
 			}
-			
 	    	requestDispatcher = req.getRequestDispatcher("/Results.jsp");
 	    	requestDispatcher.forward(req, res);
+	    	
 		} else if (uri.contains("upload_book")) {
 			req.getSession().setAttribute("upload_success", false);
 			req.getSession().setAttribute("upload_message", "");
@@ -525,7 +436,6 @@ public class NACOAMainServlet extends HttpServlet {
 			req.getSession().setAttribute("sellingList", sellingBeans);
 			pausedBeans = dHandler.getPausedList(user_id);
 			req.getSession().setAttribute("pausedList", pausedBeans);
-			//TODO
 			for(int n = 1; n != num_books+1; n++){
 //				System.out.println("Entry "  n);
 				if(req.getParameter("entry"+n) != null){
@@ -563,9 +473,6 @@ public class NACOAMainServlet extends HttpServlet {
 			requestDispatcher = req.getRequestDispatcher("/Forgot.jsp");
 	    	requestDispatcher.forward(req, res);
 		} else {//MAIN PAGE (this is /search or welcome
-			//generate random list
-			loadMainXML();
-			
 			req.getSession().setAttribute("randomBeans", dHandler.getRandomList(5));
 			
 	    	requestDispatcher = req.getRequestDispatcher("/Search.jsp");
@@ -606,18 +513,10 @@ public class NACOAMainServlet extends HttpServlet {
 	}
 
 	private void setUpCartDB(HttpServletRequest req, HttpServletResponse res) {
-		// TODO Auto-generated method stub
-		//String username = (String) req.getParameter("username");
 		System.out.println("Setting up cart!!!");
 		System.out.println(req.getParameter("username"));
 		int user_id = dHandler.getId(req.getParameter("username"));
-		
-		
-		
-		//System.out.println("User name is "  username);
-		
-		//int user_id = dHandler.getId(username);
-		
+
 		System.out.println("User id is " + user_id);
 		cartBeans = dHandler.getShoppingCart(user_id);
 		req.getSession().setAttribute("shoppingCart", cartBeans);
@@ -903,40 +802,6 @@ public class NACOAMainServlet extends HttpServlet {
 		
 	}
 	
-	/**
-	 * @TODO: change this function to work with SQL
-	 * @param req
-	 * @param res
-	 * @throws Exception
-	 */
-	public void setUpCart(HttpServletRequest req, HttpServletResponse res) throws Exception{
-		//This function just does dumb things to get xml working
-		//we wont need it either
-		//oh yeah ok
-		//need to load result xml
-		loadResultsXML();
-		
-		//we should only do this for the first time or when we update the xml
-		//we should reuse the session attribute
-		
-		//check session variable exists
-		if (req.getSession().getAttribute("shoppingCartDoc") == null) {
-			//we check the file now 
-			if(handler.fileExists(CART_FILE_LOCATION)){
-				//we load
-	    		handler.loadCartXML(CART_FILE_LOCATION);
-			} else {
-				//we must create the cart file
-				
-				handler.createCartXML(CART_FILE_LOCATION);
-			}
-		} else {
-			//we can retrieve the file from the attribute
-			handler.setSessionCartToDoc("shoppingCartDoc", req.getSession());
-			
-		}
-	}
-	
 	public void changeUserDetails(HttpServletRequest req, HttpServletResponse res){
 		int user_id = Integer.parseInt(req.getParameter("user_id"));
 		String newPassword = req.getParameter("password");
@@ -961,29 +826,6 @@ public class NACOAMainServlet extends HttpServlet {
  		
  		sendEmail(user_id, subject, message);
  		System.out.println("Sent verification email...");
-	}
-	
-	public void loadResultsXML(){
-		try {
-			if(handler.fileExists(RESULTS_FILE_LOCATION)){
-				handler.loadResultsXML(RESULTS_FILE_LOCATION);
-			}
-		} catch (Exception e){
-			System.out.println("Failed to load results xml: " + e);
-		}
-			
-	}
-	
-	public void loadMainXML(){
-		
-		try {
-			//if(handler.fileExists(MAIN_FILE_LOCATION)){
-				handler.loadMainXML(MAIN_FILE_LOCATION);
-			//}
-		} catch (Exception e){
-			System.out.println("Failed to load main xml: " + e);
-		}
-			
 	}
 	
 	/**

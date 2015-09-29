@@ -1,7 +1,4 @@
 import com.mysql.jdbc.Connection;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -4781,9 +4778,14 @@ public void changeLastname(int user_id, String lastname) {
 		
 		//Convert books to beans
 		ArrayList<NACOABean> realBooks = new ArrayList<NACOABean>();
+		ArrayList<Integer> usedNums = new ArrayList<Integer>();
 		
 		while (entries != realBooks.size()) {
 			int bID = listOfBooks.get(new Random().nextInt(listOfBooks.size()));
+			while (usedNums.contains(bID)) {
+				bID = listOfBooks.get(new Random().nextInt(listOfBooks.size()));
+			}
+			usedNums.add(bID);
 			NACOABean book = new NACOABean();
 			
 			//Set Details
@@ -4802,7 +4804,6 @@ public void changeLastname(int user_id, String lastname) {
 			realBooks.add(book);
 		}
 		
-		System.out.println("realbooks size: "+realBooks.size());
 		return realBooks;
 	}
 }
