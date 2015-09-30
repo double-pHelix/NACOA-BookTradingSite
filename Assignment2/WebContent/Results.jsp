@@ -236,6 +236,7 @@
       </c:choose>
       </c:otherwise>
     </c:choose>
+<<<<<<< HEAD
                 <center>
                   <div style="width:1200px;">
                     <div style="float: left; width: 130px"> 
@@ -277,6 +278,8 @@
       <footer class="footer">
         <p>&copy; Felix Yuen Dao Phu 2015</p>
       </footer>
+=======
+>>>>>>> branch 'master' of https://github.com/double-pHelix/WebAppsAssignment2.git
       
     </div> <!-- /container -->
   </body>
