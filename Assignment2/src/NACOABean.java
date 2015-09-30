@@ -32,7 +32,7 @@ public class NACOABean implements Serializable {
 //	  `genre` varchar(20) NOT NULL
 	//Book details
 	private int bookID;
-	private int userID;
+	private int usersellerID;
 	private String booktitle;
 	private String author;
 	private String picture;
@@ -307,5 +307,13 @@ public class NACOABean implements Serializable {
 
 	public void setDop(String dop) {
 		this.dop = dop;
+	}
+	
+	public void setUserSellerID(int user_seller_id) {
+		this.usersellerID = user_seller_id;
+	}
+	
+	public int getUserSellerID() {
+		return usersellerID;
 	}
 }
