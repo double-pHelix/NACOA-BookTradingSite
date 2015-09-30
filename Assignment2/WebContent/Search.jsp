@@ -80,46 +80,46 @@
         <h2>Search</h2>
 
         <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
+        <ul class="nav nav-tabs" role="tablist" id="searchtabmenu">
           <li role="presentation" class="active"><a href="#bookSearch" aria-controls="bookSearch" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-book"></span></a></li>
           <li role="presentation"><a href="#userSearch" aria-controls="userSearch" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-user"></span></a></li>
         </ul>
-      
-        <!-- Tab panes -->
-        <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active" id="bookSearch">
-             <form action="${pageContext.request.contextPath}/results" method="POST"> 
-                <input type="hidden" name="search_type" value="book">
+        <div class="tabtastic">
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="bookSearch">
+               <form action="${pageContext.request.contextPath}/results" method="POST"> 
+                  <input type="hidden" name="search_type" value="book">
+                  <div class="input-group">
+                    <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Author" name="search_author">
+                    <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Title" name="search_title">                         
+                    <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Genre" name="search_genre">              
+                  </div><!-- /input-group -->
+                  <div class="input-group">
+                    
+                      <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                   
+                      
+                  </div><!-- /input-group -->
+                </form>
+  
+            </div>
+            <div role="tabpanel" class="tab-pane" id="userSearch">
+            
+              <form action="${pageContext.request.contextPath}/results" method="POST">  
+                <input type="hidden" name="search_type" value="user">
                 <div class="input-group">
-                  <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Author" name="search_author">
-                  <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Title" name="search_title">                         
-                  <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Genre" name="search_genre">              
+                  <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Username" name="search_username">          
                 </div><!-- /input-group -->
                 <div class="input-group">
-                  
                     <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
-                 
-                    
                 </div><!-- /input-group -->
               </form>
-
-          </div>
-          <div role="tabpanel" class="tab-pane" id="userSearch">
-          
-            <form action="${pageContext.request.contextPath}/results" method="POST">  
-              <input type="hidden" name="search_type" value="user">
-              <div class="input-group">
-                <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Username" name="search_username">          
-              </div><!-- /input-group -->
-              <div class="input-group">
-                  <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
-              </div><!-- /input-group -->
-            </form>
-          
-          
+            
+            
+            </div>
           </div>
         </div>
-      
         <!-- 
         <p><a class="btn btn-lg btn-success" href="${pageContext.request.contextPath}/Results.jsp" role="button">Sign up today</a></p>
         -->

@@ -35,6 +35,16 @@
 	color: Indigo;	
 }
 
+#searchtabmenu {
+	padding-top: 5px;	
+}
+.our_search_form{
+	width:100% !important;
+}
+
+.tabtastic {
+	padding-top: 3px;
+}
 #NACOABannerHorizontalLine {
 	border-color: #e8c8f6;
 	padding-top: 2px;
