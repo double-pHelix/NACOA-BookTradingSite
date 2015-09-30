@@ -42,17 +42,13 @@
   </head>
   <body>
     <div class="container">
-  
-  <!-- I separated the top menu thingy into a diff jsp -->
     <jsp:include page="/topBanner.jsp" />
     
+    <div class="jumbotron">
     <h1>Goodbye</h1>
-    
-    <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button">Back to Main</a>
-    
-    <footer class="footer">
-      <p>&copy; Felix Yuen Dao Phu 2015</p>
-    </footer>
+    <h4>Thanks for visiting NACOA</h4>
+    <a href="${pageContext.request.contextPath}/login" class="btn btn-default" role="button">Login</a>
     </div> <!-- /container -->
+    <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button">Back to Main</a>
   </body>
 </html>
