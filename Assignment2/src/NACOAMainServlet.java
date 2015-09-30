@@ -857,6 +857,7 @@ public class NACOAMainServlet extends HttpServlet {
 		req.getSession().setAttribute("user_id", 0);
 		req.getSession().setAttribute("username", "");
 		req.getSession().setAttribute("userDetails", null);
+		req.getSession().setAttribute("admin", false); //should use userDetails is_admin
 		
 	}
 	

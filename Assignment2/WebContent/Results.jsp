@@ -108,12 +108,12 @@
 	              <td scope="col"><b>DATE OF PUB</b></td>
 	              <td scope="col"><b>PRICE</b></td>
 	              <c:choose>
-	        		<c:when test="${sessionScope.logged_in == true}">
+	        		<c:when test="${sessionScope.userDetails.isAdmin}">
 	              		<td scope="col"><b>ACTION</b></td>
 	              	</c:when>
 	              </c:choose>
 	              <c:choose>
-	        		<c:when test="${sessionScope.admin == true}">
+	        		<c:when test="${sessionScope.userDetails.isAdmin}">
 	              		<td scope="col"><b>ADMIN ACTION</b></td>
 	              	</c:when>
 	              </c:choose>
@@ -135,12 +135,12 @@
 	                  <td class="danger">${entry.dop}</td>
 	                  <td class="danger">${entry.price}</td>
 	                  <c:choose>
-		        		<c:when test="${sessionScope.logged_in == true}">
+		        		<c:when test="${sessionScope.userDetails.isAdmin}">
 		              		 <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart"></td>
 		              	</c:when>
 		              </c:choose>
 		              <c:choose>
-		        		<c:when test="${sessionScope.admin == true}">
+		        		<c:when test="${sessionScope.userDetails.isAdmin}">
 		              		<td class="info"><input class="btn btn-xs btn-warning" type="submit" name="remove_book" id="edit_profile_button" value="Remove Book"></td>
 		              	</c:when>
 		              </c:choose>
@@ -200,7 +200,7 @@
 		              <td scope="col"><b>NICKNAME</b></td>
 		              <!--  Permissions -->
 		              <c:choose>
-		        		<c:when test="${sessionScope.admin == true}">
+		        		<c:when test="${sessionScope.userDetails.isAdmin}">
 		              		 <td scope="col"><b>ADMIN ACTION</b></td>
 		              		 <td scope="col"><b>ADMIN ACTION</b></td>
 		              	</c:when>
@@ -222,7 +222,7 @@
 		                  <td class="danger">${entry.nickname}</td>
 		                  
 		                  <c:choose>
-			        		<c:when test="${sessionScope.admin == true}">
+			        		<c:when test="${sessionScope.userDetails.isAdmin}">
 			        			<!-- Remove the choose below -->
 			        			<%-- TO FIX
 			        			<c:choose>
