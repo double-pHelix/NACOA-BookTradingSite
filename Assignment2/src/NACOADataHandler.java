@@ -4217,9 +4217,14 @@ public void changeLastname(int user_id, String lastname) {
 					user.setPassword(rs.getString("password"));
 					user.setAddress(rs.getString("address"));
 					user.setCreditDetails(rs.getString("creditcarddetails"));
-					user.setHalted(rs.getInt("is_halted"));
+					//TODO
+					user.setIsHalted(rs.getInt("is_halted"));
+					user.setAdmin(rs.getBoolean("is_admin"));
+					user.setUser(!rs.getBoolean("is_admin"));
 					
 					System.out.println("Username is " + user.getUsername());
+					System.out.println("Admin is " + user.getIsAdmin());
+					System.out.println("Halt is " + user.getIsHalted());
 					//System.out.println(user);
 					resultUser.add(user);
 				}
@@ -4303,9 +4308,15 @@ public void changeLastname(int user_id, String lastname) {
 				user.setPassword(rs.getString("password"));
 				user.setAddress(rs.getString("address"));
 				user.setCreditDetails(rs.getString("creditcarddetails"));
-				user.setHalted(rs.getInt("is_halted"));
+				//TODO
+				user.setIsHalted(rs.getInt("is_halted"));
+				user.setAdmin(rs.getBoolean("is_admin"));
+				user.setUser(!rs.getBoolean("is_admin"));
 				
+				System.out.println("Admin search");
 				System.out.println("Username is " + user.getUsername());
+				System.out.println("Halted is " + user.getIsHalted());
+				System.out.println("Admin is " + user.getIsAdmin());
 				//System.out.println(user);
 				resultUser.add(user);
 				
@@ -4870,6 +4881,43 @@ public void changeLastname(int user_id, String lastname) {
 			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
 			
 			String sql = "UPDATE users SET is_admin=1 WHERE (id = ?)";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, id);
+			stmt.executeUpdate();
+			
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+	}
+	
+	public void unbanUser(int id) {
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			String sql = "UPDATE users SET is_halted=0 WHERE (id = ?)";
 	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, id);

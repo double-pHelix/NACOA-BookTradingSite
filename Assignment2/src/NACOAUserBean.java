@@ -66,10 +66,6 @@ public class NACOAUserBean {
 		this.creditDetails = credit;
 	}
 	
-	public void setHalted(int halted) {
-		this.isHalted = halted;
-	}
-	
 	public void setIsAdmin(boolean admin) {
 		this.isAdmin = admin;
 	}
@@ -116,10 +112,6 @@ public class NACOAUserBean {
 	
 	public String getCreditDetails() {
 		return creditDetails;
-	}
-	
-	public int getHalted() {
-		return isHalted;
 	}
 	
 	public boolean getIsAdmin() {

@@ -56,7 +56,7 @@ public class NACOAMainServlet extends HttpServlet {
         dHandler = new NACOADataHandler();
     }
 
-    private void performBookSearch(HttpServletRequest req, HttpServletResponse res){
+    private void performBookSearch(HttpServletRequest req, HttpServletResponse res, boolean admin){
     	//extract variables
 		String author = (String) req.getParameter("search_author");
 		String title = (String) req.getParameter("search_title");
@@ -87,7 +87,12 @@ public class NACOAMainServlet extends HttpServlet {
 		*/	
 		//this then just retrieves the results from the result doc (into bean format)
 		//resultBeans = handler.getBeanFromResultDoc(0);
-		resultBeans = dHandler.bookSearch(title, author, genre);
+		if (admin) {
+			resultBeans = dHandler.bookAdminSearch(title, author, genre);
+		} else {
+			resultBeans = dHandler.bookSearch(title, author, genre);
+		}
+		
 		
 		ArrayList<NACOABean> first10 = new ArrayList<NACOABean>();
 		
@@ -125,15 +130,21 @@ public class NACOAMainServlet extends HttpServlet {
 
     }
     
-    private void performUserSearch(HttpServletRequest req, HttpServletResponse res){
+    private void performUserSearch(HttpServletRequest req, HttpServletResponse res, boolean isAdmin){
     	//extract variables
     	//same thing except basic search
 		//String query = (String) req.getParameter("search_query");
 		String query = (String) req.getParameter("search_username");
 		
 		//Search users
-		resultUserBeans = dHandler.userSearch(query);
+		if (isAdmin) {
+			resultUserBeans = dHandler.userAdminSearch(query);
+		} else {
+			resultUserBeans = dHandler.userSearch(query);
+		}
 		
+		System.out.println("Size is " + resultUserBeans.size());
+		System.out.println("Is Halted = " + resultUserBeans.get(0).getIsHalted());
 		//Set up view for users?
 		ResultPageUserBean viewBean = new ResultPageUserBean();
 		viewBean.setResultBeans(resultUserBeans);
@@ -396,16 +407,32 @@ public class NACOAMainServlet extends HttpServlet {
 	    	
 		} else if (uri.contains("results")){  //RESULT PAGE
 			String searchType = (String) req.getParameter("search_type");
+			String username = (String) req.getSession().getAttribute("username");
+			boolean isAdmin = false;
+			System.out.println("username is " + username);
+			
 			req.getSession().setAttribute("banUser", false);
+			req.getSession().setAttribute("makeAdmin", false);
+			req.getSession().setAttribute("unbanUser", false);
+			
+			int user_id = dHandler.getId(username);
+			
+			if (user_id > 0) {
+				if (dHandler.isAdmin(username)) {
+					req.getSession().setAttribute("admin", true);
+					isAdmin = true;
+				} else {
+					req.getSession().setAttribute("admin", false);
+				}
+			}
 			//case of search
 			//we will redirect to results
 			if (searchType != null){
 				System.out.println("search");
 				if (searchType.matches(".*book.*")){
-					//System.out.println("Proc");
-					performBookSearch(req,res);
+					performBookSearch(req,res,isAdmin);
 				} else if (searchType.matches(".*user.*")){
-					performUserSearch(req,res);
+					performUserSearch(req,res,isAdmin);
 				}
 			} else if(req.getParameter("add_to_cart_view") != null){
 				//add to cart from extend view
@@ -421,7 +448,17 @@ public class NACOAMainServlet extends HttpServlet {
 				System.out.println("Received " + req.getParameter("banUser"));
 				req.getSession().setAttribute("banUser", true);
 				banUser(req, res);
-			} else {
+			}  else if (req.getParameter("unban_user") != null) {
+				System.out.println("unban");
+				System.out.println("Received " + req.getParameter("unbanUser"));
+				//req.getSession().setAttribute("banUser", true);
+				unbanUser(req, res);
+			}  else if (req.getParameter("make_admin") != null) {
+				System.out.println("admin");
+				System.out.println("Received " + req.getParameter("makeAdmin"));
+				//req.getSession().setAttribute("makeAdmin", true);
+				makeUserAdmin(req, res);
+			}  else {
 				System.out.println("Proc");
 				processResults(req,res);
 			}
@@ -519,6 +556,39 @@ public class NACOAMainServlet extends HttpServlet {
 	    	requestDispatcher.forward(req, res);
 		}
 
+	}
+
+	private void unbanUser(HttpServletRequest req, HttpServletResponse res) {
+		int user_id = Integer.parseInt(req.getParameter("user_id"));
+		
+		System.out.println("Received user id " + user_id);
+		
+		//String username = dHandler.getUserName(user_id);
+		
+		if (dHandler.checkHalted(user_id)) {
+			dHandler.unbanUser(user_id);
+			req.getSession().setAttribute("unbanUser", true);
+		} else {
+			System.out.println("Unban user receiving wrong info!!!");
+			//req.getSession().setAttribute("unbanUser", true);
+		}
+	}
+
+	private void makeUserAdmin(HttpServletRequest req, HttpServletResponse res) {
+		int user_id = Integer.parseInt(req.getParameter("user_id"));
+		
+		System.out.println("Received user id " + user_id);
+		
+		String username = dHandler.getUserName(user_id);
+		
+		if (dHandler.isAdmin(username)) {
+			dHandler.setAdmin(user_id);
+			req.getSession().setAttribute("alreadyAdmin", true);
+		} else {
+			dHandler.setAdmin(user_id);
+			req.getSession().setAttribute("makeAdmin", true);
+		}
+		
 	}
 
 	private boolean validEmail(String emailAddress) {

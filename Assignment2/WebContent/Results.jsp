@@ -69,9 +69,27 @@
 	    	
 	      <c:when test="${sessionScope.banUser == 'true'}">
 	        
-	        <h1>"${sessionScope.username} has been banned"</h1>
+	        <h1>${sessionScope.username} has been banned</h1>
+	        
+	      </c:when>
+	      
+	      <c:when test="${sessionScope.unbanUser == 'true'}">
+	        
+	        <h1>${sessionScope.username} has been unbanned</h1>
+	        
+	      </c:when>
+	      
+	      <c:when test="${sessionScope.makeAdmin == 'true'}">
+	        
+	        <h1>${sessionScope.username} is now an administrator</h1>
 	        
 	      </c:when>  
+	      
+	      <c:when test="${sessionScope.alreadyAdmin == 'true'}">
+	        
+	        <h1>${sessionScope.username} is already an administrator</h1>
+	        
+	      </c:when>   
 	    <c:otherwise>
 	      <h1> Results </h1>
 	      <h4>Found ${requestScope.viewBean.totalResults} results.</h4>
@@ -89,7 +107,16 @@
 	              <td scope="col"><b>GENRE</b></td>
 	              <td scope="col"><b>DATE OF PUB</b></td>
 	              <td scope="col"><b>PRICE</b></td>
-	              <td scope="col"><b>ACTION</b></td>
+	              <c:choose>
+	        		<c:when test="${sessionScope.logged_in == true}">
+	              		<td scope="col"><b>ACTION</b></td>
+	              	</c:when>
+	              </c:choose>
+	              <c:choose>
+	        		<c:when test="${sessionScope.admin == true}">
+	              		<td scope="col"><b>ADMIN ACTION</b></td>
+	              	</c:when>
+	              </c:choose>
 	            </tr>
 	            
 	            <c:forEach var="entry" items="${requestScope.viewBean.resultBeans}" varStatus="varStatus" >
@@ -107,7 +134,16 @@
 	                  <td class="warning">${entry.genre}</td>
 	                  <td class="danger">${entry.dop}</td>
 	                  <td class="danger">${entry.price}</td>
-					  <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart"></td>
+	                  <c:choose>
+		        		<c:when test="${sessionScope.logged_in == true}">
+		              		 <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart"></td>
+		              	</c:when>
+		              </c:choose>
+		              <c:choose>
+		        		<c:when test="${sessionScope.admin == true}">
+		              		<td class="info"><input class="btn btn-xs btn-warning" type="submit" name="remove_book" id="edit_profile_button" value="Remove Book"></td>
+		              	</c:when>
+		              </c:choose>
 	                </tr>
 	                
 	                <input type="hidden" name="page" value="${requestScope.viewBean.curr_page_num}">
@@ -163,7 +199,12 @@
 		              <td scope="col"><b>LASTNAME</b></td>
 		              <td scope="col"><b>NICKNAME</b></td>
 		              <!--  Permissions -->
-		              <td scope="col"><b>ACTIONS ADMIN</b></td>
+		              <c:choose>
+		        		<c:when test="${sessionScope.admin == true}">
+		              		 <td scope="col"><b>ADMIN ACTION</b></td>
+		              		 <td scope="col"><b>ADMIN ACTION</b></td>
+		              	</c:when>
+		              </c:choose>
 		            </tr>
 	            
 		            <c:forEach var="entry" items="${requestScope.viewUserBean.resultBeans}" varStatus="varStatus" >
@@ -171,7 +212,7 @@
 		              <form name="articles_option" action="" method="POST">
 		                <!--  set for each of these entries some way of id to for banning purposes later -->
 		                <input type="hidden" name="user_id" value="${entry.userID}">
-		                <input type="hidden" name="banUser" value="true">
+		                
 		                <input type="hidden" name="username" value="${entry.username}">
 		                <center>
 		                <tr class="active">
@@ -180,8 +221,24 @@
 		                  <td class="warning">${entry.lastname}</td>
 		                  <td class="danger">${entry.nickname}</td>
 		                  
-		                  <!--  We need to set permissions to check if we can ban? -->
-		                  <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="ban_user" id="edit_profile_button" value="Ban User"></td>
+		                  <c:choose>
+			        		<c:when test="${sessionScope.admin == true}">
+			        			<!-- Remove the choose below -->
+			        			<%-- TO FIX
+			        			<c:choose>
+			        				<c:when test="${entry.ishalted == '1'}">
+			              		 		<td class="info"><input class="btn btn-xs btn-warning" type="submit" name="ban_user" id="edit_profile_button" value="Ban User"></td>
+			              		 	</c:when>
+			              		 	<c:when test="${entry.ishalted == '0'}">
+			              		 		<td class="info"><input class="btn btn-xs btn-warning" type="submit" name="unban_user" id="edit_profile_button" value="Unban User"></td>
+			              		 	</c:when>
+			              		</c:choose>
+			              		 --%>
+			              		 <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="ban_user" id="edit_profile_button" value="Ban User"></td>
+			              		 <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="make_admin" id="edit_profile_button" value="Make Admin"></td>
+			              	</c:when>
+			              </c:choose>
+		                  
 		                </tr>
 		                
 		                <input type="hidden" name="page" value="${requestScope.viewUserBean.curr_page_num}">
