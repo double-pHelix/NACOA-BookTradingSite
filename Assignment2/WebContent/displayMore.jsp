@@ -19,7 +19,8 @@
 	        <br><b>PUBLISHER</b>
 	        <br><b>ISBN</b>
 	        <br><b>GENRE</b>
-	        <br><b>PRICE</b></td>
+	        <br><b>PRICE</b>
+	        <br><b>SELLER</b></td>
 	        <td align='left'><a href="${pageContext.request.contextPath}/results?entryMoreView=${requestScope.viewBean.readEntry.bookID}">${requestScope.viewBean.readEntry.booktitle}</a>
 	        <br>${requestScope.viewBean.readEntry.author}
 	        <br>${requestScope.viewBean.readEntry.DOP}
@@ -27,7 +28,9 @@
 	        <br>${requestScope.viewBean.readEntry.publisher}
 	        <br>${requestScope.viewBean.readEntry.isbn }
 	        <br>${requestScope.viewBean.readEntry.genre}
-	        <br><font size="5" color="orange">$${requestScope.viewBean.readEntry.price}</font></td>
+	        <br><font size="5" color="orange">$${requestScope.viewBean.readEntry.price}</font>
+	        <!-- FELIX you can put a link here -->
+	        <br>${requestScope.viewBean.readEntry.sellerName}</td>
 	      </tr>
 	    </table>
 	    <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button">Back to Search</a>

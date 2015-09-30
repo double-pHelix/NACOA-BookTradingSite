@@ -33,6 +33,7 @@ public class NACOABean implements Serializable {
 	//Book details
 	private int bookID;
 	private int usersellerID;
+	private String sellerUsername;
 	private String booktitle;
 	private String author;
 	private String picture;
@@ -314,6 +315,14 @@ public class NACOABean implements Serializable {
 	}
 	
 	public int getUserSellerID() {
-		return usersellerID;
+		return this.usersellerID;
+	}
+	
+	public void setSellerUsername(String username) {
+		this.sellerUsername = username;
+	}
+	
+	public String getSellerName() {
+		return this.sellerUsername;
 	}
 }

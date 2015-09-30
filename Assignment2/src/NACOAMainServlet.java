@@ -93,6 +93,11 @@ public class NACOAMainServlet extends HttpServlet {
 			resultBeans = dHandler.bookSearch(title, author, genre);
 		}
 		
+		//System.out.println("Size is " + resultBeans.size());
+		//System.out.println("Username = " + resultBeans.get(0).getSellerName());
+		//System.out.println("UserID = " + resultBeans.get(0).getUserSellerID());
+		//System.out.println("Username = " + resultBeans.get(1).getSellerName());
+		//System.out.println("UserID = " + resultBeans.get(1).getUserSellerID());
 		
 		ArrayList<NACOABean> first10 = new ArrayList<NACOABean>();
 		
@@ -143,8 +148,8 @@ public class NACOAMainServlet extends HttpServlet {
 			resultUserBeans = dHandler.userSearch(query);
 		}
 		
-		System.out.println("Size is " + resultUserBeans.size());
-		System.out.println("Is Halted = " + resultUserBeans.get(0).getIsHalted());
+		//System.out.println("Size is " + resultUserBeans.size());
+		//System.out.println("Is Halted = " + resultUserBeans.get(0).getIsHalted());
 		//Set up view for users?
 		ResultPageUserBean viewBean = new ResultPageUserBean();
 		viewBean.setResultBeans(resultUserBeans);
@@ -391,13 +396,6 @@ public class NACOAMainServlet extends HttpServlet {
 		} else if (uri.contains("cart")){ //CART PAGE
 			//for cart it only processes the cart page or remove action
 			
-			/*
-			try {
-				//just set up the cart to be read 
-				setUpCart(req, res);
-			} catch (Exception e){
-				System.out.println("setting pu cart fail: "  e );
-			} */
 			setUpCartDB(req, res);
 			if (req.getParameter("remove_cart") != null) {
 				System.out.println("removing...");
@@ -415,6 +413,7 @@ public class NACOAMainServlet extends HttpServlet {
 			req.getSession().setAttribute("banUser", false);
 			req.getSession().setAttribute("makeAdmin", false);
 			req.getSession().setAttribute("unbanUser", false);
+			//req.getSession().setAttribute("modifiedUser", username);
 			
 			int user_id = dHandler.getId(username);
 			
@@ -569,6 +568,7 @@ public class NACOAMainServlet extends HttpServlet {
 		if (dHandler.checkHalted(user_id)) {
 			dHandler.unbanUser(user_id);
 			req.getSession().setAttribute("unbanUser", true);
+			req.getSession().setAttribute("modifiedUser", dHandler.getUserName(user_id));
 		} else {
 			System.out.println("Unban user receiving wrong info!!!");
 			//req.getSession().setAttribute("unbanUser", true);
@@ -589,6 +589,7 @@ public class NACOAMainServlet extends HttpServlet {
 			dHandler.setAdmin(user_id);
 			req.getSession().setAttribute("makeAdmin", true);
 		}
+		req.getSession().setAttribute("modifiedUser", dHandler.getUserName(user_id));
 		
 	}
 
@@ -609,6 +610,7 @@ public class NACOAMainServlet extends HttpServlet {
 		
 		System.out.println("Received user id " + user_id);
 		
+		req.getSession().setAttribute("modifiedUser", dHandler.getUserName(user_id));
 		dHandler.banUser(user_id);
 	}
 
@@ -635,7 +637,6 @@ public class NACOAMainServlet extends HttpServlet {
 	}
 
 	public void appendToCartPage(HttpServletRequest req, HttpServletResponse res){
-		//String creditinfo = (String) req.getParameter("creditinfo");
 		
 		int user_id = dHandler.getId(req.getParameter("username"));
 		System.out.println("Received username "+  req.getParameter("username"));
@@ -677,11 +678,10 @@ public class NACOAMainServlet extends HttpServlet {
 			
 		}
 		
-		
 		cartBeans = dHandler.getShoppingCart(user_id);
 
 		req.getSession().setAttribute("shoppingCart", cartBeans);
-		
+	
 	}
 
 	public int registerUser(HttpServletRequest req, HttpServletResponse res){
