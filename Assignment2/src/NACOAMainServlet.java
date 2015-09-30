@@ -854,6 +854,9 @@ public class NACOAMainServlet extends HttpServlet {
 	public void logoutUser(HttpServletRequest req, HttpServletResponse res){
 		//set the session to logged out
 		req.getSession().setAttribute("logged_in", false);
+		req.getSession().setAttribute("user_id", 0);
+		req.getSession().setAttribute("username", "");
+		req.getSession().setAttribute("userDetails", null);
 		
 	}
 	
