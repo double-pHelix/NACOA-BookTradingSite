@@ -106,7 +106,7 @@
 	              <td scope="col"><b>GENRE</b></td>
 	              <td scope="col"><b>DATE OF PUB</b></td>
 	              <td scope="col"><b>PRICE</b></td>
-	              <td scope="col"><b>SELLER NAME</b></td>
+	              <td scope="col"><b>SELLER</b></td>
 	              <c:choose>
 	        		<c:when test="${sessionScope.logged_in == true}">
 	              		<td scope="col"><b>ACTION</b></td>
@@ -127,27 +127,33 @@
 	                <input type="hidden" name="username" value="${sessionScope.username}">
 	                <input type="hidden" name="banUser" value="false">
 	                <center>
-		                <tr class="active">
-	                  <td class="active"><img class="book_image" src="${entry.picture}"></img></td>
-	                  <td class="active"><a href="${pageContext.request.contextPath}/results?entryMoreView=${entry.bookID}&page=${requestScope.viewBean.curr_page_num}">${entry.booktitle}</a></td>
-	                  <td class="success">${entry.author}</td>
-	                  <td class="warning">${entry.genre}</td>
-	                  <td class="danger">${entry.dop}</td>
-	                  <td class="danger">${entry.price}</td>
+	                <tr class="active">
+                  
+	                  <td class="active" style="vertical-align: middle"><img class="book_image" src="${entry.picture}"></img></td>
+	                  <td class="active" style="vertical-align: middle"><a href="${pageContext.request.contextPath}/results?entryMoreView=${entry.bookID}&page=${requestScope.viewBean.curr_page_num}">${entry.booktitle}</a></td>
+	                  <td class="success" style="vertical-align: middle">${entry.author}</td>
+	                  <td class="warning" style="vertical-align: middle">${entry.genre}</td>
+	                  <td class="danger" style="vertical-align: middle">${entry.dop}</td>
+	                  <td class="danger" style="vertical-align: middle">$${entry.price}</td>
 	                  <!-- Felix can add a link here!! -->
-	                  <td class="success">${entry.sellerName}</td>
+	                  <td class="success" style="vertical-align: middle"><a href="${pageContext.request.contextPath}/profile?user=${entry.sellerName}">
+                                              ${entry.sellerName}
+                                          </a>
+                      </td>
+                      
 	                  <c:choose>
 		        		<c:when test="${sessionScope.logged_in == true}">
-		              		 <td class="info"><button class="btn btn-xs btn-success" type="submit" name="add_to_cart" id="addToCartButton" value="Add to Cart"><span class="glyphicon glyphicon-shopping-cart"></span></td>
+		              		 <td class="info"  style="vertical-align: middle"><button class="btn btn-xs btn-success" type="submit" name="add_to_cart" id="addToCartButton" value="Add to Cart"><span class="glyphicon glyphicon-shopping-cart"></span></button></td>
 		              	</c:when>
 		              </c:choose>
 		              <c:choose>
 		        		<c:when test="${sessionScope.userDetails.isAdmin}">
-		              		<td class="info"><input class="btn btn-xs btn-warning" type="submit" name="remove_book" id="edit_profile_button" value="Remove Book"></td>
+		              		<td class="info"  style="vertical-align: middle"><input class="btn btn-xs btn-warning" type="submit" name="remove_book" id="edit_profile_button" value="Remove Book"></td>
 		              	</c:when>
 		              </c:choose>
+                  
 	                </tr>
-	                
+	                </center>
 	                <input type="hidden" name="page" value="${requestScope.viewBean.curr_page_num}">
               	</form>
             	</c:forEach>
@@ -218,10 +224,10 @@
 		                <input type="hidden" name="username" value="${entry.username}">
 		                <center>
 		                <tr class="active">
-		                  <td class="active"><a href="${pageContext.request.contextPath}/profile?user=${entry.username}">${entry.username}</a></td>
-		                  <td class="success">${entry.firstname}</td>
-		                  <td class="warning">${entry.lastname}</td>
-		                  <td class="danger">${entry.nickname}</td>
+		                  <td class="active"  style="vertical-align: middle"><a href="${pageContext.request.contextPath}/profile?user=${entry.username}">${entry.username}</a></td>
+		                  <td class="success" style="vertical-align: middle">${entry.firstname}</td>
+		                  <td class="warning" style="vertical-align: middle">${entry.lastname}</td>
+		                  <td class="danger" style="vertical-align: middle">${entry.nickname}</td>
 		                  
 		                  <c:choose>
 			        		<c:when test="${sessionScope.userDetails.isAdmin}">
