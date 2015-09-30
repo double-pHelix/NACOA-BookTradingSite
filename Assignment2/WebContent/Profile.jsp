@@ -111,17 +111,10 @@
           </div>
         </div>
         
+        <c:choose>
+        <c:when test="${not empty sessionScope.selling_books}">
         
-        <h2 class="sub-header">
-          <c:choose>
-            <c:when test="${sessionScope.profile.isUser}">
-              My Books
-            </c:when>    
-            <c:otherwise>
-              Seller's Books
-            </c:otherwise>
-          </c:choose>
-        </h2>
+        <h2 class="sub-header">Seller's Books</h2>
         <div class="content">
         <table class="table table-bordered"> 
            <thead>
@@ -154,8 +147,13 @@
           </c:forEach>
           </tbody>
         </table>
+        <br>
         </div> 
-
+        </c:when> 
+            <c:otherwise>
+            <br><br>
+            </c:otherwise>
+          </c:choose>
       </div>
    
 
