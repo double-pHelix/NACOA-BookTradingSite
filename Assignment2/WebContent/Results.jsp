@@ -105,8 +105,8 @@
 	              <td scope="col"><b>AUTHOR</b></td>
 	              <td scope="col"><b>GENRE</b></td>
 	              <td scope="col"><b>DATE OF PUB</b></td>
-	              <td scope="col"><b>PRICE</b></td>
 	              <td scope="col"><b>SELLER</b></td>
+                  <td scope="col"><b>PRICE</b></td>
 	              <c:choose>
 	        		<c:when test="${sessionScope.logged_in == true}">
 	              		<td scope="col"><b>ACTION</b></td>
@@ -132,14 +132,15 @@
 	                  <td class="active" style="vertical-align: middle"><img class="book_image" src="${entry.picture}"></img></td>
 	                  <td class="active" style="vertical-align: middle"><a href="${pageContext.request.contextPath}/results?entryMoreView=${entry.bookID}&page=${requestScope.viewBean.curr_page_num}">${entry.booktitle}</a></td>
 	                  <td class="success" style="vertical-align: middle">${entry.author}</td>
-	                  <td class="warning" style="vertical-align: middle">${entry.genre}</td>
-	                  <td class="danger" style="vertical-align: middle">${entry.dop}</td>
-	                  <td class="danger" style="vertical-align: middle">$${entry.price}</td>
-	                  <!-- Felix can add a link here!! -->
-	                  <td class="success" style="vertical-align: middle"><a href="${pageContext.request.contextPath}/profile?user=${entry.sellerName}">
+	                  <td class="success" style="vertical-align: middle">${entry.genre}</td>
+	                  <td class="success" style="vertical-align: middle">${entry.dop}</td>
+                      <td class="success" style="vertical-align: middle"><a href="${pageContext.request.contextPath}/profile?user=${entry.sellerName}">
                                               ${entry.sellerName}
                                           </a>
                       </td>
+	                  <td class="success" style="vertical-align: middle">$${entry.price}</td>
+	                  <!-- Felix can add a link here!! -->
+	                  
                       
 	                  <c:choose>
 		        		<c:when test="${sessionScope.logged_in == true}">
@@ -159,42 +160,7 @@
             	</c:forEach>
           	</table>
           	</div> 
-          
-            <center>
-            
-	            <div style="width:1200px;">
-	              <div style="float: left; width: 130px"> 
-	            
-	                <c:if test="${requestScope.viewBean.less =='true'}">
-	                  <form name="articles_option" action="${pageContext.request.contextPath}/results" method="GET">
-	                    <input type="hidden" name="page" value="${requestScope.viewBean.prev_page_num}">
-	                    <div style="text-align:left">
-	                      <center><input class="btn btn-xs btn-success" type="submit" id="edit_profile_button" value="Prev"></center>
-	                    </div>
-	                  </form>
-	                </c:if>
-	                  
-	              </div>
-	              <div style="float: right; width: 225px"> 
-	              <!--  um bootstrap is just the container and css yeah -->
-	              <!-- So below is an example of viewBean .. ok-->
-	              <!--  btw do you want me to show you Egit? -->
-	              <!--  its super easy bro -->
-	              <!-- eclipse is easy as well lol -->
-	                <c:if test="${requestScope.viewBean.more =='true'}">
-	                  <form name="articles_option" action="${pageContext.request.contextPath}/results" method="GET">
-	                    <input type="hidden" name="page" value="${requestScope.viewBean.next_page_num}">
-	                    <div style="text-align:right">
-	                      <center><input class="btn btn-xs btn-success" type="submit" id="edit_profile_button" value="Next"></center>
-	                    </div>
-	                  </form>
-	                </c:if>
-	            
-	              </div>
-	            </div>
-	            <br>
-	            <b> ${requestScope.viewBean.curr_page_num} </b>
-        	</center>
+  
 	        </c:when> 
         	
         	<c:when test="${not empty requestScope.viewUserBean.resultBeans}">
@@ -253,55 +219,67 @@
 		            </c:forEach>
 	          		</table>
           		</div> 
+
           
-            <center>
-           
-	            <div style="width:1200px;">
-	              <div style="float: left; width: 130px"> 
-	            
-	                <c:if test="${requestScope.viewUserBean.less =='true'}">
-	                  <form name="articles_option" action="${pageContext.request.contextPath}/results" method="GET">
-	                    <input type="hidden" name="page" value="${requestScope.viewUserBean.prev_page_num}">
-	                    <div style="text-align:left">
-	                      <center><input class="btn btn-xs btn-success" type="submit" id="edit_profile_button" value="Prev"></center>
-	                    </div>
-	                  </form>
-	                </c:if>
-	                  
-	              </div>
-	              <div style="float: right; width: 225px"> 
-	              <!--  um bootstrap is just the container and css yeah -->
-	              <!-- So below is an example of viewBean .. ok-->
-	              <!--  btw do you want me to show you Egit? -->
-	              <!--  its super easy bro -->
-	              <!-- eclipse is easy as well lol -->
-	                <c:if test="${requestScope.viewUserBean.more =='true'}">
-	                  <form name="articles_option" action="${pageContext.request.contextPath}/results" method="GET">
-	                    <input type="hidden" name="page" value="${requestScope.viewUserBean.next_page_num}">
-	                    <div style="text-align:right">
-	                      <center><input class="btn btn-xs btn-success" type="submit" id="edit_profile_button" value="Next"></center>
-	                    </div>
-	                  </form>
-	                </c:if>
-	            
-	              </div>
-	            </div>
-	            <br>
-	            <b> ${requestScope.viewUserBean.curr_page_num} </b>
-	        </center>
        	</c:when> 
-        
         <c:otherwise>
           <!-- Display no results message -->
           <h1>Sorry, no matching datasets found!</h1>
           <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button">Back to Search</a>
           
         </c:otherwise>
+        
+        
+        
       </c:choose>
       </c:otherwise>
       </c:choose>
       </c:otherwise>
     </c:choose>
+<<<<<<< HEAD
+                <center>
+                  <div style="width:1200px;">
+                    <div style="float: left; width: 130px"> 
+                  
+                      <c:if test="${requestScope.viewBean.less =='true'}">
+                        <form name="articles_option" action="${pageContext.request.contextPath}/results" method="GET">
+                          <input type="hidden" name="page" value="${requestScope.viewBean.prev_page_num}">
+                          <div style="text-align:left">
+                            <center><button class="btn btn-xs btn-info" type="submit" id="edit_profile_button" value="Prev"><span class="glyphicon glyphicon-arrow-left"></span></center>
+                          </div>
+                        </form>
+                      </c:if>
+                        
+                    </div>
+                    <div style="float: right; width: 225px"> 
+                    <!--  um bootstrap is just the container and css yeah -->
+                    <!-- So below is an example of viewBean .. ok-->
+                    <!--  btw do you want me to show you Egit? -->
+                    <!--  its super easy bro -->
+                    <!-- eclipse is easy as well lol -->
+                      <c:if test="${requestScope.viewBean.more =='true'}">
+                        <form name="articles_option" action="${pageContext.request.contextPath}/results" method="GET">
+                          <input type="hidden" name="page" value="${requestScope.viewBean.next_page_num}">
+                          <div style="text-align:right">
+                            <center><button class="btn btn-xs btn-info" type="submit" id="edit_profile_button" value="Next"><span class="glyphicon glyphicon-arrow-right"></span></center>
+                          </div>
+                        </form>
+                      </c:if>
+                  
+                    </div>
+                  </div>
+                  <br>
+                  <b> ${requestScope.viewBean.curr_page_num} </b>
+              </center>
+
+      <br>
+      <br>
+      
+      <footer class="footer">
+        <p>&copy; Felix Yuen Dao Phu 2015</p>
+      </footer>
+=======
+>>>>>>> branch 'master' of https://github.com/double-pHelix/WebAppsAssignment2.git
       
     </div> <!-- /container -->
   </body>
