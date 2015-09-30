@@ -52,6 +52,12 @@
             border-radius: 4px;
 }
 
+#custom_table{
+	text-align: center !important;
+	vertical-align: middle;
+	
+}
+
 #addToCartButton{
 	margin-top: 36px;
     padding: 6px 8px;
