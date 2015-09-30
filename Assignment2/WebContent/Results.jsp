@@ -69,31 +69,30 @@
 	    	
 	      <c:when test="${sessionScope.banUser == 'true'}">
 	        
-	        <h1>${sessionScope.username} has been banned</h1>
+	        <h1>${sessionScope.modifiedUser} has been banned</h1>
 	        
 	      </c:when>
 	      
 	      <c:when test="${sessionScope.unbanUser == 'true'}">
 	        
-	        <h1>${sessionScope.username} has been unbanned</h1>
+	        <h1>${sessionScope.modifiedUser} has been unbanned</h1>
 	        
 	      </c:when>
 	      
 	      <c:when test="${sessionScope.makeAdmin == 'true'}">
 	        
-	        <h1>${sessionScope.username} is now an administrator</h1>
+	        <h1>${sessionScope.modifiedUser} is now an administrator</h1>
 	        
 	      </c:when>  
 	      
 	      <c:when test="${sessionScope.alreadyAdmin == 'true'}">
 	        
-	        <h1>${sessionScope.username} is already an administrator</h1>
+	        <h1>${sessionScope.modifiedUser} is already an administrator</h1>
 	        
 	      </c:when>   
 	    <c:otherwise>
 	      <h1> Results </h1>
-	      <h4>Found ${requestScope.viewBean.totalResults} results.</h4>
-	      
+	      	<h4>Found ${requestScope.viewBean.totalResults} results.</h4>
 	      <c:choose>
 	        <c:when test="${not empty requestScope.viewBean.resultBeans}">
 	          <!-- We must display the results of there are any -->
@@ -107,6 +106,7 @@
 	              <td scope="col"><b>GENRE</b></td>
 	              <td scope="col"><b>DATE OF PUB</b></td>
 	              <td scope="col"><b>PRICE</b></td>
+	              <td scope="col"><b>SELLER NAME</b></td>
 	              <c:choose>
 	        		<c:when test="${sessionScope.logged_in == true}">
 	              		<td scope="col"><b>ACTION</b></td>
@@ -134,6 +134,8 @@
 	                  <td class="warning">${entry.genre}</td>
 	                  <td class="danger">${entry.dop}</td>
 	                  <td class="danger">${entry.price}</td>
+	                  <!-- Felix can add a link here!! -->
+	                  <td class="success">${entry.sellerName}</td>
 	                  <c:choose>
 		        		<c:when test="${sessionScope.logged_in == true}">
 		              		 <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart"></td>
@@ -224,17 +226,16 @@
 		                  <c:choose>
 			        		<c:when test="${sessionScope.admin == true}">
 			        			<!-- Remove the choose below -->
-			        			<%-- TO FIX
+			        			
 			        			<c:choose>
-			        				<c:when test="${entry.ishalted == '1'}">
+			        				<c:when test="${entry.isHalted == 0}">
 			              		 		<td class="info"><input class="btn btn-xs btn-warning" type="submit" name="ban_user" id="edit_profile_button" value="Ban User"></td>
 			              		 	</c:when>
-			              		 	<c:when test="${entry.ishalted == '0'}">
+			              		 	<c:when test="${entry.isHalted == 1}">
 			              		 		<td class="info"><input class="btn btn-xs btn-warning" type="submit" name="unban_user" id="edit_profile_button" value="Unban User"></td>
 			              		 	</c:when>
 			              		</c:choose>
-			              		 --%>
-			              		 <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="ban_user" id="edit_profile_button" value="Ban User"></td>
+			              		
 			              		 <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="make_admin" id="edit_profile_button" value="Make Admin"></td>
 			              	</c:when>
 			              </c:choose>
@@ -283,6 +284,7 @@
 	            <b> ${requestScope.viewUserBean.curr_page_num} </b>
 	        </center>
        	</c:when> 
+        
         <c:otherwise>
           <!-- Display no results message -->
           <h1>Sorry, no matching datasets found!</h1>

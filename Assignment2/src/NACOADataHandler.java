@@ -55,13 +55,6 @@ public class NACOADataHandler {
 		handler.testDatabase(handler);
 		System.out.println("User name is " +handler.getUserName(0));
 		
-		ArrayList<NACOAHistoryBean> hb = handler.getUserHistory(9);
-		System.out.println("Printing out history!");
-		for(NACOAHistoryBean entry : hb){
-			System.out.println("HISTORY: " + entry.getUser_id());
-			
-		}
-		
 		
 		//handler.addHistoryBuyEntry(1,2); //
 		//handler.addHistoryAddCartEntry(1, 2);//
@@ -1114,7 +1107,7 @@ public class NACOADataHandler {
 			//STEP 4: Execute a query
 			//System.out.println("Creating statement...");
 			
-			String sql = "SELECT * FROM user_seller_books WHERE (user_id = ?)";
+			String sql = "SELECT * FROM user_seller_books WHERE (book_id = ?)";
 	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, book_id);
@@ -4007,6 +4000,10 @@ public void changeLastname(int user_id, String lastname) {
 					book.setPages(Integer.toString(rs.getInt("pages")));
 					book.setIsbn(rs.getString("isbn"));
 					book.setGenre(rs.getString("genre"));
+					//Change
+					int user_id = getSellersUserID(rs.getInt("id"));
+					book.setUserSellerID(user_id);
+					book.setSellerUsername(getUserName(user_id));
 					float price = rs.getFloat("price");
 					book.setPrice(Float.toString(price));
 					resultBook.add(book);
@@ -4138,6 +4135,11 @@ public void changeLastname(int user_id, String lastname) {
 				book.setPages(Integer.toString(rs.getInt("pages")));
 				book.setIsbn(rs.getString("isbn"));
 				book.setGenre(rs.getString("genre"));
+				
+				//Change
+				int user_id = getSellersUserID(rs.getInt("id"));
+				book.setUserSellerID(user_id);
+				book.setSellerUsername(getUserName(user_id));
 				float price = rs.getFloat("price");
 				book.setPrice(Float.toString(price));
 				resultBook.add(book);
