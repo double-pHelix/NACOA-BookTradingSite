@@ -90,22 +90,22 @@
         <div class="profile_info">
           <div class="row placeholders">
             <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="http://www.malwarwickonbooks.com/wp-content/uploads/2014/09/hand-sell-blur.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
+              <img src="http://www.malwarwickonbooks.com/wp-content/uploads/2014/09/hand-sell-blur.jpg" height="200" width="250" style="overflow:hidden">
               <h4>Books Sold</h4>
               <span class="text-muted">${sessionScope.profile.numBooksSold}</span>
             </div>
             <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="http://s3-media4.fl.yelpcdn.com/bphoto/N2lcaCuzP7u-0MDER3yL2g/ls.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
+              <img src="http://s3-media4.fl.yelpcdn.com/bphoto/N2lcaCuzP7u-0MDER3yL2g/ls.jpg" height="200">
               <h4>Books On Sale</h4>
               <span class="text-muted">${sessionScope.profile.numBooksSale}</span>
             </div>
             <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="http://www.columbuspubliclibrary.info/sites/www.columbuspubliclibrary.info/files/images/events/Dogs-Reading.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
+              <img src="http://www.columbuspubliclibrary.info/sites/www.columbuspubliclibrary.info/files/images/events/Dogs-Reading.jpg" height="200" width="250" style="overflow:hidden">
               <h4>Books Bought</h4>
               <span class="text-muted">${sessionScope.profile.numBooksBought}</span>
             </div>
             <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="https://playitagaindan.files.wordpress.com/2014/12/pile-of-books.jpg" class="img-responsive" alt="Generic placeholder thumbnail">
+              <img src="https://playitagaindan.files.wordpress.com/2014/12/pile-of-books.jpg" height="200" width="250" style="overflow:hidden">
               <h4>Books Wanted</h4>
               <span class="text-muted">${sessionScope.profile.numBooksInCart}</span>
             </div>

@@ -71,10 +71,10 @@
               <input type="hidden" name="user_id" value="${sessionScope.user_id}">
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Title" name="title">
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Author" name="author">
-              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Picture" name="picture">
+              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Picture (URL)" name="picture">
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Publisher" name="publisher">
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Date of Publication (YYYY-MM-DD)" name="dateofpublication">
-              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Pages" name="pages">
+              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Pages (number)" name="pages">
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="ISBN" name="isbn">
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Genre" name="genre">
               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Price ($)" name="price">
