@@ -135,13 +135,13 @@
           	                  <td class="active" style="vertical-align: middle"><img class="book_image" src="${entry.picture}"></img></td>
           	                  <td class="active" style="vertical-align: middle"><a href="${pageContext.request.contextPath}/results?entryMoreView=${entry.bookID}&page=${requestScope.viewBean.curr_page_num}">${entry.booktitle}</a></td>
           	                  <td class="success" style="vertical-align: middle">${entry.author}</td>
-          	                  <td class="success" style="vertical-align: middle">${entry.genre}</td>
-          	                  <td class="success" style="vertical-align: middle">${entry.dop}</td>
-                                <td class="success" style="vertical-align: middle"><a href="${pageContext.request.contextPath}/profile?user=${entry.sellerName}">
+          	                  <td class="warning" style="vertical-align: middle">${entry.genre}</td>
+          	                  <td class="warning" style="vertical-align: middle">${entry.dop}</td>
+                                <td class="warning" style="vertical-align: middle"><a href="${pageContext.request.contextPath}/profile?user=${entry.sellerName}">
                                                         ${entry.sellerName}
                                                     </a>
                                 </td>
-          	                  <td class="success" style="vertical-align: middle">$${entry.price}</td>
+          	                  <td class="danger" style="vertical-align: middle">$${entry.price}</td>
           	                  <!-- Felix can add a link here!! -->
           	                  
                                 
