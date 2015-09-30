@@ -55,6 +55,13 @@ public class NACOADataHandler {
 		handler.testDatabase(handler);
 		System.out.println("User name is " +handler.getUserName(0));
 		
+		ArrayList<NACOAHistoryBean> hb = handler.getUserHistory(9);
+		System.out.println("Printing out history!");
+		for(NACOAHistoryBean entry : hb){
+			System.out.println("HISTORY: " + entry.getUser_id());
+			
+		}
+		
 		
 		//handler.addHistoryBuyEntry(1,2); //
 		//handler.addHistoryAddCartEntry(1, 2);//
@@ -4587,7 +4594,9 @@ public void changeLastname(int user_id, String lastname) {
 				newEntry.setBook_id(rs.getInt("book_id")); ;
 				newEntry.setUser_id(rs.getInt("user_id"));
 				newEntry.setAction(getActionName(rs.getInt("action_type")));
-				newEntry.setTimeStamp(Integer.toString(rs.getInt("book_id")));
+				newEntry.setTimeStamp(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format((rs.getTimestamp("time_stamp"))));
+				newEntry.setBookTitle(rs.getString("title"));
+				history.add(newEntry);
 			}
 			stmt.close();
 			conn.close();	

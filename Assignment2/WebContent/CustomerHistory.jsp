@@ -80,16 +80,15 @@
                       
                         <form name="articles_option" action="" method="POST">
                           <!--  set for each of these entries some way of id to add to cart later -->
-                          <input type="hidden" name="book_id" value="${entry.bookID}">
-                          <input type="hidden" name="username" value="${sessionScope.username}">
+                          <input type="hidden" name="book_id" value="${entry.book_id}">
+                          <input type="hidden" name="username" value="${sessionScope.profile.username}">
                           <center>
                             <tr class="active">
-                              <td class="active"><a href="${pageContext.request.contextPath}/results?entryMoreView=${entry.bookID}&page=${requestScope.viewBean.curr_page_num}">${entry.booktitle}</a></td>
-                              <td class="success">${entry.author}</td>
-                              <td class="warning">${entry.genre}</td>
+                              <td class="active"><a href="${pageContext.request.contextPath}/results?entryMoreView=${entry.book_id}&page=${requestScope.viewBean.curr_page_num}">${entry.bookTitle}</a></td>
+                              <td class="success">${entry.action}</td>
+                              <td class="warning">${entry.timeStamp}</td>
                             </tr>
                           </center>
-                          <input type="hidden" name="page" value="${requestScope.viewBean.curr_page_num}">
                         </form>
                       </c:forEach>
                       </tbody>

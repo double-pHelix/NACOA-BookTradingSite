@@ -672,6 +672,7 @@ public class NACOAMainServlet extends HttpServlet {
 				//handler.removeFromCart(n);
 				System.out.println("Deleting book with id " + n);
 				dHandler.deleteBookCart(n, user_id);
+				dHandler.addHistoryRemoveCartEntry(user_id, n);
 			}
 			
 		}
@@ -1029,6 +1030,9 @@ public class NACOAMainServlet extends HttpServlet {
  			System.out.println("Setting book to sold");
  			dHandler.setBookSold(bookID);
 	 		
+ 			//add to history
+ 			dHandler.addHistoryBuyEntry(user_id, bookID);
+ 			
 	 		size++;
 		}
 		
