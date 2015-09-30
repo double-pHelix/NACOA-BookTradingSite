@@ -21,7 +21,7 @@
 	        <br><b>GENRE</b>
 	        <br><b>SELLER</b>
 	        <br><b>PRICE</b></td>
-	        <td align='left'><a href="${pageContext.request.contextPath}/results?entryMoreView=${requestScope.viewBean.readEntry.bookID}">${requestScope.viewBean.readEntry.booktitle}</a>
+	        <td align='left'>${requestScope.viewBean.readEntry.booktitle}
 	        <br>${requestScope.viewBean.readEntry.author}
 	        <br>${requestScope.viewBean.readEntry.DOP}
 	        <br>${requestScope.viewBean.readEntry.pages }
