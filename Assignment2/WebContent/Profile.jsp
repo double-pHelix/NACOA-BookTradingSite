@@ -49,7 +49,7 @@
     <div class="container">
     
     <jsp:include page="/topBanner.jsp" /> 
-    
+    ${sessionScope.userDetails.username}
       <!--  if we are viewing as admin we can ban user and view their customer activity report -->
           <c:choose>
             <c:when test="${sessionScope.userDetails.isAdmin}">

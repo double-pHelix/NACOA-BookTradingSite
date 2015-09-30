@@ -244,7 +244,8 @@ public class NACOAMainServlet extends HttpServlet {
 			String userToView = (String) req.getParameter("user");
 			int user_id = dHandler.getId(userToView);
 			String currUser = (String) req.getSession().getAttribute("username");
-			updateSessionUserDetails(req, user_id);
+			int curr_user_id = dHandler.getId(currUser);
+			updateSessionUserDetails(req, curr_user_id);
 			//load user details
 			NACOAUserBean profileBean = dHandler.getUserDetails(user_id);
 			if(userToView.equals(currUser)){ //we view our own profile
@@ -564,30 +565,6 @@ public class NACOAMainServlet extends HttpServlet {
 	}
 
 	public void appendToCartPage(HttpServletRequest req, HttpServletResponse res){
-		//int pubId = Integer.parseInt(req.getParameter("publication_id"));
-		/*
-		try {
-			//i think we will have to replace this with SQL functions or we replace the 
-			//implementations of these functiosn to use SQL
-			setUpCart(req, res);
-			
-			//we append to the loaded cart
-			handler.appendToCart(pubId);	
-			
-			handler.updateCartXML(CART_FILE_LOCATION); //this will be useless 
-			
-			cartBeans = handler.getBeanFromCartDoc(0);
-
-    		req.getSession().setAttribute("shoppingCart", cartBeans);
-    		handler.setCartToSession("shoppingCartDoc", req.getSession());
-			
-
-    		
-    		
-		} catch (Exception e){
-			System.out.println("error adding to cart:"  e );
-		}*/
-		
 		//String creditinfo = (String) req.getParameter("creditinfo");
 		
 		int user_id = dHandler.getId(req.getParameter("username"));
@@ -629,44 +606,11 @@ public class NACOAMainServlet extends HttpServlet {
 			
 		}
 		
-		//handler.updateCartXML(CART_FILE_LOCATION);
 		
 		cartBeans = dHandler.getShoppingCart(user_id);
 
 		req.getSession().setAttribute("shoppingCart", cartBeans);
 		
-		//handler.setCartToSession("shoppingCartDoc", req.getSession());
-		/*
-		//pie
-		try {
-			setUpCart(req, res);
-			
-			//need to remove from the document from last to first
-			///we need to start by looking at the last object 		
-			int totalEntries =  Integer.parseInt(req.getParameter("num_items"));
-
-			//to remove items i removed from last to first to avoid changing the indexes
-			for(int n = totalEntries-1; n >= 0; n--){
-				if(req.getParameter("entry"n) != null){
-					
-					//remove from the document
-					handler.removeFromCart(n);
-					
-				}
-				
-			}
-
-			handler.updateCartXML(CART_FILE_LOCATION);
-			
-			cartBeans = handler.getBeanFromCartDoc(0);
-
-    		req.getSession().setAttribute("shoppingCart", cartBeans);
-    		handler.setCartToSession("shoppingCartDoc", req.getSession());
-			
-		} catch (Exception e){
-			System.out.println("error adding to cart:"  e );
-		}
-		*/
 	}
 
 	public int registerUser(HttpServletRequest req, HttpServletResponse res){
