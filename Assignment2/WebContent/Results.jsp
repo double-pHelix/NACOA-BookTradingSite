@@ -138,7 +138,7 @@
 	                  <td class="success">${entry.sellerName}</td>
 	                  <c:choose>
 		        		<c:when test="${sessionScope.logged_in == true}">
-		              		 <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart"></td>
+		              		 <td class="info"><button class="btn btn-xs btn-success" type="submit" name="add_to_cart" id="addToCartButton" value="Add to Cart"><span class="glyphicon glyphicon-shopping-cart"></span></td>
 		              	</c:when>
 		              </c:choose>
 		              <c:choose>
