@@ -42,6 +42,16 @@
 	width:100% !important;
 }
 
+#removeFromCartButton{
+    padding: 6px 8px;
+    font-size: 12px;
+    color: white;
+    line-height: normal;
+    -webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
+            border-radius: 4px;
+}
+
 .tabtastic {
 	padding-top: 3px;
 }

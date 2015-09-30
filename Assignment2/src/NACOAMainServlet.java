@@ -453,7 +453,22 @@ public class NACOAMainServlet extends HttpServlet {
 				System.out.println("Received " + req.getParameter("unbanUser"));
 				//req.getSession().setAttribute("banUser", true);
 				unbanUser(req, res);
-			}  else if (req.getParameter("make_admin") != null) {
+			}   else if (req.getParameter("entryMoreView") != null) {
+				System.out.println("Looking at a particular item");
+				//
+				int book_id = Integer.parseInt(req.getParameter("entryMoreView"));
+				
+				NACOABean bookToView = dHandler.getBook(book_id);
+				
+				ResultPageBean viewBean = new ResultPageBean();
+				
+				viewBean.setReadMore(true);
+				viewBean.setReadEntry(bookToView);
+				
+				req.setAttribute("viewBean",viewBean);
+				
+				
+			}   else if (req.getParameter("make_admin") != null) {
 				System.out.println("admin");
 				System.out.println("Received " + req.getParameter("makeAdmin"));
 				//req.getSession().setAttribute("makeAdmin", true);
@@ -895,11 +910,9 @@ public class NACOAMainServlet extends HttpServlet {
 	public void processResults(HttpServletRequest req, HttpServletResponse res){
 		//just set up the cart to be read 
 		//TODO Change this!!!!!!!
-		String entryToview = req.getParameter("entryMoreView");//im trying to remember what my code does lol
+		String entryToview = req.getParameter("entryMoreView");
 		String entryToviewuser = req.getParameter("entryMoreViewUser");
-		//oh yeah so this viewBean is just a bean to display stuff, is a series of boolean values
-		//like do we show more results?
-		//do we show less results (like a back button?)
+
 		System.out.println("Processing results");
 		System.out.println("Received " + entryToview);
 		//We are viewing books

@@ -83,7 +83,10 @@
               <tr class="active">
                 <td></td><td></td><td></td><td></td>
                 <td>
-                  <center><input class="btn btn-xs btn-danger" type="submit" name="delete_article" value="Remove from Cart"></center> 
+                  <center>
+                   <button class="btn btn-ss btn-danger" id="removeFromCartButton" type="submit" name="delete_article" value="Remove from Cart"><span class="glyphicon glyphicon-trash"></span></button>
+    
+                  </center> 
                 </td>
               
               </tr>
