@@ -108,7 +108,7 @@
 	              <td scope="col"><b>PRICE</b></td>
 	              <td scope="col"><b>SELLER NAME</b></td>
 	              <c:choose>
-	        		<c:when test="${sessionScope.userDetails.isAdmin}">
+	        		<c:when test="${sessionScope.logged_in == true}">
 	              		<td scope="col"><b>ACTION</b></td>
 	              	</c:when>
 	              </c:choose>
@@ -137,7 +137,7 @@
 	                  <!-- Felix can add a link here!! -->
 	                  <td class="success">${entry.sellerName}</td>
 	                  <c:choose>
-		        		<c:when test="${sessionScope.userDetails.isAdmin}">
+		        		<c:when test="${sessionScope.logged_in == true}">
 		              		 <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart"></td>
 		              	</c:when>
 		              </c:choose>
