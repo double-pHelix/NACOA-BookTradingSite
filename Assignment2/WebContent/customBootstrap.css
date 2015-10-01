@@ -70,7 +70,6 @@
 }
 
 #addToCartButton{
-	margin-top: 36px;
     padding: 6px 8px;
     font-size: 12px;
     color: white;
@@ -125,4 +124,35 @@ body {
 #logo {
 	font-family: 'Droid Sans', sans-serif;
 	color: Indigo;
+}
+
+/* footer stuff */
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+	  position: relative;
+	  min-height: 100%;
+}
+body {
+	  /* Margin bottom by footer height */
+	  margin-bottom: 60px;
+}
+.footer {
+	  position: absolute;
+	  bottom: 0;
+	  max-width: 1320px;
+	  /* Set the fixed height of the footer here */
+	  height: 60px;
+	  background-image: url(images/groovepaper.png) ;
+}
+
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+
+.container .text-muted {
+	background-image: url(images/groovepaper.png) ;
+  	margin: 20px 0;
 }

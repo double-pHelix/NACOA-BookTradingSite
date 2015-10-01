@@ -1,3 +1,3 @@
 <footer class="footer">
-    <p>&copy; CACHEY NAME 2015</p>
+    <p class="text-muted">&copy; CACHEY NAME 2015</p>
 </footer>
