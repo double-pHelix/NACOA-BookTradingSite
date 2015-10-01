@@ -109,6 +109,11 @@ body {
 	max-width: 1320px; /* or 950px */
 }
 
+#purchaseButton{
+	position: relative;
+	float: right;
+}
+
 .content {
   text-align: center;
 }

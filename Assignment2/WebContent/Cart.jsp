@@ -99,7 +99,7 @@
         
        	<form name="checkout_book" action="" method="POST">
        		<input type="hidden" name="user_id" value="${sessionScope.user_id}">
-       		<a href="${pageContext.request.contextPath}/check_out" class="btn btn-info" role="button">Purchase Books</a>
+       		<a href="${pageContext.request.contextPath}/check_out" class="btn btn-success" id="purchaseButton" role="button">Purchase Books</a>
        	</form> 
       </c:when> 
 
