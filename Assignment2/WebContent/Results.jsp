@@ -292,42 +292,6 @@
 			                  </center>
                  	</c:when> 
                    </c:choose> 
-                   <%-- 
-                    <center>
-                      <div style="width:1200px;">
-                        <div style="float: left; width: 130px"> 
-                      
-                          <c:if test="${requestScope.viewBean.less =='true'}">
-                            <form name="articles_option" action="${pageContext.request.contextPath}/results" method="GET">
-                              <input type="hidden" name="page" value="${requestScope.viewBean.prev_page_num}">
-                              <div style="text-align:left">
-                                <center><button class="btn btn-xs btn-info" type="submit" id="edit_profile_button" value="Prev"><span class="glyphicon glyphicon-arrow-left"></span></center>
-                              </div>
-                            </form>
-                          </c:if>
-                            
-                        </div>
-                        <div style="float: right; width: 225px"> 
-                        <!--  um bootstrap is just the container and css yeah -->
-                        <!-- So below is an example of viewBean .. ok-->
-                        <!--  btw do you want me to show you Egit? -->
-                        <!--  its super easy bro -->
-                        <!-- eclipse is easy as well lol -->
-                          <c:if test="${requestScope.viewBean.more =='true'}">
-                            <form name="articles_option" action="${pageContext.request.contextPath}/results" method="GET">
-                              <input type="hidden" name="page" value="${requestScope.viewBean.next_page_num}">
-                              <div style="text-align:right">
-                                <center><button class="btn btn-xs btn-info" type="submit" id="edit_profile_button" value="Next"><span class="glyphicon glyphicon-arrow-right"></span></center>
-                              </div>
-                            </form>
-                          </c:if>
-                      
-                        </div>
-                      </div>
-                      <br>
-                      <b> ${requestScope.viewBean.curr_page_num} </b>
-                  </center>
-					--%>
         </c:when>
 
         <c:otherwise>

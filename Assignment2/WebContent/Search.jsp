@@ -130,6 +130,8 @@
           <table class="table table-borderless"> 
           <c:forEach var="random" items="${sessionScope.randomBeans}" varStatus="varStatus">
             <tr class="active">
+              <input type="hidden" name="logged_in" value="${sessionScope.logged_in}">
+              <input type="hidden" name="username" value="${sessionScope.username}">
 	          <a href="${pageContext.request.contextPath}/results?entryMoreView=${random.bookID}"> <img SRC="${random.picture}" height="150"> </a> &nbsp;
             </tr>
           </c:forEach>

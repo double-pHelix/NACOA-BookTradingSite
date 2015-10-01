@@ -9,6 +9,7 @@
   		<!-- Displaying a book -->
 	    <input type="hidden" name="book_id" value="${requestScope.viewBean.readEntry.bookID}">
 	    <input type="hidden" name="page" value="${requestScope.viewBean.curr_page_num}">
+	    <input type="hidden" name="username" value="${sessionScope.username}">
 	    <table class="table table-borderless">
 	      <tr class="active">
 	        <td><img SRC="${requestScope.viewBean.readEntry.picture}" height="300"></td>
@@ -33,7 +34,11 @@
 	      </tr>
 	    </table>
 	    <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button">Back to Search</a>
-  		<input class="btn btn-xx btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart">
+  		<c:choose>
+  			<c:when test="${sessionScope.logged_in}">
+  		  		<input class="btn btn-xx btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart">
+  			</c:when>
+  		</c:choose>
   </form>
   
 </div>
