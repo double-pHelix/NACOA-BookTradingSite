@@ -10,7 +10,23 @@
 
 <div class="header clearfix">
   <nav>
-    <ul class="nav nav-pills pull-right">
+    <ul class="nav nav-pills pull-right">    
+      
+        <li role="presentation">
+           <div id="bannerSearchBox">
+           <form action="${pageContext.request.contextPath}/results" method="POST" class="form-inline"> 
+              <input type="hidden" name="search_type" value="book">
+              <input type="hidden" name="search_format" value="basic">
+              <div class="input-group">
+                <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Search..." name="search_general">                           
+              </div><!-- /input-group -->
+              <div class="input-group">
+                <button class="btn btn-default" type="submit" id="topBannerSearchButton"><span class="glyphicon glyphicon-search"></span></button>
+              </div>
+            </form>
+            </div>
+          </li>
+        
       <li role="presentation" class="active"><a href="${pageContext.request.contextPath}/"><span class="glyphicon glyphicon-home"></span></a></li>
       <c:choose>
       <c:when test="${sessionScope.logged_in == true}">

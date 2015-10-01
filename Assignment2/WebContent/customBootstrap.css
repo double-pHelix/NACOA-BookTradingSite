@@ -16,14 +16,25 @@
 #homeLink { 
 	color: inherit;
 } 
+
 #NACOABanner {
 	background-image: url(images/paper_fibers.png) ;
 	/*background: #BB5DE3 ;*/
 }
 
+#topBannerSearchButton{
+	margin-left: -6px;
+	padding: 9px 8px;	
+}
 .NACOABannerText {
 	color: Indigo  !important;
 	font-family: 'Droid Sans', sans-serif;
+}
+
+#bannerSearchBox{
+	position: relative;
+	left: -5%;
+	margin-left: -50px !important;
 }
 
 #bannerRegisterButton{
