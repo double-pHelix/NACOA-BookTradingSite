@@ -101,6 +101,7 @@ public class NACOAMainServlet extends HttpServlet {
 		
 		req.setAttribute("viewBean",viewBean);
 		req.getSession().setAttribute("bookSearch",true);
+		//req.getSession().setAttribute("resultBeans", resultBeans);
 		//i guess we still need this
 		//but we might change it to include a search for people?
 		//as Admin can find people and ban them?
@@ -150,6 +151,7 @@ public class NACOAMainServlet extends HttpServlet {
 		
 		req.setAttribute("viewUserBean",viewBean);
 		req.getSession().setAttribute("bookSearch",false);
+		//req.getSession().setAttribute("resultUserBeans", resultUserBeans);
 		/*
 		try {
 			//we should only do this if we want to load the main xml
@@ -399,6 +401,8 @@ public class NACOAMainServlet extends HttpServlet {
 			req.getSession().setAttribute("banUser", false);
 			req.getSession().setAttribute("makeAdmin", false);
 			req.getSession().setAttribute("unbanUser", false);
+			req.getSession().setAttribute("addedCart", false);
+			req.getSession().setAttribute("alreadyCart", false);
 			//req.getSession().setAttribute("modifiedUser", username);
 			
 			int user_id = dHandler.getId(username);
@@ -591,6 +595,7 @@ public class NACOAMainServlet extends HttpServlet {
 		
 		req.setAttribute("viewBean",viewBean);
 		req.getSession().setAttribute("bookSearch",true);
+		//req.getSession().setAttribute("resultBeans",resultBeans);
 	}
 
 	private void unbanUser(HttpServletRequest req, HttpServletResponse res) {
@@ -679,13 +684,22 @@ public class NACOAMainServlet extends HttpServlet {
 		int book_id = Integer.parseInt(req.getParameter("book_id"));
 		System.out.println("Received book ID " + book_id);
 		   
-		//Need to get book_id somehow
-		dHandler.addBookToCart(user_id, book_id, 0);
+		if (dHandler.checkBookInCart(user_id, book_id)) {
+			req.getSession().setAttribute("alreadyCart", true);
+		} else {
+			//Add book to cart
+			dHandler.addBookToCart(user_id, book_id, 0);
+			
+			//Don't forget to make an entry for our transaction history!
+			dHandler.addHistoryAddCartEntry(user_id,book_id);
+			
+			req.getSession().setAttribute("addedCart", true);
+			req.getSession().setAttribute("itemAdded", dHandler.getBookTitle(book_id));
+		}
+		
 		cartBeans = dHandler.getShoppingCart(user_id);
 		
 		System.out.println("Cart is size " + cartBeans.size());
-		//Don't forget to make an entry for our transaction history!
-		dHandler.addHistoryAddCartEntry(user_id,book_id);
 		
 		req.getSession().setAttribute("shoppingCart", cartBeans);
 		//handler.setCartToSession("shoppingCartDoc", req.getSession());
@@ -979,6 +993,8 @@ public class NACOAMainServlet extends HttpServlet {
 			//We need to consider between a user and nook search
 			System.out.println("Received bookSearch" + req.getSession().getAttribute("bookSearch"));
 			if ((boolean)req.getSession().getAttribute("bookSearch") == true) {
+				
+				//resultBeans = (ArrayList<NACOABean>) req.getSession().getAttribute("resultBeans");
 				ResultPageBean viewBean = new ResultPageBean();
 				
 				//get the current page number (default = 1)
@@ -1042,6 +1058,7 @@ public class NACOAMainServlet extends HttpServlet {
 				}
 			} else {
 				//User Search
+				//resultUserBeans = (ArrayList<NACOAUserBean>) req.getSession().getAttribute("resultUserBeans");
 				ResultPageUserBean viewBean = new ResultPageUserBean();
 				
 				//get the current page number (default = 1)

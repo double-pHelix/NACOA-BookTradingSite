@@ -5229,5 +5229,62 @@ public void changeLastname(int user_id, String lastname) {
 			} //end finally try
 		} //end try
 	}
+	
+	//Gets the shopping cart as beans
+	public boolean checkBookInCart (int user_id, int book_id){
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		boolean answer = false;
+		//String bookName = null;
+		//int bookID = 0;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			String sql = "SELECT * FROM user_customer_books WHERE (user_id = ?)";
+			
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, user_id);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+			
+			//STEP 5: Extract data from result set
+			while(rs.next()){
+				//Retrieve by column name
+				if (rs.getInt("book_id") == book_id) {
+					answer = true;
+				}
+			}
+			
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+			//return listOfBooks;
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		return answer;
+	}
 }
 

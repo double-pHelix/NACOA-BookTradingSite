@@ -90,6 +90,18 @@
 	        <h1>${sessionScope.modifiedUser} is already an administrator</h1>
 	        
 	      </c:when>   
+	      
+	      <c:when test="${sessionScope.addedCart == 'true'}">
+	        
+	        <h1>"${sessionScope.itemAdded}" has been added to cart</h1>
+	        
+	      </c:when>   
+	      
+	      <c:when test="${sessionScope.alreadyCart == 'true'}">
+	        
+	        <h1>"${sessionScope.itemAdded}" is already in the cart</h1>
+	        
+	      </c:when>
 	    <c:otherwise>
 	      <h1> Results </h1>
 	      	<h4>Found ${requestScope.viewBean.totalResults} results.</h4>
