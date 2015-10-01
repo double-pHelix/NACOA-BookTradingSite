@@ -93,7 +93,23 @@
                   <div class="input-group">
                     <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Author" name="search_author">
                     <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Title" name="search_title">                         
-                    <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Genre" name="search_genre">              
+                    <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Genre" name="search_genre"> 
+                    <!-- Drop down -->
+                    <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Price Below" name="search_price">                           
+                  </div><!-- /input-group -->
+                  <div class="input-group">
+                    
+                      <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                   
+                      
+                  </div><!-- /input-group -->
+                </form>
+                
+                <form action="${pageContext.request.contextPath}/results" method="POST"> 
+                  <input type="hidden" name="search_type" value="book">
+                  <input type="hidden" name="search_format" value="basic">
+                  <div class="input-group">
+                    <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="General" name="search_general">                           
                   </div><!-- /input-group -->
                   <div class="input-group">
                     

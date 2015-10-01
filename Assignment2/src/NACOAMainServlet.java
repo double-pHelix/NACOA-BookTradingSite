@@ -61,36 +61,12 @@ public class NACOAMainServlet extends HttpServlet {
 		String author = (String) req.getParameter("search_author");
 		String title = (String) req.getParameter("search_title");
 		String genre = (String) req.getParameter("search_genre");
-		//String year = (String) req.getParameter("search_year");
-		//String pubType = (String) req.getParameter("search_pubtype");
-		/*
-		try {
-			//we should only do this if we want to load the main xml
-			if(handler.fileExists(MAIN_FILE_LOCATION)){
-				handler.loadMainXML(MAIN_FILE_LOCATION);
-			}
-			
-			if(handler.fileExists(RESULTS_FILE_LOCATION)){
-				handler.loadResultsXML(RESULTS_FILE_LOCATION);
-			}
-			
-			//this performs the search and puts the results into a result doc
-			handler.searchAdvanced(author, title, venue, year, pubType);
-			
-			//write results to the given file location
-			handler.updateResultStoreXML(RESULTS_FILE_LOCATION);
-			
-		} catch (Exception e){
-			System.out.println("error loading main xml:"  e );
-		}
+		String price = (String) req.getParameter("search_price");
 		
-		*/	
-		//this then just retrieves the results from the result doc (into bean format)
-		//resultBeans = handler.getBeanFromResultDoc(0);
 		if (admin) {
-			resultBeans = dHandler.bookAdminSearch(title, author, genre);
+			resultBeans = dHandler.bookAdminSearch(title, author, genre, price);
 		} else {
-			resultBeans = dHandler.bookSearch(title, author, genre);
+			resultBeans = dHandler.bookSearch(title, author, genre, price);
 		}
 		
 		//System.out.println("Size is " + resultBeans.size());
@@ -415,6 +391,7 @@ public class NACOAMainServlet extends HttpServlet {
 	    	
 		} else if (uri.contains("results")){  //RESULT PAGE
 			String searchType = (String) req.getParameter("search_type");
+			String searchFormat = (String) req.getParameter("search_format");
 			String username = (String) req.getSession().getAttribute("username");
 			boolean isAdmin = false;
 			System.out.println("username is " + username);
@@ -439,7 +416,11 @@ public class NACOAMainServlet extends HttpServlet {
 			if (searchType != null){
 				System.out.println("search");
 				if (searchType.matches(".*book.*")){
-					performBookSearch(req,res,isAdmin);
+					if (searchFormat != null) {
+						performBasicBookSearch(req,res,isAdmin);
+					} else {
+						performBookSearch(req,res,isAdmin);
+					}
 				} else if (searchType.matches(".*user.*")){
 					performUserSearch(req,res,isAdmin);
 				}
@@ -565,6 +546,51 @@ public class NACOAMainServlet extends HttpServlet {
 	    	requestDispatcher.forward(req, res);
 		}
 
+	}
+
+	private void performBasicBookSearch(HttpServletRequest req, HttpServletResponse res, boolean isAdmin) {
+		// TODO Auto-generated method stub
+		//extract variables
+		String query = (String) req.getParameter("search_general");
+		
+		if (isAdmin) {
+			resultBeans = dHandler.bookBasicAdminSearch(query);
+		} else {
+			resultBeans = dHandler.bookBasicSearch(query);
+		}
+		
+		//System.out.println("Size is " + resultBeans.size());
+		//System.out.println("Username = " + resultBeans.get(0).getSellerName());
+		//System.out.println("UserID = " + resultBeans.get(0).getUserSellerID());
+		//System.out.println("Username = " + resultBeans.get(1).getSellerName());
+		//System.out.println("UserID = " + resultBeans.get(1).getUserSellerID());
+		
+		ArrayList<NACOABean> first10 = new ArrayList<NACOABean>();
+		
+		int x = 0;
+		
+		while (x != resultBeans.size() && first10.size() != 10) {
+			first10.add(resultBeans.get(x));
+			x++;
+		}
+		
+		//set up our bean to be displayed
+		ResultPageBean viewBean = new ResultPageBean();
+		viewBean.setResultBeans(first10);
+		
+		int totalResults = resultBeans.size();
+		viewBean.setTotalResults(totalResults);
+		System.out.println("size is " + totalResults);
+		
+		
+		if(totalResults > 10){
+			viewBean.setMore(true);
+		}
+		viewBean.setCurr_page_num(1);
+		viewBean.setNext_page_num(2);
+		
+		req.setAttribute("viewBean",viewBean);
+		req.getSession().setAttribute("bookSearch",true);
 	}
 
 	private void unbanUser(HttpServletRequest req, HttpServletResponse res) {

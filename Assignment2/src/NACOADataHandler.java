@@ -3895,7 +3895,7 @@ public void changeLastname(int user_id, String lastname) {
 	}
 	
 	//Searches database for book
-	public ArrayList<NACOABean> bookSearch(String title, String author, String genre) {
+	public ArrayList<NACOABean> bookSearch(String title, String author, String genre, String price) {
 		ArrayList<NACOABean> resultBook = new ArrayList<NACOABean>();
 
 		Connection conn = null;
@@ -3913,7 +3913,8 @@ public void changeLastname(int user_id, String lastname) {
 			String sql = "SELECT * FROM books "
 						 + "WHERE title LIKE ?"
 						 + "AND author LIKE ?"
-						 + "AND genre LIKE ?";
+						 + "AND genre LIKE ?"
+						 + "AND price < ?";
 	
 			String newTitle = title;
 			String newAuthor = author;
@@ -3953,6 +3954,8 @@ public void changeLastname(int user_id, String lastname) {
 				sql = sql + "genre LIKE ?";
 			}
 			
+			sql = sql + " AND price < ?";
+			
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
 			//System.out.println("Title is " + title);
@@ -3975,6 +3978,104 @@ public void changeLastname(int user_id, String lastname) {
 			} else {
 				stmt.setString(3, "%"+newGenre+"%");
 			}
+			
+			if (price.isEmpty()) {
+				stmt.setFloat(4, 1000);
+			} else {
+				stmt.setFloat(4, Float.parseFloat(price));
+			}
+			
+			
+			System.out.println("statement is: ");
+			System.out.println(stmt);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+			
+			while(rs.next()) {
+				
+				//Need to make sure that the book has not been sold yet?
+				int bookID = rs.getInt("id");
+				
+				//Search the user_seller_book for the id to see if sold
+				if (getBookAvail(bookID) == 0 && isBookPaused(bookID) == 0) {
+					NACOABean book = new NACOABean();
+					
+					book.setBookID(rs.getInt("id"));
+					book.setBooktitle(rs.getString("title"));
+					book.setAuthor(rs.getString("author"));
+					book.setPicture(rs.getString("picture"));
+					book.setPublisher(rs.getString("publisher"));
+					book.setDop(rs.getString("dateofpublication"));
+					book.setPages(Integer.toString(rs.getInt("pages")));
+					book.setIsbn(rs.getString("isbn"));
+					book.setGenre(rs.getString("genre"));
+					//Change
+					int user_id = getSellersUserID(rs.getInt("id"));
+					book.setUserSellerID(user_id);
+					book.setSellerUsername(getUserName(user_id));
+					float priceVal = rs.getFloat("price");
+					book.setPrice(Float.toString(priceVal));
+					resultBook.add(book);
+				}
+			}	
+
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		return resultBook;
+	}
+	
+	//Searches database for book
+	public ArrayList<NACOABean> bookBasicSearch(String query) {
+		ArrayList<NACOABean> resultBook = new ArrayList<NACOABean>();
+
+		System.out.println("Doing basic search");
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		//String bookName = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM books "
+						 + "WHERE title LIKE ?"
+						 + "OR author LIKE ?"
+						 + "OR genre LIKE ?"
+						 + "OR publisher LIKE ?";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+			//System.out.println("Title is " + title);
+			//System.out.println("Author is " + author);
+			//System.out.println("Genre is " + genre);
+			stmt.setString(1, "%"+query+"%");
+			stmt.setString(2, "%"+query+"%");
+			stmt.setString(3, "%"+query+"%");
+			stmt.setString(4, "%"+query+"%");
 			
 			System.out.println("statement is: ");
 			System.out.println(stmt);
@@ -4008,6 +4109,96 @@ public void changeLastname(int user_id, String lastname) {
 					book.setPrice(Float.toString(price));
 					resultBook.add(book);
 				}
+			}	
+
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			    se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		return resultBook;
+	}
+	
+	//Searches database for book
+	public ArrayList<NACOABean> bookBasicAdminSearch(String query) {
+		ArrayList<NACOABean> resultBook = new ArrayList<NACOABean>();
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		//String bookName = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM books "
+						 + "WHERE title LIKE ?"
+						 + "OR author LIKE ?"
+						 + "OR genre LIKE ?"
+						 + "OR publisher LIKE ?";
+	
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+			//System.out.println("Title is " + title);
+			//System.out.println("Author is " + author);
+			//System.out.println("Genre is " + genre);
+			stmt.setString(1, "%"+query+"%");
+			stmt.setString(2, "%"+query+"%");
+			stmt.setString(3, "%"+query+"%");
+			stmt.setString(4, "%"+query+"%");
+			
+			System.out.println("statement is: ");
+			System.out.println(stmt);
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+			
+			while(rs.next()) {
+				
+				//Need to make sure that the book has not been sold yet?
+				int bookID = rs.getInt("id");
+				
+				//Search the user_seller_book for the id to see if sold
+				//if (getBookAvail(bookID) == 0 && isBookPaused(bookID) == 0) {
+					NACOABean book = new NACOABean();
+					
+					book.setBookID(rs.getInt("id"));
+					book.setBooktitle(rs.getString("title"));
+					book.setAuthor(rs.getString("author"));
+					book.setPicture(rs.getString("picture"));
+					book.setPublisher(rs.getString("publisher"));
+					book.setDop(rs.getString("dateofpublication"));
+					book.setPages(Integer.toString(rs.getInt("pages")));
+					book.setIsbn(rs.getString("isbn"));
+					book.setGenre(rs.getString("genre"));
+					//Change
+					int user_id = getSellersUserID(rs.getInt("id"));
+					book.setUserSellerID(user_id);
+					book.setSellerUsername(getUserName(user_id));
+					float price = rs.getFloat("price");
+					book.setPrice(Float.toString(price));
+					resultBook.add(book);
+				//}
 			}	
 
 			//STEP 6: Clean-up environment
@@ -4110,7 +4301,7 @@ public void changeLastname(int user_id, String lastname) {
 	}
 	
 	//Searches database for book
-	public ArrayList<NACOABean> bookAdminSearch(String title, String author, String genre) {
+	public ArrayList<NACOABean> bookAdminSearch(String title, String author, String genre, String price) {
 		ArrayList<NACOABean> resultBook = new ArrayList<NACOABean>();
 
 		Connection conn = null;
@@ -4167,6 +4358,8 @@ public void changeLastname(int user_id, String lastname) {
 				sql = sql + "genre LIKE ?";
 			}
 			
+			sql = sql + " AND price < ?";
+			
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
 			//System.out.println("Title is " + title);
@@ -4188,6 +4381,12 @@ public void changeLastname(int user_id, String lastname) {
 				stmt.setString(3, newGenre);
 			} else {
 				stmt.setString(3, "%"+newGenre+"%");
+			}
+			
+			if (price.isEmpty()) {
+				stmt.setFloat(4, 1000);
+			} else {
+				stmt.setFloat(4, Float.parseFloat(price));
 			}
 			
 			System.out.println("statement is: ");
@@ -4215,8 +4414,8 @@ public void changeLastname(int user_id, String lastname) {
 				int user_id = getSellersUserID(rs.getInt("id"));
 				book.setUserSellerID(user_id);
 				book.setSellerUsername(getUserName(user_id));
-				float price = rs.getFloat("price");
-				book.setPrice(Float.toString(price));
+				float priceVal = rs.getFloat("price");
+				book.setPrice(Float.toString(priceVal));
 				resultBook.add(book);
 				
 			}	
