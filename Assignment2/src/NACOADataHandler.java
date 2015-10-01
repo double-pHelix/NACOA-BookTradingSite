@@ -2133,7 +2133,11 @@ public class NACOADataHandler {
 			while(rs.next()){
 				//Retrieve by column name
 				bookID = rs.getInt("book_id");
-				listOfBooks.add(bookID);
+				
+				if (isBookPaused(bookID) != 1) {
+					listOfBooks.add(bookID);
+				}
+				
 			}
 
 			//STEP 6: Clean-up environment
