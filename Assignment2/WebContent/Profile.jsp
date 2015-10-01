@@ -112,48 +112,48 @@
         </div>
         
         <c:choose>
-        <c:when test="${not empty sessionScope.selling_books}">
-        
-        <h2 class="sub-header">Seller's Books</h2>
-        <div class="content">
-        <table class="table table-bordered"> 
-           <thead>
-            <tr class="active">
-              <td scope="col"><b>TITLE</b></td>
-              <td scope="col"><b>AUTHOR</b></td>
-              <td scope="col"><b>GENRE</b></td>
-              <td scope="col"><b>PRICE</b></td>
-              <td scope="col"><b>ACTIONS</b></td>
-            </tr>
-           </thead> 
-           <tbody>
-          <c:forEach var="entry" items="${sessionScope.selling_books}" varStatus="varStatus" >
+          <c:when test="${not empty sessionScope.selling_books}">
           
-            <form name="articles_option" action="" method="POST">
-              <!--  set for each of these entries some way of id to add to cart later -->
-              <input type="hidden" name="book_id" value="${entry.bookID}">
-              <input type="hidden" name="username" value="${sessionScope.username}">
-              <center>
-                <tr class="active">
-                  <td class="active"><a href="${pageContext.request.contextPath}/results?entryMoreView=${entry.bookID}&page=${requestScope.viewBean.curr_page_num}">${entry.booktitle}</a></td>
-                  <td class="success">${entry.author}</td>
-                  <td class="warning">${entry.genre}</td>
-                  <td class="danger">${entry.price}</td>
-                  <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart"></td>
-                </tr>
-              </center>
-              <input type="hidden" name="page" value="${requestScope.viewBean.curr_page_num}">
-            </form>
-          </c:forEach>
-          </tbody>
-        </table>
-        <br>
-        </div> 
-        </c:when> 
-            <c:otherwise>
+          <h2 class="sub-header">Seller's Books</h2>
+          <div class="content">
+          <table class="table table-bordered"> 
+             <thead>
+              <tr class="active">
+                <td scope="col"><b>TITLE</b></td>
+                <td scope="col"><b>AUTHOR</b></td>
+                <td scope="col"><b>GENRE</b></td>
+                <td scope="col"><b>PRICE</b></td>
+                <td scope="col"><b>ACTIONS</b></td>
+              </tr>
+             </thead> 
+             <tbody>
+            <c:forEach var="entry" items="${sessionScope.selling_books}" varStatus="varStatus" >
+            
+              <form name="articles_option" action="" method="POST">
+                <!--  set for each of these entries some way of id to add to cart later -->
+                <input type="hidden" name="book_id" value="${entry.bookID}">
+                <input type="hidden" name="username" value="${sessionScope.username}">
+                <center>
+                  <tr class="active">
+                    <td class="active"><a href="${pageContext.request.contextPath}/results?entryMoreView=${entry.bookID}&page=${requestScope.viewBean.curr_page_num}">${entry.booktitle}</a></td>
+                    <td class="success">${entry.author}</td>
+                    <td class="warning">${entry.genre}</td>
+                    <td class="danger">${entry.price}</td>
+                    <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart"></td>
+                  </tr>
+                </center>
+                <input type="hidden" name="page" value="${requestScope.viewBean.curr_page_num}">
+              </form>
+            </c:forEach>
+            </tbody>
+          </table>
+          <br>
+          </div> 
+          </c:when> 
+          <c:otherwise>
             <br><br>
-            </c:otherwise>
-          </c:choose>
+          </c:otherwise>
+       </c:choose>
       </div>
    
 

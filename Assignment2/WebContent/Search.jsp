@@ -104,7 +104,7 @@
                               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Title" name="search_title">                         
                               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Genre" name="search_genre"> 
                               <!-- Drop down -->
-                              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Price Below" name="search_price">                           
+                              <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Max Price" name="search_price">                           
                             </div><!-- /input-group -->
                             <div class="input-group">
                               

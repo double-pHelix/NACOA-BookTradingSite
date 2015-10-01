@@ -212,8 +212,7 @@
           		              <!--  Permissions -->
           		              <c:choose>
           		        		<c:when test="${sessionScope.userDetails.isAdmin}">
-          		              		 <td scope="col"><b>ADMIN ACTION</b></td>
-          		              		 <td scope="col"><b>ADMIN ACTION</b></td>
+          		              		 <td scope="col" colspan =2><b>ADMIN ACTION</b></td>
           		              	</c:when>
           		              </c:choose>
           		            </tr>
