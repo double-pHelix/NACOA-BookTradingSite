@@ -124,7 +124,7 @@ public class NACOAMainServlet extends HttpServlet {
 		viewBean.setNext_page_num(2);
 		
 		req.setAttribute("viewBean",viewBean);
-    	
+		req.getSession().setAttribute("bookSearch",true);
 		//i guess we still need this
 		//but we might change it to include a search for people?
 		//as Admin can find people and ban them?
@@ -148,13 +148,22 @@ public class NACOAMainServlet extends HttpServlet {
 			resultUserBeans = dHandler.userSearch(query);
 		}
 		
+		ArrayList<NACOAUserBean> first10 = new ArrayList<NACOAUserBean>();
+		
+		int x = 0;
+		
+		while (x != resultUserBeans.size() && first10.size() != 10) {
+			first10.add(resultUserBeans.get(x));
+			x++;
+		}
 		//System.out.println("Size is " + resultUserBeans.size());
 		//System.out.println("Is Halted = " + resultUserBeans.get(0).getIsHalted());
 		//Set up view for users?
 		ResultPageUserBean viewBean = new ResultPageUserBean();
-		viewBean.setResultBeans(resultUserBeans);
+		viewBean.setResultBeans(first10);
 		
 		int totalResults = resultUserBeans.size();
+		System.out.println("user bean is size " + totalResults);
 		viewBean.setTotalResults(totalResults);
 		
 		if(totalResults > 10){
@@ -164,7 +173,7 @@ public class NACOAMainServlet extends HttpServlet {
 		viewBean.setNext_page_num(2);
 		
 		req.setAttribute("viewUserBean",viewBean);
-		
+		req.getSession().setAttribute("bookSearch",false);
 		/*
 		try {
 			//we should only do this if we want to load the main xml
@@ -453,22 +462,7 @@ public class NACOAMainServlet extends HttpServlet {
 				System.out.println("Received " + req.getParameter("unbanUser"));
 				//req.getSession().setAttribute("banUser", true);
 				unbanUser(req, res);
-			}   else if (req.getParameter("entryMoreView") != null) {
-				System.out.println("Looking at a particular item");
-				//
-				int book_id = Integer.parseInt(req.getParameter("entryMoreView"));
-				
-				NACOABean bookToView = dHandler.getBook(book_id);
-				
-				ResultPageBean viewBean = new ResultPageBean();
-				
-				viewBean.setReadMore(true);
-				viewBean.setReadEntry(bookToView);
-				
-				req.setAttribute("viewBean",viewBean);
-				
-				
-			}   else if (req.getParameter("make_admin") != null) {
+			}  else if (req.getParameter("make_admin") != null) {
 				System.out.println("admin");
 				System.out.println("Received " + req.getParameter("makeAdmin"));
 				//req.getSession().setAttribute("makeAdmin", true);
@@ -872,7 +866,6 @@ public class NACOAMainServlet extends HttpServlet {
 		req.getSession().setAttribute("user_id", 0);
 		req.getSession().setAttribute("username", "");
 		req.getSession().setAttribute("userDetails", null);
-		req.getSession().setAttribute("admin", false); //should use userDetails is_admin
 		
 	}
 	
@@ -910,29 +903,42 @@ public class NACOAMainServlet extends HttpServlet {
 	public void processResults(HttpServletRequest req, HttpServletResponse res){
 		//just set up the cart to be read 
 		//TODO Change this!!!!!!!
-		String entryToview = req.getParameter("entryMoreView");
-		String entryToviewuser = req.getParameter("entryMoreViewUser");
-
+		String entryToview = req.getParameter("entryMoreView");//im trying to remember what my code does lol
+		//String entryToviewuser = req.getParameter("entryMoreViewUser");
+		//oh yeah so this viewBean is just a bean to display stuff, is a series of boolean values
+		//like do we show more results?
+		//do we show less results (like a back button?)
 		System.out.println("Processing results");
 		System.out.println("Received " + entryToview);
 		//We are viewing books
 		//Need to separate viewing books and users
 		if(entryToview != null){ //EXPANDING VIEW TO READ MORE
 			int entryToViewNum = Integer.parseInt(entryToview);
-			
+			NACOABean entry = new NACOABean();
 			//View num is the book_id
 			//resultBeans = handler.getBeanFromResultDoc(entryToViewNum);
 			//Search for right entry
-			NACOABean entry = resultBeans.get(0);
 			
-			System.out.println("Size of results is "+ resultBeans.size());
-			int i = 0;
-			
-			while (entry.getBookID() != entryToViewNum) {
-				entry = resultBeans.get(i);
-				i++;
+			if (resultBeans.size() == 0) {
+				entry = dHandler.getBook(entryToViewNum);
+			} else {
+				int i = 0;
+				
+				while (i != resultBeans.size()) {
+					if (resultBeans.get(i).getBookID() == entryToViewNum) {
+						entry = resultBeans.get(i);
+						break;
+					}
+					i++;
+				}
+				
+				if (i == resultBeans.size()) {
+					//Found no entry
+					entry = dHandler.getBook(entryToViewNum);
+				}
 			}
-			
+			 
+
 			//that is what a ResultPageBean does
 			ResultPageBean viewBean = new ResultPageBean();
 			
@@ -944,66 +950,133 @@ public class NACOAMainServlet extends HttpServlet {
 		} else { 
 			//TODO Not sure
 			//CHANGING PAGE NUMBER
-			ResultPageBean viewBean = new ResultPageBean();
-			
-			//get the current page number (default = 1)
-			//int totalResults = handler.getNumResults();
-			int totalResults = resultBeans.size();
-			viewBean.setTotalResults(totalResults);
-			
-			String pageNo = req.getParameter("page");
-			int currPageNo = Integer.parseInt(pageNo);
-			viewBean.setCurr_page_num(currPageNo);
-			
-			//so the logic for that is here
-			//if the current page number is > 1 we can go backwards etc
-			if(pageNo == null){
-				//default is first page
-				//resultBeans = handler.getBeanFromResultDoc(0);
+			//We need to consider between a user and nook search
+			System.out.println("Received bookSearch" + req.getSession().getAttribute("bookSearch"));
+			if ((boolean)req.getSession().getAttribute("bookSearch") == true) {
+				ResultPageBean viewBean = new ResultPageBean();
 				
-				if(currPageNo > 1){
-					viewBean.setLess(true);
+				//get the current page number (default = 1)
+				//int totalResults = handler.getNumResults();
+				int totalResults = resultBeans.size();
+				viewBean.setTotalResults(totalResults);
+				
+				String pageNo = req.getParameter("page");
+				int currPageNo = Integer.parseInt(pageNo);
+				viewBean.setCurr_page_num(currPageNo);
+				
+				//so the logic for that is here
+				//if the current page number is > 1 we can go backwards etc
+				if(pageNo == null){
+					//default is first page
+					//resultBeans = handler.getBeanFromResultDoc(0);
+					
+					if(currPageNo > 1){
+						viewBean.setLess(true);
+					}
+					
+				} else {
+					//generate the appropriate
+					int startEntry = 10 * (currPageNo-1);
+					
+					System.out.println("Start entry is " + startEntry);
+					if(startEntry > totalResults){
+						//error
+						return;
+					} 
+					
+					//retrieve results
+					//resultBeans = handler.getBeanFromResultDoc(startEntry);
+					ArrayList<NACOABean> temp = new ArrayList<NACOABean>();
+					
+					int x = startEntry;
+					
+					while (x < resultBeans.size() && x != (startEntry+10)) {
+						temp.add(resultBeans.get(x));
+						x++;
+					}
+					
+					//set up our bean to be displayed
+					viewBean.setResultBeans(temp); //we keep two copies
+					
+					//set up entry
+					if(currPageNo > 1){
+						viewBean.setLess(true);
+						viewBean.setPrev_page_num(currPageNo-1);
+					}
+					if(totalResults > startEntry + 10){
+						viewBean.setMore(true);
+						viewBean.setNext_page_num(currPageNo+1);
+					}
+	
+					//and we pass these Beans to our JSPs through attributes
+					req.setAttribute("viewBean",viewBean);
+					//yeah, it reads it and has if statements to display data
+					//um yeah it uses JSTL for ifs
+	
 				}
-				
 			} else {
-				//generate the appropriate
-				int startEntry = 10 * (currPageNo-1);
+				//User Search
+				ResultPageUserBean viewBean = new ResultPageUserBean();
 				
-				System.out.println("Start entry is " + startEntry);
-				if(startEntry > totalResults){
-					//error
-					return;
-				} 
+				//get the current page number (default = 1)
+				//int totalResults = handler.getNumResults();
+				int totalResults = resultUserBeans.size();
+				viewBean.setTotalResults(totalResults);
 				
-				//retrieve results
-				//resultBeans = handler.getBeanFromResultDoc(startEntry);
-				ArrayList<NACOABean> temp = new ArrayList<NACOABean>();
+				String pageNo = req.getParameter("page");
+				int currPageNo = Integer.parseInt(pageNo);
+				viewBean.setCurr_page_num(currPageNo);
 				
-				int x = startEntry;
-				
-				while (x < resultBeans.size() && x != (startEntry+10)) {
-					temp.add(resultBeans.get(x));
-					x++;
+				//so the logic for that is here
+				//if the current page number is > 1 we can go backwards etc
+				if(pageNo == null){
+					//default is first page
+					//resultBeans = handler.getBeanFromResultDoc(0);
+					
+					if(currPageNo > 1){
+						viewBean.setLess(true);
+					}
+					
+				} else {
+					//generate the appropriate
+					int startEntry = 10 * (currPageNo-1);
+					
+					System.out.println("Start entry is " + startEntry);
+					if(startEntry > totalResults){
+						//error
+						return;
+					} 
+					
+					//retrieve results
+					//resultBeans = handler.getBeanFromResultDoc(startEntry);
+					ArrayList<NACOAUserBean> temp = new ArrayList<NACOAUserBean>();
+					
+					int x = startEntry;
+					
+					while (x < resultUserBeans.size() && x != (startEntry+10)) {
+						temp.add(resultUserBeans.get(x));
+						x++;
+					}
+					
+					//set up our bean to be displayed
+					viewBean.setResultBeans(temp); //we keep two copies
+					
+					//set up entry
+					if(currPageNo > 1){
+						viewBean.setLess(true);
+						viewBean.setPrev_page_num(currPageNo-1);
+					}
+					if(totalResults > startEntry + 10){
+						viewBean.setMore(true);
+						viewBean.setNext_page_num(currPageNo+1);
+					}
+	
+					//and we pass these Beans to our JSPs through attributes
+					req.setAttribute("viewUserBean",viewBean);
+					//yeah, it reads it and has if statements to display data
+					//um yeah it uses JSTL for ifs
+	
 				}
-				
-				//set up our bean to be displayed
-				viewBean.setResultBeans(temp); //we keep two copies
-				
-				//set up entry
-				if(currPageNo > 1){
-					viewBean.setLess(true);
-					viewBean.setPrev_page_num(currPageNo-1);
-				}
-				if(totalResults > startEntry + 10){
-					viewBean.setMore(true);
-					viewBean.setNext_page_num(currPageNo+1);
-				}
-
-				//and we pass these Beans to our JSPs through attributes
-				req.setAttribute("viewBean",viewBean);
-				//yeah, it reads it and has if statements to display data
-				//um yeah it uses JSTL for ifs
-
 			}
 		}
 

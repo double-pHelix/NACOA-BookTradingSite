@@ -55,10 +55,6 @@ public class NACOADataHandler {
 		handler.testDatabase(handler);
 		System.out.println("User name is " +handler.getUserName(0));
 		
-		NACOABean bookTest = handler.getBook(4);
-
-		System.out.println("Book name is " +bookTest.getBooktitle());
-		
 		
 		//handler.addHistoryBuyEntry(1,2); //
 		//handler.addHistoryAddCartEntry(1, 2);//
@@ -4039,6 +4035,81 @@ public void changeLastname(int user_id, String lastname) {
 	}
 	
 	//Searches database for book
+	public NACOABean getBook(int book_id) {
+		NACOABean resultBook = new NACOABean();
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		//String bookName = null;
+		try {
+			//STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			//
+			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+			
+			//STEP 4: Execute a query
+			//System.out.println("Creating statement...");
+			
+			String sql = "SELECT * FROM books "
+						 + "WHERE id = ?";
+			
+			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+			//System.out.println("Title is " + title);
+			//System.out.println("Author is " + author);
+			//System.out.println("Genre is " + genre);
+			stmt.setInt(1, book_id);
+
+			stmt.executeQuery();
+			
+			ResultSet rs = stmt.getResultSet();
+			
+			while(rs.next()) {
+				
+				//Search the user_seller_book for the id to see if sold
+				
+				resultBook.setBookID(rs.getInt("id"));
+				resultBook.setBooktitle(rs.getString("title"));
+				resultBook.setAuthor(rs.getString("author"));
+				resultBook.setPicture(rs.getString("picture"));
+				resultBook.setPublisher(rs.getString("publisher"));
+				resultBook.setDop(rs.getString("dateofpublication"));
+				resultBook.setPages(Integer.toString(rs.getInt("pages")));
+				resultBook.setIsbn(rs.getString("isbn"));
+				resultBook.setGenre(rs.getString("genre"));
+				//Change
+				int user_id = getSellersUserID(rs.getInt("id"));
+				resultBook.setUserSellerID(user_id);
+				resultBook.setSellerUsername(getUserName(user_id));
+				float price = rs.getFloat("price");
+				resultBook.setPrice(Float.toString(price));
+			}	
+
+			//STEP 6: Clean-up environment
+			stmt.close();
+			conn.close();	
+			
+		} catch (SQLException se) {
+			//Handle errors for JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		} finally {
+		    //finally block used to close resources
+		 
+			try {
+			   if(conn!=null)
+			      conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} //end finally try
+		} //end try
+		
+		return resultBook;
+	}
+	
+	//Searches database for book
 	public ArrayList<NACOABean> bookAdminSearch(String title, String author, String genre) {
 		ArrayList<NACOABean> resultBook = new ArrayList<NACOABean>();
 
@@ -4693,81 +4764,6 @@ public void changeLastname(int user_id, String lastname) {
 		
 		return userid; 
 	}
-	
-	//Gets userID using book id
-		//username should be unique
-	public NACOABean getBook (int book_id){
-		
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		NACOABean book = new NACOABean();
-		
-		try {
-			//STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-			//
-			conn = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
-			
-			
-			//STEP 4: Execute a query
-			//System.out.println("Creating statement...");
-			
-			String sql = "SELECT * FROM books WHERE (id = ?)";
-	
-			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setInt(1, book_id);
-			stmt.executeQuery();
-			
-			ResultSet rs = stmt.getResultSet();
-	
-			  //STEP 5: Extract data from result set
-			while(rs.next()){
-
-				book.setBookID(rs.getInt("id"));
-				book.setBooktitle(rs.getString("title"));
-				book.setAuthor(rs.getString("author"));
-				book.setPicture(rs.getString("picture"));
-				book.setPublisher(rs.getString("publisher"));
-				book.setDop(rs.getString("dateofpublication"));
-				book.setPages(Integer.toString(rs.getInt("pages")));
-				book.setIsbn(rs.getString("isbn"));
-				book.setGenre(rs.getString("genre"));
-				//Change
-				int user_id = getSellersUserID(rs.getInt("id"));
-				book.setUserSellerID(user_id);
-				book.setSellerUsername(getUserName(user_id));
-				float price = rs.getFloat("price");
-				book.setPrice(Float.toString(price));
-		
-			}
-			
-			//STEP 6: Clean-up environment
-			rs.close();
-			stmt.close();
-			conn.close();	
-
-		} catch (SQLException se) {
-			//Handle errors for JDBC
-			    se.printStackTrace();
-		} catch (Exception e) {
-		    //Handle errors for Class.forName
-		    e.printStackTrace();
-		} finally {
-		    //finally block used to close resources
-		 
-			try {
-			   if(conn!=null)
-			      conn.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			} //end finally try
-		} //end try
-		
-		
-		return book; 
-	}
-
-	
 
 	public String getPassword(int user_id) {
 					
