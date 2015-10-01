@@ -308,6 +308,9 @@
       
       <br>
       <br>
+       
+       <jsp:include page="/footer.jsp" />
+      
     </div> <!-- /container -->
   </body>
 </html>

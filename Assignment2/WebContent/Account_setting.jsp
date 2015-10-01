@@ -97,6 +97,10 @@
         </c:when>    
       </c:choose>
       </div>
+      </div>
+    
+      <jsp:include page="/footer.jsp" />
+      
     </div> <!-- /container -->
 
 

@@ -50,5 +50,9 @@
     <a href="${pageContext.request.contextPath}/login" class="btn btn-default" role="button">Login</a>
     </div> <!-- /container -->
     <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button">Back to Main</a>
+    
+    <jsp:include page="/footer.jsp" />
+    
+    </div>
   </body>
 </html>

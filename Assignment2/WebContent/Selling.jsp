@@ -173,6 +173,7 @@
       <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button">Back to Search</a>
       </div>
   
+      <jsp:include page="/footer.jsp" />
    
     </div> <!-- /container -->
 

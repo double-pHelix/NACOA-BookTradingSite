@@ -112,10 +112,8 @@
     </c:otherwise>
     </c:choose>
     
+      <jsp:include page="/footer.jsp" />
     
-    <footer class="footer">
-      <p>&copy; Felix Yuen Dao Phu 2015</p>
-    </footer>
     </div> <!-- /container -->
   </body>
 </html>

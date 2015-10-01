@@ -64,5 +64,9 @@
       <div class="center-block">
         <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button" id="backButton">Back to Main</a>
       </div>
+      
+       <jsp:include page="/footer.jsp" />
+      
+    </div>
   </body>
 </html>
