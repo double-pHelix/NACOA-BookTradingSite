@@ -111,7 +111,9 @@
       
     </c:otherwise>
     </c:choose>
-    
+      <br>
+      <br>
+      <br>
       <jsp:include page="/footer.jsp" />
     
     </div> <!-- /container -->
