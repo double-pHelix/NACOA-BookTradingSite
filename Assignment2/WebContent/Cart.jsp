@@ -58,23 +58,21 @@
           <div class="content">
           <table class="table table-bordered"> 
             <tr class="active">
+              <td scope="col"><b>IMAGE</b></td>
               <td scope="col"><b>TITLE</b></td>
               <td scope="col"><b>AUTHOR</b></td>
-              <td scope="col"><b>ISBN</b></td>
               <td scope="col"><b>PRICE</b></td>
               <td scope="col"><b>REMOVE</b></td>
             </tr>
-
+            
               <c:forEach var="entry" items="${sessionScope.shoppingCart}" varStatus="varStatus" >
   
                 <!--  set for each of these entries some way of id to add to cart later -->
                  
                 <tr class="active">
-                
-                
+                  <td class="active"><img class="book_image" src="${entry.picture}"></img></td>
                   <td class="active"><a href="?entryMoreView=${entry.bookID}">${entry.booktitle}</a></td>
                   <td class="success">${entry.author}</td>
-                  <td class="warning">${entry.isbn}</td>
                   <td class="danger">$${entry.price}</td>
                   
                   <td class="info"><center> <input type="checkbox" name="entry${entry.bookID}" value="set" style="width: 20px;height: 20px;"> </center></td>
@@ -83,7 +81,7 @@
               </c:forEach>
               
               <tr class="active">
-                <td></td><td></td><td></td><td></td>
+                <td></td><td></td><td><b>TOTAL</b></td><td><font size="3" color="orange">$How2Maths</font></td>
                 <td>
                   <center>
                    <button class="btn btn-ss btn-danger" id="removeFromCartButton" type="submit" name="delete_article" value="Remove from Cart"><span class="glyphicon glyphicon-trash"></span></button>
