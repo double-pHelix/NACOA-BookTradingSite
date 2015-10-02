@@ -46,8 +46,8 @@
           </c:choose>
 	    
   		<c:choose>
-  			<c:when test="${sessionScope.logged_in}">
-  		  		<input class="btn btn-xx btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart">
+  			<c:when test="${sessionScope.logged_in && empty requestScope.returnToCart}">
+  		  		<input class="btn btn-xx btn-warning" type="submit" name="add_to_cart_view" id="edit_profile_button" value="Add to Cart">
   			</c:when>
   		</c:choose>
   </form>

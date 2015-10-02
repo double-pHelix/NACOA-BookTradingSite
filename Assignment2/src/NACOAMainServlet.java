@@ -212,12 +212,21 @@ public class NACOAMainServlet extends HttpServlet {
 			//write the code you want
 		}
 		
-		if (req.getParameter("entryMoreView") != null) {
+		if (req.getParameter("entryMoreView") != null || req.getParameter("add_to_cart_view") != null) {
+			
+			System.out.println("WHAT");
+			if(req.getParameter("add_to_cart_view") != null){
+				//add to cart from extend view
+				System.out.println("add");
+				appendToCartPage(req,res);
+			}	
+			
+			
 			System.out.println("Looking at a particular item");
 			//
 			int book_id = Integer.parseInt(req.getParameter("entryMoreView"));
 			int page_no;
-			if(req.getParameter("page") != null){
+			if (uri.contains("result")){
 				System.out.println("We wanna return to results");
 				page_no = Integer.parseInt(req.getParameter("page"));
 				req.setAttribute("returnToPage",page_no);
@@ -425,10 +434,6 @@ public class NACOAMainServlet extends HttpServlet {
 					performUserSearch(req,res,isAdmin);
 					processUserPage(req,res);
 				}
-			} else if(req.getParameter("add_to_cart_view") != null){
-				//add to cart from extend view
-				System.out.println("add");
-				appendToCartPage(req,res);
 			} else if(req.getParameter("add_to_cart") != null){
 				//add to cart from results
 				System.out.println("add");
