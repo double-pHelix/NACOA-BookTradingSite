@@ -309,7 +309,7 @@
         <c:otherwise>
           <!-- Display no results message -->
           <h1>Sorry, no matching datasets found!</h1>
-          <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button">Back to Search</a>
+          <a href="${pageContext.request.contextPath}/results?page=${requestScope.viewBean.curr_page_num}" class="btn btn-info" role="button">Back to Search</a>
           
         </c:otherwise>
 

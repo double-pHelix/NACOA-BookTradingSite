@@ -114,8 +114,9 @@ public class NACOAMainServlet extends HttpServlet {
 
     
     private void processBookPage(HttpServletRequest req, HttpServletResponse res){
-		resultBeans = (ArrayList<NACOABean>) req.getSession().getAttribute("resultBeans");
-		
+    	if(req.getSession().getAttribute("resultBeans") != null){
+    		resultBeans = (ArrayList<NACOABean>) req.getSession().getAttribute("resultBeans");
+    	}
 		ArrayList<NACOABean> first10 = new ArrayList<NACOABean>();
 		
 		int x = 0;
@@ -148,8 +149,10 @@ public class NACOAMainServlet extends HttpServlet {
 	}
 
 	private void processUserPage(HttpServletRequest req, HttpServletResponse res){
-    	resultUserBeans = (ArrayList<NACOAUserBean>) req.getSession().getAttribute("resultUserBeans");
-
+    	
+		if(req.getSession().getAttribute("resultUserBeans") != null){
+			resultUserBeans = (ArrayList<NACOAUserBean>) req.getSession().getAttribute("resultUserBeans");
+		}
 		ArrayList<NACOAUserBean> first10 = new ArrayList<NACOAUserBean>();
 		
 		int x = 0;
@@ -417,6 +420,27 @@ public class NACOAMainServlet extends HttpServlet {
 				System.out.println("Received " + req.getParameter("unbanUser"));
 				//req.getSession().setAttribute("banUser", true);
 				unbanUser(req, res);
+			}   else if (req.getParameter("entryMoreView") != null) {
+				System.out.println("Looking at a particular item");
+				//
+				int book_id = Integer.parseInt(req.getParameter("entryMoreView"));
+				int page_no;
+				if(req.getParameter("page") != null){
+					System.out.println("We wanna return to results");
+					page_no = Integer.parseInt(req.getParameter("page"));
+					req.setAttribute("returnToPage",page_no);
+				}
+				
+				NACOABean bookToView = dHandler.getBook(book_id);
+				
+				ResultPageBean viewBean = new ResultPageBean();
+				
+				viewBean.setReadMore(true);
+				viewBean.setReadEntry(bookToView);
+				
+				req.setAttribute("viewBean",viewBean);
+				
+								
 			}  else if (req.getParameter("make_admin") != null) {
 				System.out.println("admin");
 				System.out.println("Received " + req.getParameter("makeAdmin"));
@@ -880,6 +904,7 @@ public class NACOAMainServlet extends HttpServlet {
 		//We are viewing books
 		//Need to separate viewing books and users
 		if(entryToview != null){ //EXPANDING VIEW TO READ MORE
+			/*
 			int entryToViewNum = Integer.parseInt(entryToview);
 			NACOABean entry = new NACOABean();
 			//View num is the book_id
@@ -913,7 +938,7 @@ public class NACOAMainServlet extends HttpServlet {
 			viewBean.setReadEntry(entry);
 			
 			req.setAttribute("viewBean",viewBean);
-			
+			*/
 		} else { 
 			//TODO Not sure
 			//CHANGING PAGE NUMBER

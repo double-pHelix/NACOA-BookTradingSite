@@ -33,7 +33,15 @@
 	        <br><font size="5" color="orange">$${requestScope.viewBean.readEntry.price}</font></td>
 	      </tr>
 	    </table>
-	    <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button">Back to Search</a>
+          <c:choose>
+            <c:when test="${not empty requestScope.returnToPage}">
+                <a href="${pageContext.request.contextPath}/results?page=${requestScope.returnToPage}" class="btn btn-info" role="button">Back to Results</a>
+            </c:when>
+            <c:otherwise>
+                <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button">Back to Search</a>
+            </c:otherwise>
+          </c:choose>
+	    
   		<c:choose>
   			<c:when test="${sessionScope.logged_in}">
   		  		<input class="btn btn-xx btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart">
