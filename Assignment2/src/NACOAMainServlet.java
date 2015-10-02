@@ -214,16 +214,12 @@ public class NACOAMainServlet extends HttpServlet {
 		
 		if (req.getParameter("entryMoreView") != null || req.getParameter("add_to_cart_view") != null) {
 			
-			System.out.println("WHAT");
 			if(req.getParameter("add_to_cart_view") != null){
 				//add to cart from extend view
 				System.out.println("add");
 				appendToCartPage(req,res);
 			}	
-			
-			
-			System.out.println("Looking at a particular item");
-			//
+
 			int book_id = Integer.parseInt(req.getParameter("entryMoreView"));
 			int page_no;
 			if (uri.contains("result")){
