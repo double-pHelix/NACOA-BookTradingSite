@@ -144,7 +144,7 @@
                     <td class="active"><a href="${pageContext.request.contextPath}/profile?entryMoreView=${entry.bookID}&user=${sessionScope.profile.username}">${entry.booktitle}</a></td>
                     <td class="success">${entry.author}</td>
                     <td class="warning">${entry.genre}</td>
-                    <td class="danger">${entry.price}</td>
+                    <td class="danger">$${entry.price}</td>
                     <c:choose>
     	        		<c:when test="${sessionScope.logged_in == true}">
     	                 	<td class="info"  style="vertical-align: middle"><button class="btn btn-xs btn-success" type="submit" name="add_to_cart" id="addToCartButton" value="Add to Cart"><span class="glyphicon glyphicon-shopping-cart"></span></button></td>
