@@ -113,17 +113,22 @@
         
         <c:choose>
           <c:when test="${not empty sessionScope.selling_books}">
-          
+          <h2>${requestScope.message}</h2>
           <h2 class="sub-header">Seller's Books</h2>
           <div class="content">
           <table class="table table-bordered"> 
              <thead>
               <tr class="active">
+                <td scope="col"><b>IMAGE</b></td>
                 <td scope="col"><b>TITLE</b></td>
                 <td scope="col"><b>AUTHOR</b></td>
                 <td scope="col"><b>GENRE</b></td>
                 <td scope="col"><b>PRICE</b></td>
-                <td scope="col"><b>ACTIONS</b></td>
+                <c:choose>
+          		    <c:when test="${sessionScope.logged_in == true}">
+                		<td scope="col"><b>ACTION</b></td>
+                	</c:when>
+                </c:choose>
               </tr>
              </thead> 
              <tbody>
@@ -135,11 +140,18 @@
                 <input type="hidden" name="username" value="${sessionScope.username}">
                 <center>
                   <tr class="active">
-                    <td class="active"><a href="${pageContext.request.contextPath}/results?entryMoreView=${entry.bookID}&page=${requestScope.viewBean.curr_page_num}">${entry.booktitle}</a></td>
+                    <td class="active" style="vertical-align: middle"><img class="book_image" src="${entry.picture}"></img></td>
+                    <td class="active"><a href="${pageContext.request.contextPath}/profile?entryMoreView=${entry.bookID}&user=${sessionScope.profile.username}">${entry.booktitle}</a></td>
                     <td class="success">${entry.author}</td>
                     <td class="warning">${entry.genre}</td>
                     <td class="danger">${entry.price}</td>
-                    <td class="info"><input class="btn btn-xs btn-warning" type="submit" name="add_to_cart" id="edit_profile_button" value="Add to Cart"></td>
+                    <c:choose>
+    	        		<c:when test="${sessionScope.logged_in == true}">
+    	                 	<td class="info"  style="vertical-align: middle"><button class="btn btn-xs btn-success" type="submit" name="add_to_cart" id="addToCartButton" value="Add to Cart"><span class="glyphicon glyphicon-shopping-cart"></span></button></td>
+    	              	</c:when>
+  	                </c:choose>
+                    
+                    
                   </tr>
                 </center>
                 <input type="hidden" name="page" value="${requestScope.viewBean.curr_page_num}">

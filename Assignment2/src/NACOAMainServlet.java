@@ -226,15 +226,14 @@ public class NACOAMainServlet extends HttpServlet {
 				System.out.println("We wanna return to results");
 				page_no = Integer.parseInt(req.getParameter("page"));
 				req.setAttribute("returnToPage",page_no);
-			}
-			
-			if (uri.contains("cart")){ //if we're viewing from the cart, we need to set it so
+			} else if (uri.contains("cart")){ //if we're viewing from the cart, we need to set it so
 				req.setAttribute("returnToCart",true);
-			}
-			
-			if(uri.contains("transaction_history")){
+			} else if(uri.contains("transaction_history")){
 				req.setAttribute("returnToUser", req.getParameter("user"));
 				req.setAttribute("returnToHistory",true);
+			} else if (uri.contains("profile")){
+				req.setAttribute("returnToUser", req.getParameter("user"));
+				req.setAttribute("returnToProfile",true);
 			}
 			
 			NACOABean bookToView = dHandler.getBook(book_id);
@@ -249,6 +248,23 @@ public class NACOAMainServlet extends HttpServlet {
 	    	requestDispatcher = req.getRequestDispatcher("/Results.jsp");
 	    	requestDispatcher.forward(req, res);
 								
+		} else if(req.getParameter("add_to_cart") != null){ //we can add to cart from a seller's profile page as well as results
+			//add to cart from results
+			System.out.println("add");
+			appendToCartPage(req,res);
+			if (uri.contains("profile")){
+				//we don't have to reload the profile data again (it's session loaded)...
+				//just redirect there
+				req.setAttribute("message", "Added to Cart!");
+				requestDispatcher = req.getRequestDispatcher("/Profile.jsp");
+		    	requestDispatcher.forward(req, res);
+			} else {
+				processBookPage(req,res);	
+				processResults(req,res);
+				requestDispatcher = req.getRequestDispatcher("/Results.jsp");
+		    	requestDispatcher.forward(req, res);
+			}
+
 		} else if (uri.contains("profile")){ //WE WANT TO VIEW A PROFILE (CURRENT USERS OR SOMEONE ELSE)
 			String userToView = (String) req.getParameter("user");
 			int user_id = dHandler.getId(userToView);
@@ -435,12 +451,6 @@ public class NACOAMainServlet extends HttpServlet {
 					performUserSearch(req,res,isAdmin);
 					processUserPage(req,res);
 				}
-			} else if(req.getParameter("add_to_cart") != null){
-				//add to cart from results
-				System.out.println("add");
-				appendToCartPage(req,res);
-				processBookPage(req,res);	
-				processResults(req,res);
 			} else if (req.getParameter("ban_user") != null) {
 				System.out.println("ban");
 				System.out.println("Received " + req.getParameter("banUser"));

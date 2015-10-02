@@ -43,6 +43,9 @@
             <c:when test="${not empty requestScope.returnToHistory}">
                 <a href="${pageContext.request.contextPath}/transaction_history?user=${requestScope.returnToUser}" class="btn btn-info" role="button">Back to History</a>
             </c:when>
+            <c:when test="${not empty requestScope.returnToProfile}">
+                <a href="${pageContext.request.contextPath}/profile?user=${requestScope.returnToUser}" class="btn btn-info" role="button">Back to Profile</a>
+            </c:when>
             <c:otherwise>
                 <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button">Back to Search</a>
             </c:otherwise>
