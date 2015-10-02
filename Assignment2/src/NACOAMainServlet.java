@@ -75,6 +75,47 @@ public class NACOAMainServlet extends HttpServlet {
 		//System.out.println("Username = " + resultBeans.get(1).getSellerName());
 		//System.out.println("UserID = " + resultBeans.get(1).getUserSellerID());
 		
+		
+    }
+    
+    private void performUserSearch(HttpServletRequest req, HttpServletResponse res, boolean isAdmin){
+    	//extract variables
+    	//same thing except basic search
+		//String query = (String) req.getParameter("search_query");
+		String query = (String) req.getParameter("search_username");
+		
+		//Search users
+		if (isAdmin) {
+			resultUserBeans = dHandler.userAdminSearch(query);
+		} else {
+			resultUserBeans = dHandler.userSearch(query);
+		}
+		
+		req.getSession().setAttribute("resultUserBeans", resultUserBeans);
+
+    }
+      
+    
+    private void performBasicBookSearch(HttpServletRequest req, HttpServletResponse res, boolean isAdmin) {
+		// TODO Auto-generated method stub
+		//extract variables
+		String query = (String) req.getParameter("search_general");
+		
+		if (isAdmin) {
+			resultBeans = dHandler.bookBasicAdminSearch(query);
+		} else {
+			resultBeans = dHandler.bookBasicSearch(query);
+		}
+		
+		//set attribute to be retrieved later
+		req.getSession().setAttribute("resultBeans", resultBeans);
+		
+	}
+
+    
+    private void processBookPage(HttpServletRequest req, HttpServletResponse res){
+		resultBeans = (ArrayList<NACOABean>) req.getSession().getAttribute("resultBeans");
+		
 		ArrayList<NACOABean> first10 = new ArrayList<NACOABean>();
 		
 		int x = 0;
@@ -101,30 +142,14 @@ public class NACOAMainServlet extends HttpServlet {
 		
 		req.setAttribute("viewBean",viewBean);
 		req.getSession().setAttribute("bookSearch",true);
-		//req.getSession().setAttribute("resultBeans", resultBeans);
-		//i guess we still need this
-		//but we might change it to include a search for people?
-		//as Admin can find people and ban them?
-		//um that might be good too
-		//that sounds like a good idea
-		//um same database but different query and table
-		
+	
+	
+	
+	}
 
-    }
-    
-    private void performUserSearch(HttpServletRequest req, HttpServletResponse res, boolean isAdmin){
-    	//extract variables
-    	//same thing except basic search
-		//String query = (String) req.getParameter("search_query");
-		String query = (String) req.getParameter("search_username");
-		
-		//Search users
-		if (isAdmin) {
-			resultUserBeans = dHandler.userAdminSearch(query);
-		} else {
-			resultUserBeans = dHandler.userSearch(query);
-		}
-		
+	private void processUserPage(HttpServletRequest req, HttpServletResponse res){
+    	resultUserBeans = (ArrayList<NACOAUserBean>) req.getSession().getAttribute("resultUserBeans");
+
 		ArrayList<NACOAUserBean> first10 = new ArrayList<NACOAUserBean>();
 		
 		int x = 0;
@@ -151,63 +176,6 @@ public class NACOAMainServlet extends HttpServlet {
 		
 		req.setAttribute("viewUserBean",viewBean);
 		req.getSession().setAttribute("bookSearch",false);
-		//req.getSession().setAttribute("resultUserBeans", resultUserBeans);
-		/*
-		try {
-			//we should only do this if we want to load the main xml
-			if(handler.fileExists(MAIN_FILE_LOCATION)){
-				handler.loadMainXML(MAIN_FILE_LOCATION);
-    		}
-			
-			//read results from the given file location
-    		if(handler.fileExists(RESULTS_FILE_LOCATION)){
-				handler.loadResultsXML(RESULTS_FILE_LOCATION);
-    		}
-    		
-    		
-    		if(searchType.matches(".*Author.*")){
-    			handler.searchBasicAuthor(query);
-    		} else if (searchType.matches(".*Publication.Title.*")){
-    			handler.searchBasicTitle(query);
-    		} else if (searchType.matches(".*Venue.*")){
-    			handler.searchBasicVenue(query);
-    		} else if (searchType.matches(".*Year.*")){
-    			handler.searchBasicYear(query);
-    		} else {
-    			System.out.println("search type unknown");
-    		}
-    		//write results to the given file location
-    		handler.updateResultStoreXML(RESULTS_FILE_LOCATION);
-			
-		} catch (Exception e){
-			System.out.println("error loading main xml:"  e );
-		}*/
-		
-		//Do a search and display the content (from results instead of main!)
-
-		//resultBeans = handler.getBeanFromResultDoc(0);	
-		
-	  	//set up our bean to be displayed
-		/*
-		ResultPageBean viewBean = new ResultPageBean();
-		viewBean.setResultBeans(resultBeans);
-		
-		int totalResults = handler.getNumResults();
-		viewBean.setTotalResults(totalResults);
-		
-		
-		if(totalResults > 10){
-			viewBean.setMore(true);
-		}
-		viewBean.setCurr_page_num(1);
-		viewBean.setNext_page_num(2);
-		
-		req.setAttribute("viewBean",viewBean);
-    	*/
-
-    	//set up our bean to be displayed
-		//yeah um.. ill ask on the forum but i think searching will be easy
-		//SQL makes searches pretty easy I think
 
     }
     
@@ -401,8 +369,6 @@ public class NACOAMainServlet extends HttpServlet {
 			req.getSession().setAttribute("banUser", false);
 			req.getSession().setAttribute("makeAdmin", false);
 			req.getSession().setAttribute("unbanUser", false);
-			req.getSession().setAttribute("addedCart", false);
-			req.getSession().setAttribute("alreadyCart", false);
 			//req.getSession().setAttribute("modifiedUser", username);
 			
 			int user_id = dHandler.getId(username);
@@ -425,8 +391,11 @@ public class NACOAMainServlet extends HttpServlet {
 					} else {
 						performBookSearch(req,res,isAdmin);
 					}
+					processBookPage(req,res);
+					
 				} else if (searchType.matches(".*user.*")){
 					performUserSearch(req,res,isAdmin);
+					processUserPage(req,res);
 				}
 			} else if(req.getParameter("add_to_cart_view") != null){
 				//add to cart from extend view
@@ -436,6 +405,7 @@ public class NACOAMainServlet extends HttpServlet {
 				//add to cart from results
 				System.out.println("add");
 				appendToCartPage(req,res);
+				processBookPage(req,res);	
 				processResults(req,res);
 			} else if (req.getParameter("ban_user") != null) {
 				System.out.println("ban");
@@ -456,6 +426,7 @@ public class NACOAMainServlet extends HttpServlet {
 				System.out.println("Proc");
 				processResults(req,res);
 			}
+			
 	    	requestDispatcher = req.getRequestDispatcher("/Results.jsp");
 	    	requestDispatcher.forward(req, res);
 	    	
@@ -552,52 +523,6 @@ public class NACOAMainServlet extends HttpServlet {
 
 	}
 
-	private void performBasicBookSearch(HttpServletRequest req, HttpServletResponse res, boolean isAdmin) {
-		// TODO Auto-generated method stub
-		//extract variables
-		String query = (String) req.getParameter("search_general");
-		
-		if (isAdmin) {
-			resultBeans = dHandler.bookBasicAdminSearch(query);
-		} else {
-			resultBeans = dHandler.bookBasicSearch(query);
-		}
-		
-		//System.out.println("Size is " + resultBeans.size());
-		//System.out.println("Username = " + resultBeans.get(0).getSellerName());
-		//System.out.println("UserID = " + resultBeans.get(0).getUserSellerID());
-		//System.out.println("Username = " + resultBeans.get(1).getSellerName());
-		//System.out.println("UserID = " + resultBeans.get(1).getUserSellerID());
-		
-		ArrayList<NACOABean> first10 = new ArrayList<NACOABean>();
-		
-		int x = 0;
-		
-		while (x != resultBeans.size() && first10.size() != 10) {
-			first10.add(resultBeans.get(x));
-			x++;
-		}
-		
-		//set up our bean to be displayed
-		ResultPageBean viewBean = new ResultPageBean();
-		viewBean.setResultBeans(first10);
-		
-		int totalResults = resultBeans.size();
-		viewBean.setTotalResults(totalResults);
-		System.out.println("size is " + totalResults);
-		
-		
-		if(totalResults > 10){
-			viewBean.setMore(true);
-		}
-		viewBean.setCurr_page_num(1);
-		viewBean.setNext_page_num(2);
-		
-		req.setAttribute("viewBean",viewBean);
-		req.getSession().setAttribute("bookSearch",true);
-		//req.getSession().setAttribute("resultBeans",resultBeans);
-	}
-
 	private void unbanUser(HttpServletRequest req, HttpServletResponse res) {
 		int user_id = Integer.parseInt(req.getParameter("user_id"));
 		
@@ -685,7 +610,7 @@ public class NACOAMainServlet extends HttpServlet {
 		System.out.println("Received book ID " + book_id);
 		   
 		if (dHandler.checkBookInCart(user_id, book_id)) {
-			req.getSession().setAttribute("alreadyCart", true);
+			req.setAttribute("alreadyCart", true);
 		} else {
 			//Add book to cart
 			dHandler.addBookToCart(user_id, book_id, 0);
@@ -693,7 +618,7 @@ public class NACOAMainServlet extends HttpServlet {
 			//Don't forget to make an entry for our transaction history!
 			dHandler.addHistoryAddCartEntry(user_id,book_id);
 			
-			req.getSession().setAttribute("addedCart", true);
+			req.setAttribute("addedCart", true);
 			req.getSession().setAttribute("itemAdded", dHandler.getBookTitle(book_id));
 		}
 		
@@ -941,6 +866,8 @@ public class NACOAMainServlet extends HttpServlet {
 	 * @param res
 	 */
 	public void processResults(HttpServletRequest req, HttpServletResponse res){
+		req.getSession().setAttribute("resultBeans", resultBeans);
+		
 		//just set up the cart to be read 
 		//TODO Change this!!!!!!!
 		String entryToview = req.getParameter("entryMoreView");//im trying to remember what my code does lol

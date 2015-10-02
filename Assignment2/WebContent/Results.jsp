@@ -91,20 +91,24 @@
 	        
 	      </c:when>   
 	      
-	      <c:when test="${sessionScope.addedCart == 'true'}">
-	        
-	        <h1>"${sessionScope.itemAdded}" has been added to cart</h1>
-	        
-	      </c:when>   
-	      
-	      <c:when test="${sessionScope.alreadyCart == 'true'}">
-	        
-	        <h1>"${sessionScope.itemAdded}" is already in the cart</h1>
-	        
-	      </c:when>
 	    <c:otherwise>
 	      <h1> Results </h1>
 	      	<h4>Found ${requestScope.viewBean.totalResults} results.</h4>
+          
+           <c:choose>
+    	      <c:when test="${requestScope.addedCart == 'true'}">
+    	        
+    	        <h1>"${sessionScope.itemAdded}" has been added to cart</h1>
+    	        
+    	      </c:when>   
+    	      
+    	      <c:when test="${requestScope.alreadyCart == 'true'}">
+    	        
+    	        <h1>"${sessionScope.itemAdded}" is already in the cart</h1>
+    	        
+    	      </c:when>
+          </c:choose>
+          
       <c:choose>
          <c:when test="${not empty requestScope.viewBean.resultBeans || not empty requestScope.viewUserBean.resultBeans}">
         
@@ -143,7 +147,6 @@
           	                <input type="hidden" name="banUser" value="false">
           	                <center>
           	                <tr class="active">
-                            
           	                  <td class="active" style="vertical-align: middle"><img class="book_image" src="${entry.picture}"></img></td>
           	                  <td class="active" style="vertical-align: middle"><a href="${pageContext.request.contextPath}/results?entryMoreView=${entry.bookID}&page=${requestScope.viewBean.curr_page_num}">${entry.booktitle}</a></td>
           	                  <td class="success" style="vertical-align: middle">${entry.author}</td>
@@ -154,9 +157,7 @@
                                                     </a>
                                 </td>
           	                  <td class="danger" style="vertical-align: middle">$${entry.price}</td>
-          	                  <!-- Felix can add a link here!! -->
-          	                  
-                                
+
           	                  <c:choose>
           		        		<c:when test="${sessionScope.logged_in == true}">
           		              		 <td class="info"  style="vertical-align: middle"><button class="btn btn-xs btn-success" type="submit" name="add_to_cart" id="addToCartButton" value="Add to Cart"><span class="glyphicon glyphicon-shopping-cart"></span></button></td>
