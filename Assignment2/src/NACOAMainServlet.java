@@ -38,6 +38,7 @@ public class NACOAMainServlet extends HttpServlet {
 	private ArrayList<NACOABean> cartBeans;
 	private ArrayList<NACOABean> sellingBeans;
 	private ArrayList<NACOABean> pausedBeans;
+	private ArrayList<NACOABean> soldBeans;
 	private ArrayList<NACOAUserBean> resultUserBeans; 
 	
 	/* Data Handler: class for dealing with databases */
@@ -53,6 +54,7 @@ public class NACOAMainServlet extends HttpServlet {
         cartBeans = new ArrayList<NACOABean>();
         sellingBeans = new ArrayList<NACOABean>();
         pausedBeans = new ArrayList<NACOABean>();
+        soldBeans = new ArrayList<NACOABean>();
         dHandler = new NACOADataHandler();
     }
 
@@ -515,6 +517,7 @@ public class NACOAMainServlet extends HttpServlet {
 			requestDispatcher = req.getRequestDispatcher("/checkOut.jsp");
 	    	requestDispatcher.forward(req, res);
 			System.out.println(uri);
+			
 		} else if (uri.contains("selling")) {
 			int user_id = (int)req.getSession().getAttribute("user_id");
 			int num_books = dHandler.maxBooksID();
@@ -522,8 +525,9 @@ public class NACOAMainServlet extends HttpServlet {
 			req.getSession().setAttribute("sellingList", sellingBeans);
 			pausedBeans = dHandler.getPausedList(user_id);
 			req.getSession().setAttribute("pausedList", pausedBeans);
+			soldBeans = dHandler.getSoldList(user_id);
+			req.getSession().setAttribute("soldList", soldBeans);
 			for(int n = 1; n != num_books+1; n++){
-//				System.out.println("Entry "  n);
 				if(req.getParameter("entry"+n) != null){
 					System.out.println("Deleting book with id " + n);
 					dHandler.pauseSelling(user_id, n);
@@ -536,13 +540,18 @@ public class NACOAMainServlet extends HttpServlet {
 				req.getSession().setAttribute("sellingList", sellingBeans);
 				pausedBeans = dHandler.getPausedList(user_id);
 				req.getSession().setAttribute("pausedList", pausedBeans);
+				soldBeans = dHandler.getSoldList(user_id);
+				req.getSession().setAttribute("soldList", soldBeans);
 			}
 			sellingBeans = dHandler.getSellingList(user_id);
 			req.getSession().setAttribute("sellingList", sellingBeans);
 			pausedBeans = dHandler.getPausedList(user_id);
 			req.getSession().setAttribute("pausedList", pausedBeans);
+			soldBeans = dHandler.getSoldList(user_id);
+			req.getSession().setAttribute("soldList", soldBeans);
 			requestDispatcher = req.getRequestDispatcher("/Selling.jsp");
 	    	requestDispatcher.forward(req, res);
+	    	
 		} else if (uri.contains("forgot_password")) {
 			if(req.getParameter("forget") != null){
 				String username = (String) req.getParameter("username");

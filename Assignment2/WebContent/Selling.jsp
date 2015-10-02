@@ -60,9 +60,9 @@
           <div class="content">
           <table class="table table-bordered"> 
             <tr class="active">
+              <td scope="col"><b>IMAGE</b></td>
               <td scope="col"><b>TITLE</b></td>
               <td scope="col"><b>AUTHOR</b></td>
-              <td scope="col"><b>ISBN</b></td>
               <td scope="col"><b>PRICE</b></td>
               <td scope="col"><b>REMOVE</b></td>
             </tr>
@@ -70,9 +70,9 @@
               <c:forEach var="entry" items="${sessionScope.sellingList}" varStatus="varStatus" >
                  
                 <tr class="active">
-                  <td class="active">${entry.booktitle}</td>
+                  <td class="active"><img class="book_image" src="${entry.picture}"></img></td>
+                  <td class="active"><a href="?entryMoreView=${entry.bookID}">${entry.booktitle}</a></td>
                   <td class="success">${entry.author}</td>
-                  <td class="warning">${entry.isbn}</td>
                   <td class="danger">$${entry.price}</td>
                   
                   <td class="info"><center> <input type="checkbox" name="entry${entry.bookID}" value="set" style="width: 20px;height: 20px;"> </center></td>
@@ -85,21 +85,11 @@
                 <td>
                   <center><input class="btn btn-xs btn-danger" type="submit" name="delete_article" value="Stop Selling"></center> 
                 </td>
-              
               </tr>
-              
-              
           </table>
           </div>
          
         </form>
-        
-      
-       	<% /*NOT SURE IF NEEDED!!
-       	<form name="checkout_book" action="" method="POST">
-      		<input type="hidden" name="user_id" value="${sessionScope.user_id}">
-       		<a href="${pageContext.request.contextPath}/selling" class="btn btn-info" role="button">Remove Book</a>
-       	</form> */%>
       </c:when> 
 
     <c:otherwise>
@@ -118,9 +108,9 @@
           <div class="content">
           <table class="table table-bordered"> 
             <tr class="active">
+              <td scope="col"><b>IMAGE</b></td>
               <td scope="col"><b>TITLE</b></td>
               <td scope="col"><b>AUTHOR</b></td>
-              <td scope="col"><b>ISBN</b></td>
               <td scope="col"><b>PRICE</b></td>
               <td scope="col"><b>REMOVE</b></td>
             </tr>
@@ -128,9 +118,9 @@
               <c:forEach var="paused" items="${sessionScope.pausedList}" varStatus="varStatus" >
                  
                 <tr class="active">
-                  <td class="active">${paused.booktitle}</td>
+                  <td class="active"><img class="book_image" src="${paused.picture}"></img></td>
+                  <td class="active"><a href="?entryMoreView=${paused.bookID}">${paused.booktitle}</a></td>
                   <td class="success">${paused.author}</td>
-                  <td class="warning">${paused.isbn}</td>
                   <td class="danger">$${paused.price}</td>
                   
                   <td class="info"><center> <input type="checkbox" name="paused${paused.bookID}" value="set" style="width: 20px;height: 20px;"> </center></td>
@@ -144,21 +134,12 @@
        			  <input type="hidden" name="user_id" value="${sessionScope.user_id}">
                   <center><input class="btn btn-xs btn-success" type="submit" name="delete_article" value="Resume Selling"></center> 
                 </td>
-              
               </tr>
-              
               
           </table>
           </div>
          
         </form>
-        
-      
-       	<% /*NOT SURE IF NEEDED!!
-       	<form name="checkout_book" action="" method="POST">
-      		<input type="hidden" name="user_id" value="${sessionScope.user_id}">
-       		<a href="${pageContext.request.contextPath}/selling" class="btn btn-info" role="button">Remove Book</a>
-       	</form> */%>
       </c:when> 
 
     <c:otherwise>
@@ -167,6 +148,43 @@
     
     </c:otherwise>
     </c:choose>
+    
+        <c:choose>
+      <c:when test="${not empty sessionScope.soldList}">
+	   <hr/>
+	   <h2>Sold Books</h2>
+          <input type="hidden" name="remove_cart" value="yes">
+          <input type="hidden" name="user_id" value="${sessionScope.user_id}">
+          <input type="hidden" name="num_items" value="${fn:length(sessionScope.soldList)}">
+          <div class="content">
+          <table class="table table-bordered"> 
+            <tr class="active">
+              <td scope="col"><b>IMAGE</b></td>
+              <td scope="col"><b>TITLE</b></td>
+              <td scope="col"><b>AUTHOR</b></td>
+              <td scope="col"><b>PRICE</b></td>
+            </tr>
+              <c:forEach var="sold" items="${sessionScope.soldList}" varStatus="varStatus" >
+                 
+                <tr class="active">
+                  <td class="active"><img class="book_image" src="${sold.picture}"></img></td>
+                  <td class="active"><a href="?entryMoreView=${sold.bookID}">${sold.booktitle}</a></td>
+                  <td class="success">${sold.author}</td>
+                  <td class="danger">$${sold.price}</td>
+                </tr>
+                
+              </c:forEach>
+          </table>
+          </div>
+      </c:when> 
+
+    <c:otherwise>
+    
+    <!-- Do Nothing -->
+    
+    </c:otherwise>
+    </c:choose>
+    
    	  <br>
       <a href="${pageContext.request.contextPath}/upload_book" class="btn btn-info" role="button">Sell a Book</a>
       <br><br>
