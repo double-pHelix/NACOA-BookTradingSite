@@ -81,7 +81,7 @@
               </c:forEach>
               
               <tr class="active">
-                <td></td><td></td><td><b>TOTAL</b></td><td><font size="3" color="orange">$How2Maths</font></td>
+                <td></td><td></td><td><b>TOTAL</b></td><td><font size="3" color="orange">$${sessionScope.totalCost}</font></td>
                 <td>
                   <center>
                    <button class="btn btn-ss btn-danger" id="removeFromCartButton" type="submit" name="delete_article" value="Remove from Cart"><span class="glyphicon glyphicon-trash"></span></button>

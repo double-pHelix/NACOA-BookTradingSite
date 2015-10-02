@@ -649,7 +649,13 @@ public class NACOAMainServlet extends HttpServlet {
 		int user_id = userDetails.getUserID();
 		System.out.println("User id is " + user_id);
 		cartBeans = dHandler.getShoppingCart(user_id);
+		float totalCost = 0;
+		for (NACOABean n : cartBeans) {
+			totalCost = totalCost + Float.parseFloat(n.getPrice());
+		}
+		String cost = Float.toString(totalCost);
 		req.getSession().setAttribute("shoppingCart", cartBeans);
+		req.getSession().setAttribute("totalCost", cost);
 		//handler.setCartToSession("shoppingCartDoc", req.getSession());
 	}
 
