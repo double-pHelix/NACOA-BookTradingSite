@@ -31,7 +31,7 @@
       <c:choose>
       <c:when test="${sessionScope.logged_in == true}">
         <li role="presentation"><a href="${pageContext.request.contextPath}/upload_book"><span class="glyphicon glyphicon-upload"></span></a></li>
-		<li role="presentation"><a href="${pageContext.request.contextPath}/cart?username=${sessionScope.username}"><span class="glyphicon glyphicon-shopping-cart"></span></a></li>     
+		<li role="presentation"><a href="${pageContext.request.contextPath}/cart"><span class="glyphicon glyphicon-shopping-cart"></span></a></li>     
       </c:when>
       </c:choose>
       <li class="dropdown">

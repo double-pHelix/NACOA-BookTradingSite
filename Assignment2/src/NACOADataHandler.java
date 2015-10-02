@@ -3715,6 +3715,7 @@ public void changeLastname(int user_id, String lastname) {
 			System.out.println("id: " + id + "\nDetails: " + rs);
 			
 			while(rs.next()){
+				details.setUserID(id);
 				details.setUsername(rs.getString("username"));
 				details.setPassword(rs.getString("password"));
 				details.setEmailAddress(rs.getString("email"));

@@ -37,6 +37,9 @@
             <c:when test="${not empty requestScope.returnToPage}">
                 <a href="${pageContext.request.contextPath}/results?page=${requestScope.returnToPage}" class="btn btn-info" role="button">Back to Results</a>
             </c:when>
+            <c:when test="${not empty requestScope.returnToCart}">
+                <a href="${pageContext.request.contextPath}/cart" class="btn btn-info" role="button">Back to Cart</a>
+            </c:when>
             <c:otherwise>
                 <a href="${pageContext.request.contextPath}/search" class="btn btn-info" role="button">Back to Search</a>
             </c:otherwise>

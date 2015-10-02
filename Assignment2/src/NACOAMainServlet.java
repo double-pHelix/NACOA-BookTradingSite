@@ -144,8 +144,6 @@ public class NACOAMainServlet extends HttpServlet {
 		req.setAttribute("viewBean",viewBean);
 		req.getSession().setAttribute("bookSearch",true);
 	
-	
-	
 	}
 
 	private void processUserPage(HttpServletRequest req, HttpServletResponse res){
@@ -214,7 +212,34 @@ public class NACOAMainServlet extends HttpServlet {
 			//write the code you want
 		}
 		
-		if (uri.contains("profile")){ //WE WANT TO VIEW A PROFILE (CURRENT USERS OR SOMEONE ELSE)
+		if (req.getParameter("entryMoreView") != null) {
+			System.out.println("Looking at a particular item");
+			//
+			int book_id = Integer.parseInt(req.getParameter("entryMoreView"));
+			int page_no;
+			if(req.getParameter("page") != null){
+				System.out.println("We wanna return to results");
+				page_no = Integer.parseInt(req.getParameter("page"));
+				req.setAttribute("returnToPage",page_no);
+			}
+			
+			if (uri.contains("cart")){ //if we're viewing from the cart, we need to set it so
+				req.setAttribute("returnToCart",true);
+			}
+			
+			NACOABean bookToView = dHandler.getBook(book_id);
+			
+			ResultPageBean viewBean = new ResultPageBean();
+			
+			viewBean.setReadMore(true);
+			viewBean.setReadEntry(bookToView);
+			
+			req.setAttribute("viewBean",viewBean);
+			
+	    	requestDispatcher = req.getRequestDispatcher("/Results.jsp");
+	    	requestDispatcher.forward(req, res);
+								
+		} else if (uri.contains("profile")){ //WE WANT TO VIEW A PROFILE (CURRENT USERS OR SOMEONE ELSE)
 			String userToView = (String) req.getParameter("user");
 			int user_id = dHandler.getId(userToView);
 			String currUser = (String) req.getSession().getAttribute("username");
@@ -420,28 +445,7 @@ public class NACOAMainServlet extends HttpServlet {
 				System.out.println("Received " + req.getParameter("unbanUser"));
 				//req.getSession().setAttribute("banUser", true);
 				unbanUser(req, res);
-			}   else if (req.getParameter("entryMoreView") != null) {
-				System.out.println("Looking at a particular item");
-				//
-				int book_id = Integer.parseInt(req.getParameter("entryMoreView"));
-				int page_no;
-				if(req.getParameter("page") != null){
-					System.out.println("We wanna return to results");
-					page_no = Integer.parseInt(req.getParameter("page"));
-					req.setAttribute("returnToPage",page_no);
-				}
-				
-				NACOABean bookToView = dHandler.getBook(book_id);
-				
-				ResultPageBean viewBean = new ResultPageBean();
-				
-				viewBean.setReadMore(true);
-				viewBean.setReadEntry(bookToView);
-				
-				req.setAttribute("viewBean",viewBean);
-				
-								
-			}  else if (req.getParameter("make_admin") != null) {
+			}   else if (req.getParameter("make_admin") != null) {
 				System.out.println("admin");
 				System.out.println("Received " + req.getParameter("makeAdmin"));
 				//req.getSession().setAttribute("makeAdmin", true);
@@ -615,10 +619,9 @@ public class NACOAMainServlet extends HttpServlet {
 	}
 
 	private void setUpCartDB(HttpServletRequest req, HttpServletResponse res) {
-		System.out.println("Setting up cart!!!");
-		System.out.println(req.getParameter("username"));
-		int user_id = dHandler.getId(req.getParameter("username"));
-
+		System.out.println("Setting up the user's cart!!!");
+		NACOAUserBean userDetails = (NACOAUserBean) (req.getSession().getAttribute("userDetails"));
+		int user_id = userDetails.getUserID();
 		System.out.println("User id is " + user_id);
 		cartBeans = dHandler.getShoppingCart(user_id);
 		req.getSession().setAttribute("shoppingCart", cartBeans);

@@ -70,7 +70,9 @@
                 <!--  set for each of these entries some way of id to add to cart later -->
                  
                 <tr class="active">
-                  <td class="active">${entry.booktitle}</td>
+                
+                
+                  <td class="active"><a href="?entryMoreView=${entry.bookID}">${entry.booktitle}</a></td>
                   <td class="success">${entry.author}</td>
                   <td class="warning">${entry.isbn}</td>
                   <td class="danger">$${entry.price}</td>
