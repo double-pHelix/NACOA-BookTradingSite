@@ -69,25 +69,25 @@
 	    	
 	      <c:when test="${sessionScope.banUser == 'true'}">
 	        
-	        <h1>${sessionScope.modifiedUser} has been banned</h1>
+	        <font color="green">${sessionScope.modifiedUser} has been banned</font>
 	        
 	      </c:when>
 	      
 	      <c:when test="${sessionScope.unbanUser == 'true'}">
 	        
-	        <h1>${sessionScope.modifiedUser} has been unbanned</h1>
+	        <font color="green">${sessionScope.modifiedUser} has been unbanned</font>
 	        
 	      </c:when>
 	      
 	      <c:when test="${sessionScope.makeAdmin == 'true'}">
 	        
-	        <h1>${sessionScope.modifiedUser} is now an administrator</h1>
+	        <font color="green">${sessionScope.modifiedUser} is now an administrator</font>
 	        
 	      </c:when>  
 	      
 	      <c:when test="${sessionScope.alreadyAdmin == 'true'}">
 	        
-	        <h1>${sessionScope.modifiedUser} is already an administrator</h1>
+	        <font color="green">${sessionScope.modifiedUser} is already an administrator</font>
 	        
 	      </c:when>   
 	      
@@ -98,13 +98,13 @@
            <c:choose>
     	      <c:when test="${requestScope.addedCart == 'true'}">
     	        
-    	        <h1>"${sessionScope.itemAdded}" has been added to cart</h1>
+    	        <font color="green">"${sessionScope.itemAdded}" has been added to cart</font>
     	        
     	      </c:when>   
     	      
     	      <c:when test="${requestScope.alreadyCart == 'true'}">
     	        
-    	        <h1>"${sessionScope.itemAdded}" is already in the cart</h1>
+    	        <font color="green">"${sessionScope.itemAdded}" is already in the cart</font>
     	        
     	      </c:when>
           </c:choose>
