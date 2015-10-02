@@ -5373,5 +5373,42 @@ public void changeLastname(int user_id, String lastname) {
 		
 		return answer;
 	}
+
+	public ArrayList<NACOAUserBean> removeSelf(ArrayList<NACOAUserBean> resultUserBeans, int id) {
+		ArrayList<NACOAUserBean> answer = resultUserBeans;
+		
+		int i = 0;
+		
+		while (i != answer.size()) {
+			NACOAUserBean user = answer.get(i);
+			
+			if (user.getUserID() == id) {
+				answer.remove(i);
+				break;
+			}
+			i++;
+		}
+		
+		return answer;
+	}
+
+	public ArrayList<NACOABean> removeMyBook(ArrayList<NACOABean> resultBeans, int id) {
+		ArrayList<NACOABean> answer = resultBeans;
+		
+		int i = 0;
+		
+		while (i != answer.size()) {
+			NACOABean user = answer.get(i);
+			
+			if (user.getUserSellerID() == id) {
+				answer.remove(i);
+			} else {
+				i++;
+			}
+		}
+		
+		return answer;
+	}
+	
 }
 

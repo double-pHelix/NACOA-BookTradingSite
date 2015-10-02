@@ -99,6 +99,7 @@
                       <div role="tabpanel" class="tab-pane" id="advancedSearch">
                          <form action="${pageContext.request.contextPath}/results" method="POST"> 
                             <input type="hidden" name="search_type" value="book">
+                            <input type="hidden" name="username" value="${sessionScope.username}">
                             <div class="input-group">
                               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Author" name="search_author">
                               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Title" name="search_title">                         
@@ -120,6 +121,7 @@
                           <form action="${pageContext.request.contextPath}/results" method="POST"> 
                             <input type="hidden" name="search_type" value="book">
                             <input type="hidden" name="search_format" value="basic">
+                            <input type="hidden" name="username" value="${sessionScope.username}">
                             <div class="input-group">
                               <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="General" name="search_general">                           
                             </div><!-- /input-group -->
@@ -139,6 +141,7 @@
             
               <form action="${pageContext.request.contextPath}/results" method="POST">  
                 <input type="hidden" name="search_type" value="user">
+                <input type="hidden" name="username" value="${sessionScope.username}">
                 <div class="input-group">
                   <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Username" name="search_username">          
                 </div><!-- /input-group -->

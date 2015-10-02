@@ -64,6 +64,7 @@ public class NACOAMainServlet extends HttpServlet {
 		String title = (String) req.getParameter("search_title");
 		String genre = (String) req.getParameter("search_genre");
 		String price = (String) req.getParameter("search_price");
+		String username = (String) req.getParameter("username");
 		
 		if (admin) {
 			resultBeans = dHandler.bookAdminSearch(title, author, genre, price);
@@ -71,6 +72,10 @@ public class NACOAMainServlet extends HttpServlet {
 			resultBeans = dHandler.bookSearch(title, author, genre, price);
 		}
 		
+		//Remove my books from search
+		if (username != null) {
+			resultBeans = dHandler.removeMyBook(resultBeans, dHandler.getId(username));
+		}
 		//System.out.println("Size is " + resultBeans.size());
 		//System.out.println("Username = " + resultBeans.get(0).getSellerName());
 		//System.out.println("UserID = " + resultBeans.get(0).getUserSellerID());
@@ -85,12 +90,19 @@ public class NACOAMainServlet extends HttpServlet {
     	//same thing except basic search
 		//String query = (String) req.getParameter("search_query");
 		String query = (String) req.getParameter("search_username");
+		String username = (String) req.getParameter("username");
 		
+		System.out.println("Username is " + username);
 		//Search users
 		if (isAdmin) {
 			resultUserBeans = dHandler.userAdminSearch(query);
 		} else {
 			resultUserBeans = dHandler.userSearch(query);
+		}
+		
+		//Remove myself from search
+		if (username != null) {
+			resultUserBeans = dHandler.removeSelf(resultUserBeans, dHandler.getId(username));
 		}
 		
 		req.getSession().setAttribute("resultUserBeans", resultUserBeans);
@@ -102,11 +114,17 @@ public class NACOAMainServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		//extract variables
 		String query = (String) req.getParameter("search_general");
+		String username = (String) req.getParameter("username");
 		
 		if (isAdmin) {
 			resultBeans = dHandler.bookBasicAdminSearch(query);
 		} else {
 			resultBeans = dHandler.bookBasicSearch(query);
+		}
+		
+		//Remove my books from search
+		if (username != null) {
+			resultBeans = dHandler.removeMyBook(resultBeans, dHandler.getId(username));
 		}
 		
 		//set attribute to be retrieved later
@@ -431,6 +449,7 @@ public class NACOAMainServlet extends HttpServlet {
 			req.getSession().setAttribute("banUser", false);
 			req.getSession().setAttribute("makeAdmin", false);
 			req.getSession().setAttribute("unbanUser", false);
+			req.getSession().setAttribute("removeBook", false);
 			//req.getSession().setAttribute("modifiedUser", username);
 			
 			int user_id = dHandler.getId(username);
@@ -474,7 +493,13 @@ public class NACOAMainServlet extends HttpServlet {
 				System.out.println("Received " + req.getParameter("makeAdmin"));
 				//req.getSession().setAttribute("makeAdmin", true);
 				makeUserAdmin(req, res);
-			}  else {
+			} else if (req.getParameter("remove_book") != null) {
+				System.out.println("remove book");
+				System.out.println("Received " + req.getParameter("removeBook"));
+				removeBook(req, res);
+				//req.getSession().setAttribute("makeAdmin", true);
+				//makeUserAdmin(req, res);
+			} else {
 				System.out.println("Proc");
 				processResults(req,res);
 			}
@@ -580,6 +605,20 @@ public class NACOAMainServlet extends HttpServlet {
 	    	requestDispatcher.forward(req, res);
 		}
 
+	}
+
+	private void removeBook(HttpServletRequest req, HttpServletResponse res) {
+		//int user_id = dHandler.getId(req.getParameter("username"));
+		int book_id = Integer.parseInt(req.getParameter("book_id"));
+		int user_id = dHandler.getSellersUserID(book_id);
+		System.out.println("Received user id " + user_id);
+		System.out.println("Received book id " + book_id);
+		
+		//String username = dHandler.getUserName(user_id);
+		dHandler.pauseSelling(user_id, book_id);
+		req.getSession().setAttribute("removeBook", true);
+		req.getSession().setAttribute("bookName", dHandler.getBookTitle(book_id));
+		
 	}
 
 	private void unbanUser(HttpServletRequest req, HttpServletResponse res) {

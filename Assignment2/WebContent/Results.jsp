@@ -91,6 +91,12 @@
 	        
 	      </c:when>   
 	      
+	      <c:when test="${sessionScope.removeBook == 'true'}">
+	        
+	        <font color="green">${sessionScope.bookName} has been removed</font>
+	        
+	      </c:when>
+	      
 	    <c:otherwise>
 	      <h1> Results </h1>
 	      	<h4>Found ${requestScope.viewBean.totalResults} results.</h4>
@@ -140,7 +146,6 @@
           	                <!--  set for each of these entries some way of id to add to cart later -->
           	                <input type="hidden" name="book_id" value="${entry.bookID}">
           	                <input type="hidden" name="username" value="${sessionScope.username}">
-          	                <input type="hidden" name="banUser" value="false">
           	                <center>
           	                <tr class="active">
           	                  <td class="active" style="vertical-align: middle"><img class="book_image" src="${entry.picture}"></img></td>
