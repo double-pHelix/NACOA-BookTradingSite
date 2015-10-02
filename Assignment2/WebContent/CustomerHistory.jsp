@@ -84,7 +84,7 @@
                           <input type="hidden" name="username" value="${sessionScope.profile.username}">
                           <center>
                             <tr class="active">
-                              <td class="active"><a href="${pageContext.request.contextPath}/results?entryMoreView=${entry.book_id}">${entry.bookTitle}</a></td>
+                              <td class="active"><a href="${pageContext.request.contextPath}/transaction_history?entryMoreView=${entry.book_id}&user=${sessionScope.profile.username}">${entry.bookTitle}</a></td>
                               <td class="success">${entry.action}</td>
                               <td class="warning">${entry.timeStamp}</td>
                             </tr>

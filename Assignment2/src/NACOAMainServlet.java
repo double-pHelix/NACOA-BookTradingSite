@@ -232,6 +232,11 @@ public class NACOAMainServlet extends HttpServlet {
 				req.setAttribute("returnToCart",true);
 			}
 			
+			if(uri.contains("transaction_history")){
+				req.setAttribute("returnToUser", req.getParameter("user"));
+				req.setAttribute("returnToHistory",true);
+			}
+			
 			NACOABean bookToView = dHandler.getBook(book_id);
 			
 			ResultPageBean viewBean = new ResultPageBean();

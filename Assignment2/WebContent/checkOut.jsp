@@ -24,7 +24,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-   	<title>Registration</title>
+   	<title>Check out Complete</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
@@ -54,6 +54,7 @@
       
       <c:choose>
         <c:when test="${sessionScope.checkingOut == true}">
+          <h2>Purchase Complete</h2>
           <h2>Thank you for shopping at NACOA ${sessionScope.username}</h2> 
         </c:when>    
         <c:otherwise>
