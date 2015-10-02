@@ -2896,7 +2896,7 @@ public class NACOADataHandler {
 	}
 	
 public void changeUserDetails(int user_id, String password, String email, String nickname, 
-		String firstname, String lastname, String dob, String address, String creditinfo) {
+		String firstname, String lastname, String dob, String address, String creditinfo, String description) {
 		
 		changePassword(user_id, password);
 		changeEmail(user_id, email);
@@ -2906,6 +2906,7 @@ public void changeUserDetails(int user_id, String password, String email, String
 		changeDOB(user_id, dob);
 		changeAddress(user_id, address);
 		changeCreditInfo(user_id, creditinfo);
+		changeDescription(user_id, description);
 	}
 
 public void changeEmail(int user_id, String email) {

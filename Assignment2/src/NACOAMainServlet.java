@@ -887,8 +887,9 @@ public class NACOAMainServlet extends HttpServlet {
 		String newDob = req.getParameter("dob");
 		String newAddress = req.getParameter("address");
 		String newCreditinfo = req.getParameter("creditinfo");
+		String newDescription = req.getParameter("description");
 		dHandler.changeUserDetails(user_id, newPassword, newEmail, newNickname, 
-				newFirstname, newLastname, newDob, newAddress, newCreditinfo);
+				newFirstname, newLastname, newDob, newAddress, newCreditinfo, newDescription);
 	}
 	
 	public void sendConfirmationEmail(int user_id){
