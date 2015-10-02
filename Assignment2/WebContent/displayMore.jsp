@@ -33,7 +33,17 @@
 	        <br><font size="5" color="orange">$${requestScope.viewBean.readEntry.price}</font></td>
 	      </tr>
 	    </table>
-          <c:choose>
+	    
+	    <c:choose>
+    	      <c:when test="${requestScope.addedCart == 'true'}">
+    	        <font color="green">"${requestScope.viewBean.readEntry.booktitle}" has been added to cart</font><br><br>
+    	      </c:when>
+    	      
+    	      <c:when test="${requestScope.alreadyCart == 'true'}">
+    	        <font color="red">"${requestScope.viewBean.readEntry.booktitle}" is already in the cart</font><br><br>
+    	      </c:when>
+	    </c:choose>
+	    <c:choose>
             <c:when test="${not empty requestScope.returnToPage}">
                 <a href="${pageContext.request.contextPath}/results?page=${requestScope.returnToPage}" class="btn btn-info" role="button">Back to Results</a>
             </c:when>

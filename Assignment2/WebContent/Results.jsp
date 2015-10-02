@@ -97,15 +97,11 @@
           
            <c:choose>
     	      <c:when test="${requestScope.addedCart == 'true'}">
-    	        
     	        <font color="green">"${sessionScope.itemAdded}" has been added to cart</font>
-    	        
-    	      </c:when>   
+    	      </c:when>
     	      
     	      <c:when test="${requestScope.alreadyCart == 'true'}">
-    	        
-    	        <font color="green">"${sessionScope.itemAdded}" is already in the cart</font>
-    	        
+    	        <font color="red">"${sessionScope.itemAdded}" is already in the cart</font>
     	      </c:when>
           </c:choose>
           
