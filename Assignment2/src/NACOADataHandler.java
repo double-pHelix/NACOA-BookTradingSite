@@ -428,6 +428,10 @@ public class NACOADataHandler {
 					+ "  `pages` int(11) NOT NULL,"
 					+ "  `isbn` varchar(20) NOT NULL,"
 					+ "  `genre` varchar(52) NOT NULL,"
+					+ "  `type` varchar(20) NULL,"
+					+ "  `venue` varchar(128) NULL,"
+					+ "  `booktitle` varchar(128) NULL,"
+					+ "  `journal` varchar(128) NULL,"
 					+ "  `description` text NULL"
 					+ ") ENGINE=InnoDB DEFAULT CHARSET=latin1";
 			
