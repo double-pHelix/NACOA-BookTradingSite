@@ -4309,7 +4309,8 @@ public void changeLastname(int user_id, String lastname) {
 						 + "WHERE title LIKE ?"
 						 + "OR author LIKE ?"
 						 + "OR genre LIKE ?"
-						 + "OR publisher LIKE ?";
+						 + "OR publisher LIKE ?"
+					     + "OR description LIKE ?";
 	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
@@ -4320,6 +4321,7 @@ public void changeLastname(int user_id, String lastname) {
 			stmt.setString(2, "%"+query+"%");
 			stmt.setString(3, "%"+query+"%");
 			stmt.setString(4, "%"+query+"%");
+			stmt.setString(5, "%"+query+"%");
 			
 			System.out.println("statement is: ");
 			System.out.println(stmt);
@@ -4399,7 +4401,8 @@ public void changeLastname(int user_id, String lastname) {
 						 + "WHERE title LIKE ?"
 						 + "OR author LIKE ?"
 						 + "OR genre LIKE ?"
-						 + "OR publisher LIKE ?";
+						 + "OR publisher LIKE ?"
+						 + "OR description LIKE ?";
 	
 			stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
@@ -4410,6 +4413,7 @@ public void changeLastname(int user_id, String lastname) {
 			stmt.setString(2, "%"+query+"%");
 			stmt.setString(3, "%"+query+"%");
 			stmt.setString(4, "%"+query+"%");
+			stmt.setString(5, "%"+query+"%");
 			
 			System.out.println("statement is: ");
 			System.out.println(stmt);
