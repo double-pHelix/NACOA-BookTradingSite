@@ -603,7 +603,7 @@ public class NACOAMainServlet extends HttpServlet {
 			requestDispatcher = req.getRequestDispatcher("/Forgot.jsp");
 	    	requestDispatcher.forward(req, res);
 		} else {//MAIN PAGE (this is /search or welcome
-			req.getSession().setAttribute("randomBeans", dHandler.getRandomList(5));
+			req.getSession().setAttribute("randomBeans", dHandler.getRandomList(10));
 			
 	    	requestDispatcher = req.getRequestDispatcher("/Search.jsp");
 	    	requestDispatcher.forward(req, res);
