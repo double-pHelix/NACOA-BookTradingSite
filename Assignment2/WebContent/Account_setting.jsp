@@ -55,7 +55,8 @@
       <div class= "account_form">
       <c:choose>
         <c:when test="${sessionScope.logged_in == true}">
-          <h2>Change Account Details</h2> 
+          <h2>Change Account Details</h2>
+          <font color="red">${sessionScope.update_message}</font>
           <form action="${pageContext.request.contextPath}/updacc" method="POST"> 
             <input type="hidden" name="username" value="${sessionScope.username}">
             <div class="input-group">
