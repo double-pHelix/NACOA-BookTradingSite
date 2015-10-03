@@ -2250,7 +2250,7 @@ public class NACOADataHandler {
 				//Retrieve by column name
 				bookID = rs.getInt("book_id");
 				
-				if (isBookPaused(bookID) != 1) {
+				if (isBookPaused(bookID) != 1 && rs.getInt("is_bought") != 1) {
 					listOfBooks.add(bookID);
 				}
 				

@@ -1190,8 +1190,9 @@ public class NACOAMainServlet extends HttpServlet {
 	 		sendEmail(user_seller_id, subject, message);
 	 		
  			//Remove the books from the cart
- 			System.out.println("Deleting book from cart");
- 			dHandler.deleteBookCart(bookID, user_id);
+	 		//Probably don't need to remove??
+ 			//System.out.println("Deleting book from cart");
+ 			//dHandler.deleteBookCart(bookID, user_id);
  			
  			//Set the book to sold
  			System.out.println("Setting book to sold");
