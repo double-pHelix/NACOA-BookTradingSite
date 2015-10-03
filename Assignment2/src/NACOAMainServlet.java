@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -613,9 +614,15 @@ public class NACOAMainServlet extends HttpServlet {
 		int user_id = dHandler.getSellersUserID(book_id);
 		System.out.println("Received user id " + user_id);
 		System.out.println("Received book id " + book_id);
-		
-		//String username = dHandler.getUserName(user_id);
+		String my_username = req.getParameter("username");
+		int my_id = dHandler.getId(my_username);
+
 		dHandler.pauseSelling(user_id, book_id);
+		String message = "Hi "+dHandler.getFirstName(user_id)+ " " +dHandler.getLastName(user_id)
+						  +"\n\nI regret to inform you that your book '"+dHandler.getBookTitle(book_id)
+						  +"' was found to be inappropriate for our website and has been removed.\n\nRegards,\nNACOA Team";
+		sendEmail(user_id, "NACOA - Book Removed", message);
+		dHandler.removeBook(user_id, book_id, my_id);
 		req.getSession().setAttribute("removeBook", true);
 		req.getSession().setAttribute("bookName", dHandler.getBookTitle(book_id));
 		
