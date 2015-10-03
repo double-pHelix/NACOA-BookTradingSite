@@ -715,6 +715,7 @@ public class NACOAMainServlet extends HttpServlet {
 		   
 		if (dHandler.checkBookInCart(user_id, book_id)) {
 			req.setAttribute("alreadyCart", true);
+			req.getSession().setAttribute("itemAdded", dHandler.getBookTitle(book_id));
 		} else {
 			//Add book to cart
 			dHandler.addBookToCart(user_id, book_id, 0);
