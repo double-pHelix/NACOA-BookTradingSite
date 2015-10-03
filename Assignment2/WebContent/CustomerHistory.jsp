@@ -50,21 +50,19 @@
     
     <jsp:include page="/topBanner.jsp" /> 
     
-      <!--  if we are viewing as admin we can ban user and view their customer activity report -->
+          <div class="jumbotron">                
           <c:choose>
             <c:when test="${sessionScope.userDetails.isAdmin}">
               <c:choose>
                 <c:when test="${sessionScope.profile.isUser}">
-                  <div class="jumbotron">                
-                    <h1>You do not have a transaction history because you are an Admin</h1>             
-                  </div>
+                    <h1>You do not have a transaction history because you are not an Admin</h1>
                 </c:when>    
                 <c:otherwise>
-                    <div class="jumbotron">                
-                    	<h1>${sessionScope.profile.username}'s Transaction History</h1>             
-                    </div>
+                    	<h1>${sessionScope.profile.username}'s Transaction History</h1>  
                     <!--  Display this user's profile -->
                     <div class="content">
+                    <c:choose>
+                    <c:when test="${not empty sessionScope.transaction_history}">
                     
                     <h2 class="sub-header"> History </h2>
                     <table class="table table-bordered"> 
@@ -93,21 +91,20 @@
                       </c:forEach>
                       </tbody>
                     </table>
-                    </div> 
-
-                
+                    </c:when>
+                    <c:otherwise>
+                         <h4><br>${sessionScope.profile.username}'s Transaction History is empty</h4>
+                    </c:otherwise>
+                    </c:choose>
+                    </div>
                 </c:otherwise>
               </c:choose>
             </c:when>    
             <c:otherwise>
-              <div class="jumbotron">                
-              	<h1>You cannot view ${sessionScope.profile.username}'s Transaction History</h1>             
-              </div>
-            
+              	<h1>You cannot view ${sessionScope.profile.username}'s Transaction History</h1> 
             </c:otherwise>
           </c:choose>
-      
-      
+      </div>
 
 
       <jsp:include page="/footer.jsp" />
