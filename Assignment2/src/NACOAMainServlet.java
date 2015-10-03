@@ -420,7 +420,11 @@ public class NACOAMainServlet extends HttpServlet {
 	    	
 		} else if (uri.contains("updacc")){ //Update the account details
 			changeUserDetails(req,res);
-			requestDispatcher = req.getRequestDispatcher("/Search.jsp");
+			req.getSession().setAttribute("update_message", "");
+ 			changeUserDetails(req,res);
+			int user_id = (int) req.getSession().getAttribute("user_id");
+			updateSessionUserDetails(req, user_id);
+			requestDispatcher = req.getRequestDispatcher("/Account_setting.jsp");
 	    	requestDispatcher.forward(req, res);
 	    	
 		} else if (uri.contains("cart")){ //CART PAGE
@@ -952,6 +956,16 @@ public class NACOAMainServlet extends HttpServlet {
 		String newDescription = req.getParameter("description");
 		dHandler.changeUserDetails(user_id, newPassword, newEmail, newNickname, 
 				newFirstname, newLastname, newDob, newAddress, newCreditinfo, newDescription);
+		
+
+		if (newPassword.equals("") || newEmail.equals("") || newNickname.equals("") || newFirstname.equals("") || newLastname.equals("") || 
+				newDob.equals("") || newAddress.equals("") || newCreditinfo.equals("")) {
+				req.getSession().setAttribute("update_message", "Please check that all fields are filled in");
+		}
+		if (!isValidDate(newDob)) {
+			req.getSession().setAttribute("update_message", "Invalid date format, please check that your DOB is valid (yyyy-mm-dd)");
+		}
+
 	}
 	
 	public void sendConfirmationEmail(int user_id){
