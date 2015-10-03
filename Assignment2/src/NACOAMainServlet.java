@@ -67,11 +67,11 @@ public class NACOAMainServlet extends HttpServlet {
 		String price = (String) req.getParameter("search_price");
 		String username = (String) req.getParameter("username");
 		
-		if (admin) {
-			resultBeans = dHandler.bookAdminSearch(title, author, genre, price);
-		} else {
+		//if (admin) {
+			//resultBeans = dHandler.bookAdminSearch(title, author, genre, price);
+		//} else {
 			resultBeans = dHandler.bookSearch(title, author, genre, price);
-		}
+		//}
 		
 		//Remove my books from search
 		if (username != null) {
@@ -117,11 +117,11 @@ public class NACOAMainServlet extends HttpServlet {
 		String query = (String) req.getParameter("search_general");
 		String username = (String) req.getParameter("username");
 		
-		if (isAdmin) {
-			resultBeans = dHandler.bookBasicAdminSearch(query);
-		} else {
+		//if (isAdmin) {
+			//resultBeans = dHandler.bookBasicAdminSearch(query);
+		//} else {
 			resultBeans = dHandler.bookBasicSearch(query);
-		}
+		//}
 		
 		//Remove my books from search
 		if (username != null) {
@@ -419,11 +419,8 @@ public class NACOAMainServlet extends HttpServlet {
 	    	requestDispatcher.forward(req, res);
 	    	
 		} else if (uri.contains("updacc")){ //Update the account details
-			req.getSession().setAttribute("update_message", "");
 			changeUserDetails(req,res);
-			int user_id = (int) req.getSession().getAttribute("user_id");
-			updateSessionUserDetails(req, user_id);
-			requestDispatcher = req.getRequestDispatcher("/Account_setting.jsp");
+			requestDispatcher = req.getRequestDispatcher("/Search.jsp");
 	    	requestDispatcher.forward(req, res);
 	    	
 		} else if (uri.contains("cart")){ //CART PAGE
@@ -955,15 +952,6 @@ public class NACOAMainServlet extends HttpServlet {
 		String newDescription = req.getParameter("description");
 		dHandler.changeUserDetails(user_id, newPassword, newEmail, newNickname, 
 				newFirstname, newLastname, newDob, newAddress, newCreditinfo, newDescription);
-		
-		if (newPassword.equals("") || newEmail.equals("") || newNickname.equals("") || newFirstname.equals("") || newLastname.equals("") || 
-				newDob.equals("") || newAddress.equals("") || newCreditinfo.equals("")) {
-				req.getSession().setAttribute("update_message", "Please check that all fields are filled in");
-		}
-		if (!isValidDate(newDob)) {
-			req.getSession().setAttribute("update_message", "Invalid date format, please check that your DOB is valid (yyyy-mm-dd)");
-		}
-
 	}
 	
 	public void sendConfirmationEmail(int user_id){
