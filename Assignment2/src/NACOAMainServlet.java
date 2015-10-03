@@ -419,7 +419,6 @@ public class NACOAMainServlet extends HttpServlet {
 	    	requestDispatcher.forward(req, res);
 	    	
 		} else if (uri.contains("updacc")){ //Update the account details
-			changeUserDetails(req,res);
 			req.getSession().setAttribute("update_message", "");
  			changeUserDetails(req,res);
 			int user_id = (int) req.getSession().getAttribute("user_id");
