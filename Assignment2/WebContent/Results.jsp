@@ -161,7 +161,7 @@
 
           	                  <c:choose>
           		        		<c:when test="${sessionScope.logged_in == true}">
-          		              		 <td class="info"  style="vertical-align: middle"><button class="btn btn-xs btn-success" type="submit" name="add_to_cart" id="addToCartButton" value="Add to Cart"><span class="glyphicon glyphicon-shopping-cart"></span></button></td>
+          		              		 <td class="info"  style="vertical-align: middle"><button class="btn btn-xs btn-success" type="submit" name="add_to_cart" id="addToCartButton" value="Add to Cart" <c:if test="${entry.sellerName eq sessionScope.username}"><c:out value="disabled='disabled'"/></c:if>><span class="glyphicon glyphicon-shopping-cart"></span></button></td>
           		              	</c:when>
           		              </c:choose>
           		              <c:choose>

@@ -82,7 +82,7 @@ public class NACOAMainServlet extends HttpServlet {
 		//System.out.println("UserID = " + resultBeans.get(0).getUserSellerID());
 		//System.out.println("Username = " + resultBeans.get(1).getSellerName());
 		//System.out.println("UserID = " + resultBeans.get(1).getUserSellerID());
-		
+		req.getSession().setAttribute("resultBeans", resultBeans);
 		
     }
     
@@ -124,9 +124,9 @@ public class NACOAMainServlet extends HttpServlet {
 		//}
 		
 		//Remove my books from search
-		if (username != null) {
-			resultBeans = dHandler.removeMyBook(resultBeans, dHandler.getId(username));
-		}
+//		if (username != null) {
+//			resultBeans = dHandler.removeMyBook(resultBeans, dHandler.getId(username));
+//		}
 		
 		//set attribute to be retrieved later
 		req.getSession().setAttribute("resultBeans", resultBeans);
@@ -454,6 +454,7 @@ public class NACOAMainServlet extends HttpServlet {
 			req.getSession().setAttribute("makeAdmin", false);
 			req.getSession().setAttribute("unbanUser", false);
 			req.getSession().setAttribute("removeBook", false);
+			req.getSession().setAttribute("alreadyAdmin", false);
 			//req.getSession().setAttribute("modifiedUser", username);
 			
 			int user_id = dHandler.getId(username);
@@ -800,6 +801,11 @@ public class NACOAMainServlet extends HttpServlet {
 			return -1;
 		}
 		
+		if (!isValidNum(creditinfo)) {
+			req.getSession().setAttribute("register_message", "Credit card details must be a number");
+			return -1;
+		}
+		
 		if (!validEmail(email)) {
 			req.getSession().setAttribute("register_message", "Invalid email address, please check that you spelt it correctly");
 			return -1;
@@ -905,6 +911,11 @@ public class NACOAMainServlet extends HttpServlet {
 		}
 	    return true;
 	 }
+	
+	public boolean isValidNum(String inNum) {
+	    return inNum.matches("\\d+");
+	 }
+	
 	public String authUser(int id, String pw) {
 		String result = "Error authenticating user";
 		

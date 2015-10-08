@@ -63,7 +63,7 @@
 	    
   		<c:choose>
   			<c:when test="${sessionScope.logged_in && empty requestScope.returnToCart}">
-  		  		<input class="btn btn-xx btn-warning" type="submit" name="add_to_cart_view" id="edit_profile_button" value="Add to Cart">
+  		  		<input class="btn btn-xx btn-warning" type="submit" name="add_to_cart_view" id="edit_profile_button" value="Add to Cart" <c:if test="${requestScope.viewBean.readEntry.sellerName eq sessionScope.username}"><c:out value="disabled='disabled'"/></c:if>>
   			</c:when>
   		</c:choose>
   </form>
